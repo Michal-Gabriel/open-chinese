@@ -6,206 +6,85 @@ const meaningPinyin = document.querySelector("#meaning-pinyin");
 const meaningEnglish = document.querySelector("#meaning-english");
 const meaningLevel = document.querySelector("#meaning-level");
 
-const lexicon = {
-  "我家": {
-    pinyin: "wǒ jiā",
-    english: "my family / my home",
-    level: "HSK1 words",
-  },
-  "有": {
-    pinyin: "yǒu",
-    english: "to have",
-    level: "HSK1",
-  },
-  "四口人": {
-    pinyin: "sì kǒu rén",
-    english: "four people in a family",
-    level: "HSK1 words",
-  },
-  "我叫李明": {
-    pinyin: "wǒ jiào lǐ míng",
-    english: "my name is Li Ming",
-    level: "HSK1 words + name",
-  },
-  "我是": {
-    pinyin: "wǒ shì",
-    english: "I am",
-    level: "HSK1 words",
-  },
-  "我": {
-    pinyin: "wǒ",
-    english: "I / me",
-    level: "HSK1",
-  },
-  "学生": {
-    pinyin: "xué sheng",
-    english: "student",
-    level: "HSK1",
-  },
-  "今年": {
-    pinyin: "jīn nián",
-    english: "this year",
-    level: "HSK1",
-  },
-  "十岁": {
-    pinyin: "shí suì",
-    english: "ten years old",
-    level: "HSK1 words",
-  },
-  "在": {
-    pinyin: "zài",
-    english: "to be at / in",
-    level: "HSK1",
-  },
-  "北京": {
-    pinyin: "běi jīng",
-    english: "Beijing",
-    level: "HSK1",
-  },
-  "爸爸": {
-    pinyin: "bà ba",
-    english: "dad",
-    level: "HSK1",
-  },
-  "是": {
-    pinyin: "shì",
-    english: "to be",
-    level: "HSK1",
-  },
-  "老师": {
-    pinyin: "lǎo shī",
-    english: "teacher",
-    level: "HSK1",
-  },
-  "妈妈": {
-    pinyin: "mā ma",
-    english: "mom",
-    level: "HSK1",
-  },
-  "朋友": {
-    pinyin: "péng you",
-    english: "friend",
-    level: "HSK1",
-  },
-  "她": {
-    pinyin: "tā",
-    english: "she",
-    level: "HSK1",
-  },
-  "喜欢": {
-    pinyin: "xǐ huan",
-    english: "to like",
-    level: "HSK1",
-  },
-  "汉语": {
-    pinyin: "hàn yǔ",
-    english: "Chinese language",
-    level: "HSK1",
-  },
-  "今天": {
-    pinyin: "jīn tiān",
-    english: "today",
-    level: "HSK1",
-  },
-  "星期一": {
-    pinyin: "xīng qī yī",
-    english: "Monday",
-    level: "HSK1",
-  },
-  "上午": {
-    pinyin: "shàng wǔ",
-    english: "morning",
-    level: "HSK1",
-  },
-  "我和朋友": {
-    pinyin: "wǒ hé péng you",
-    english: "my friend and I",
-    level: "HSK1 words",
-  },
-  "去": {
-    pinyin: "qù",
-    english: "to go",
-    level: "HSK1",
-  },
-  "学校": {
-    pinyin: "xué xiào",
-    english: "school",
-    level: "HSK1",
-  },
-  "说": {
-    pinyin: "shuō",
-    english: "to say / speak",
-    level: "HSK1",
-  },
-  "你好": {
-    pinyin: "nǐ hǎo",
-    english: "hello",
-    level: "HSK1",
-  },
-  "我说": {
-    pinyin: "wǒ shuō",
-    english: "I say",
-    level: "HSK1 words",
-  },
-  "老师好": {
-    pinyin: "lǎo shī hǎo",
-    english: "hello teacher",
-    level: "HSK1 words",
-  },
-  "中午": {
-    pinyin: "zhōng wǔ",
-    english: "noon",
-    level: "HSK1",
-  },
-  "我们": {
-    pinyin: "wǒ men",
-    english: "we / us",
-    level: "HSK1",
-  },
-  "喝水": {
-    pinyin: "hē shuǐ",
-    english: "drink water",
-    level: "HSK1 words",
-  },
-  "吃米饭": {
-    pinyin: "chī mǐ fàn",
-    english: "eat rice / eat a meal",
-    level: "HSK1 words",
-  },
-  "看书": {
-    pinyin: "kàn shū",
-    english: "read books",
-    level: "HSK1 words",
-  },
-  "回家": {
-    pinyin: "huí jiā",
-    english: "go home",
-    level: "HSK1 words",
-  },
-  "爸爸妈妈": {
-    pinyin: "bà ba mā ma",
-    english: "dad and mom",
-    level: "HSK1 words",
-  },
-  "都": {
-    pinyin: "dōu",
-    english: "both / all",
-    level: "HSK1",
-  },
-  "在家": {
-    pinyin: "zài jiā",
-    english: "at home",
-    level: "HSK1 words",
-  },
-  "很高兴": {
-    pinyin: "hěn gāo xìng",
-    english: "very happy",
-    level: "HSK1 words",
-  },
-};
+const fallbackCsv = `key,hanzi,pinyin,english,level
+我家,我家,wǒ jiā,my family / my home,HSK1
+有,有,yǒu,to have,HSK1
+四口人,四口人,sì kǒu rén,four people in a family,HSK1
+我叫李明,我叫李明,wǒ jiào lǐ míng,my name is Li Ming,HSK1
+我是,我是,wǒ shì,I am,HSK1
+我,我,wǒ,I / me,HSK1
+学生,学生,xué sheng,student,HSK1
+今年,今年,jīn nián,this year,HSK1
+十岁,十岁,shí suì,ten years old,HSK1
+在,在,zài,to be at / in,HSK1
+北京,北京,běi jīng,Beijing,HSK1
+爸爸,爸爸,bà ba,dad,HSK1
+是,是,shì,to be,HSK1
+老师,老师,lǎo shī,teacher,HSK1
+妈妈,妈妈,mā ma,mom,HSK1
+朋友,朋友,péng you,friend,HSK1
+她,她,tā,she,HSK1
+喜欢,喜欢,xǐ huan,to like,HSK1
+汉语,汉语,hàn yǔ,Chinese language,HSK1
+今天,今天,jīn tiān,today,HSK1
+星期一,星期一,xīng qī yī,Monday,HSK1
+上午,上午,shàng wǔ,morning,HSK1
+我和朋友,我和朋友,wǒ hé péng you,my friend and I,HSK1
+去,去,qù,to go,HSK1
+学校,学校,xué xiào,school,HSK1
+说,说,shuō,to say / speak,HSK1
+你好,你好,nǐ hǎo,hello,HSK1
+我说,我说,wǒ shuō,I say,HSK1
+老师好,老师好,lǎo shī hǎo,hello teacher,HSK1
+中午,中午,zhōng wǔ,noon,HSK1
+我们,我们,wǒ men,we / us,HSK1
+喝水,喝水,hē shuǐ,drink water,HSK1
+吃米饭,吃米饭,chī mǐ fàn,eat rice / eat a meal,HSK1
+看书,看书,kàn shū,read books,HSK1
+回家,回家,huí jiā,go home,HSK1
+爸爸妈妈,爸爸妈妈,bà ba mā ma,dad and mom,HSK1
+都,都,dōu,both / all,HSK1
+在家,在家,zài jiā,at home,HSK1
+很高兴,很高兴,hěn gāo xìng,very happy,HSK1`;
+
+let lexicon = {};
 
 function applyToggle(name, checked) {
   root.classList.toggle(`hide-${name}`, !checked);
+}
+
+function parseCsv(text) {
+  const rows = text.trim().split(/\r?\n/);
+  const [, ...dataRows] = rows;
+
+  return dataRows.reduce((acc, row) => {
+    const [key, hanzi, pinyin, english, level] = row.split(",");
+    if (!key) return acc;
+
+    acc[key] = {
+      hanzi,
+      pinyin,
+      english,
+      level,
+    };
+
+    return acc;
+  }, {});
+}
+
+async function loadLexicon() {
+  try {
+    const response = await fetch("./data/story1-vocabulary.csv");
+
+    if (!response.ok) {
+      throw new Error("Could not load story1 vocabulary.");
+    }
+
+    const csv = await response.text();
+    lexicon = parseCsv(csv);
+  } catch (error) {
+    lexicon = parseCsv(fallbackCsv);
+  }
 }
 
 function updateMeaning(word) {
@@ -216,21 +95,30 @@ function updateMeaning(word) {
   words.forEach((item) => item.classList.remove("selected"));
   word.classList.add("selected");
 
-  meaningHanzi.textContent = key;
+  meaningHanzi.textContent = entry.hanzi;
   meaningPinyin.textContent = entry.pinyin;
   meaningEnglish.textContent = entry.english;
   meaningLevel.textContent = entry.level;
 }
 
-toggles.forEach((toggle) => {
-  applyToggle(toggle.dataset.toggle, toggle.checked);
-
-  toggle.addEventListener("change", () => {
+function bindInteractions() {
+  toggles.forEach((toggle) => {
     applyToggle(toggle.dataset.toggle, toggle.checked);
-  });
-});
 
-words.forEach((word) => {
-  word.addEventListener("mouseenter", () => updateMeaning(word));
-  word.addEventListener("focus", () => updateMeaning(word));
-});
+    toggle.addEventListener("change", () => {
+      applyToggle(toggle.dataset.toggle, toggle.checked);
+    });
+  });
+
+  words.forEach((word) => {
+    word.addEventListener("mouseenter", () => updateMeaning(word));
+    word.addEventListener("focus", () => updateMeaning(word));
+  });
+}
+
+async function init() {
+  await loadLexicon();
+  bindInteractions();
+}
+
+init();

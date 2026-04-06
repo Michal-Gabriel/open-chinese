@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Family</title>
+    <meta
+      name="description"
+      content="Chinese reader interface closely modeled on the provided reference."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="reader-shell">
+      <section class="info-panel">
+        <div class="info-header">
+          <span>Story name</span>
+        </div>
+        <p class="info-copy">My Family</p>
+        <p class="story-meta">New words in this story: 39</p>
+      </section>
+
+      <section class="info-panel sticky-word-panel">
+        <div class="info-header">
+          <span>Word meaning</span>
+        </div>
+        <div class="word-meaning">
+          <div class="meaning-main">
+            <span class="meaning-hanzi" id="meaning-hanzi">学生</span>
+            <span class="meaning-pinyin" id="meaning-pinyin">xue sheng</span>
+            <span class="meaning-english" id="meaning-english">student</span>
+          </div>
+          <div class="meaning-level" id="meaning-level">HSK1</div>
+        </div>
+      </section>
+
+      <section class="reader-panel">
+        <div class="reader-toolbar">
+          <div class="display-switches" aria-label="Display controls">
+            <label class="switch">
+              <input type="checkbox" data-toggle="pinyin" checked />
+              <span>Pinyin</span>
+            </label>
+            <label class="switch">
+              <input type="checkbox" data-toggle="english" checked />
+              <span>English</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="reader-content">
+          <section class="title-block">
+            <div class="phrase-card">
+              <div class="pinyin-line">wǒ jiā yǒu sì kǒu rén</div>
+              <div class="hanzi-line solo">
+                <span class="word underline" data-pinyin="wǒ jiā" data-tip="family" data-key="我家">我家</span>
+                <span class="word underline" data-pinyin="yǒu" data-tip="have" data-key="有">有</span>
+                <span class="word underline" data-pinyin="sì kǒu rén" data-tip="four people" data-key="四口人">四口人</span>
+              </div>
+              <div class="english-line">There are four people in my family.</div>
+            </div>
+          </section>
+
+          <section class="lesson-sheet" aria-label="Chinese reader">
+            <article class="reader-row">
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ jiào lǐ míng</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="wǒ jiào lǐ míng" data-tip="my name is Li Ming" data-key="我叫李明">我叫李明</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">My name is Li Ming.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ shì xué sheng</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="wǒ shì" data-tip="I am" data-key="我是">我是</span>
+                  <span class="word underline" data-pinyin="xué sheng" data-tip="student" data-key="学生">学生</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">I am a student.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ jīn nián shí suì</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="wǒ" data-tip="I" data-key="我">我</span>
+                  <span class="word underline" data-pinyin="jīn nián" data-tip="this year" data-key="今年">今年</span>
+                  <span class="word underline" data-pinyin="shí suì" data-tip="ten years old" data-key="十岁">十岁</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">I am ten years old.</div>
+              </div>
+            </article>
+
+            <article class="reader-row">
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ jiā zài běi jīng</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="wǒ jiā" data-tip="family" data-key="我家">我家</span>
+                  <span class="word underline" data-pinyin="zài" data-tip="in / at" data-key="在">在</span>
+                  <span class="word underline" data-pinyin="běi jīng" data-tip="Beijing" data-key="北京">北京</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">My family is in Beijing.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">bà ba shì lǎo shī</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="bà ba" data-tip="dad" data-key="爸爸">爸爸</span>
+                  <span class="word underline" data-pinyin="shì" data-tip="is" data-key="是">是</span>
+                  <span class="word underline" data-pinyin="lǎo shī" data-tip="teacher" data-key="老师">老师</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">Dad is a teacher.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">mā ma yě shì lǎo shī</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="mā ma" data-tip="mom" data-key="妈妈">妈妈</span>
+                  <span class="word underline" data-pinyin="shì" data-tip="is" data-key="是">是</span>
+                  <span class="word underline" data-pinyin="lǎo shī" data-tip="teacher" data-key="老师">老师</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">Mom is a teacher.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">péng you shì xué sheng</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="péng you" data-tip="friend" data-key="朋友">朋友</span>
+                  <span class="word underline" data-pinyin="shì" data-tip="is" data-key="是">是</span>
+                  <span class="word underline" data-pinyin="xué sheng" data-tip="student" data-key="学生">学生</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">My friend is a student.</div>
+              </div>
+            </article>
+
+            <article class="reader-row">
+              <div class="phrase-card">
+                <div class="pinyin-line">tā xǐ huan hàn yǔ</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="tā" data-tip="she" data-key="她">她</span>
+                  <span class="word underline" data-pinyin="xǐ huan" data-tip="like" data-key="喜欢">喜欢</span>
+                  <span class="word underline" data-pinyin="hàn yǔ" data-tip="Chinese language" data-key="汉语">汉语</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">She likes Chinese.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ xǐ huan hàn yǔ</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="wǒ" data-tip="I" data-key="我">我</span>
+                  <span class="word underline" data-pinyin="xǐ huan" data-tip="like" data-key="喜欢">喜欢</span>
+                  <span class="word underline" data-pinyin="hàn yǔ" data-tip="Chinese language" data-key="汉语">汉语</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">I like Chinese too.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">jīn tiān xīng qī yī</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="jīn tiān" data-tip="today" data-key="今天">今天</span>
+                  <span class="word underline" data-pinyin="xīng qī yī" data-tip="Monday" data-key="星期一">星期一</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">Today is Monday.</div>
+              </div>
+            </article>
+
+            <article class="reader-row">
+              <div class="phrase-card">
+                <div class="pinyin-line">shàng wǔ, wǒ hé péng you qù xué xiào</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="shàng wǔ" data-tip="morning" data-key="上午">上午</span>
+                  <span class="punctuation">，</span>
+                  <span class="word underline" data-pinyin="wǒ hé péng you" data-tip="friend and I" data-key="我和朋友">我和朋友</span>
+                  <span class="word underline" data-pinyin="qù" data-tip="go to" data-key="去">去</span>
+                  <span class="word underline" data-pinyin="xué xiào" data-tip="school" data-key="学校">学校</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">In the morning, my friend and I go to school.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">lǎo shī shuō: nǐ hǎo</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="lǎo shī" data-tip="teacher" data-key="老师">老师</span>
+                  <span class="word underline" data-pinyin="shuō" data-tip="say" data-key="说">说</span>
+                  <span class="punctuation">：</span>
+                  <span class="word underline" data-pinyin="nǐ hǎo" data-tip="hello" data-key="你好">你好</span>
+                  <span class="punctuation">！</span>
+                </div>
+                <div class="english-line">The teacher says, “Hello!”</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ shuō: lǎo shī hǎo</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="wǒ shuō" data-tip="I say" data-key="我说">我说</span>
+                  <span class="punctuation">：</span>
+                  <span class="word underline" data-pinyin="lǎo shī hǎo" data-tip="hello teacher" data-key="老师好">老师好</span>
+                  <span class="punctuation">！</span>
+                </div>
+                <div class="english-line">I say, “Hello teacher!”</div>
+              </div>
+            </article>
+
+            <article class="reader-row">
+              <div class="phrase-card">
+                <div class="pinyin-line">zhōng wǔ, wǒ men hē shuǐ, chī mǐ fàn</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="zhōng wǔ" data-tip="noon" data-key="中午">中午</span>
+                  <span class="punctuation">，</span>
+                  <span class="word underline" data-pinyin="wǒ men" data-tip="we" data-key="我们">我们</span>
+                  <span class="word underline" data-pinyin="hē shuǐ" data-tip="drink water" data-key="喝水">喝水</span>
+                  <span class="punctuation">，</span>
+                  <span class="word underline" data-pinyin="chī mǐ fàn" data-tip="eat rice" data-key="吃米饭">吃米饭</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">At noon, we drink water and eat rice.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ men kàn shū</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="wǒ men" data-tip="we" data-key="我们">我们</span>
+                  <span class="word underline" data-pinyin="kàn shū" data-tip="read books" data-key="看书">看书</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">We read books.</div>
+              </div>
+            </article>
+
+            <article class="reader-row">
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ men huí jiā</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="wǒ men" data-tip="we" data-key="我们">我们</span>
+                  <span class="word underline" data-pinyin="huí jiā" data-tip="go home" data-key="回家">回家</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">We go home.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">bà ba mā ma dōu zài jiā</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="bà ba mā ma" data-tip="dad and mom" data-key="爸爸妈妈">爸爸妈妈</span>
+                  <span class="word underline" data-pinyin="dōu" data-tip="both" data-key="都">都</span>
+                  <span class="word underline" data-pinyin="zài jiā" data-tip="are at home" data-key="在家">在家</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">Dad and Mom are both at home.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ jīn tiān hěn gāo xìng</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-pinyin="wǒ" data-tip="I" data-key="我">我</span>
+                  <span class="word underline" data-pinyin="jīn tiān" data-tip="today" data-key="今天">今天</span>
+                  <span class="word underline" data-pinyin="hěn gāo xìng" data-tip="happy" data-key="很高兴">很高兴</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">I am very happy today.</div>
+              </div>
+            </article>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script src="./script.js"></script>
+  </body>
+</html>
