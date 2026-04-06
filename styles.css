@@ -1,0 +1,266 @@
+:root {
+  --bg: #ffffff;
+  --border: #dddddd;
+  --label: #a4a4a4;
+  --text: #303030;
+  --pinyin: #666666;
+  --underline: #ff9a90;
+  --highlight: #bfe9e1;
+  --link: #3a86f5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", "Noto Sans SC", sans-serif;
+}
+
+body {
+  padding: 40px 28px 48px;
+}
+
+.reader-shell {
+  max-width: 1810px;
+  margin: 0 auto;
+}
+
+.info-panel,
+.reader-panel {
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+.info-panel + .info-panel,
+.info-panel + .reader-panel {
+  margin-top: -1px;
+}
+
+.info-panel {
+  padding: 10px 26px 26px;
+}
+
+.sticky-word-panel {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--label);
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.info-copy {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.35;
+}
+
+.word-meaning {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.meaning-main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: baseline;
+  font-size: 22px;
+  line-height: 1.45;
+}
+
+.meaning-hanzi {
+  color: var(--link);
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 24px;
+}
+
+.meaning-pinyin {
+  color: #f36a58;
+}
+
+.meaning-level {
+  align-self: flex-end;
+  font-size: 16px;
+  padding-bottom: 6px;
+  border-bottom: 4px solid var(--underline);
+}
+
+.reader-panel {
+  min-height: 680px;
+}
+
+.reader-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 26px;
+  border-bottom: 1px solid var(--border);
+}
+
+.display-switches {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fafafa;
+  color: #666;
+  font-size: 15px;
+}
+
+.switch input {
+  margin: 0;
+}
+
+.reader-content {
+  padding: 76px 72px 80px 188px;
+}
+
+.title-block {
+  margin-bottom: 116px;
+}
+
+.lesson-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.reader-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  align-items: flex-start;
+}
+
+.phrase-card {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.pinyin-line {
+  font-size: 23px;
+  line-height: 1.1;
+  color: var(--pinyin);
+  margin-bottom: 2px;
+  white-space: nowrap;
+}
+
+.hanzi-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 6px;
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 50px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.hanzi-line.solo {
+  gap: 16px;
+}
+
+.word {
+  display: inline-flex;
+  align-items: center;
+  min-height: 54px;
+  position: relative;
+}
+
+.underline {
+  border-bottom: 4px solid var(--underline);
+  padding-bottom: 4px;
+}
+
+.highlight {
+  background: var(--highlight);
+  border-radius: 8px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.selected {
+  color: var(--link);
+}
+
+.punctuation {
+  font-size: 45px;
+  transform: translateY(-1px);
+}
+
+.english-line {
+  margin-top: 8px;
+  font-size: 18px;
+  line-height: 1.3;
+  color: #8a8a8a;
+  white-space: nowrap;
+}
+
+.hide-pinyin .pinyin-line,
+.hide-english .english-line {
+  display: none;
+}
+
+@media (max-width: 1400px) {
+  .reader-content {
+    padding-left: 90px;
+    padding-right: 40px;
+  }
+}
+
+@media (max-width: 1100px) {
+  body {
+    padding: 18px;
+  }
+
+  .word-meaning,
+  .reader-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .reader-content {
+    padding: 40px 24px 48px;
+  }
+
+  .title-block {
+    margin-bottom: 64px;
+  }
+
+  .pinyin-line {
+    font-size: 20px;
+  }
+
+  .hanzi-line {
+    font-size: 38px;
+  }
+
+  .punctuation {
+    font-size: 34px;
+  }
+}

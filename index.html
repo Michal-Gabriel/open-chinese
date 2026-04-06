@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open Chinese Reader</title>
+    <meta
+      name="description"
+      content="Chinese reader interface closely modeled on the provided reference."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="reader-shell">
+      <section class="info-panel">
+        <div class="info-header">
+          <span>Story name</span>
+        </div>
+        <p class="info-copy">I’m a Cat</p>
+      </section>
+
+      <section class="info-panel sticky-word-panel">
+        <div class="info-header">
+          <span>Word meaning</span>
+        </div>
+        <div class="word-meaning">
+          <div class="meaning-main">
+            <span class="meaning-hanzi" id="meaning-hanzi">东西</span>
+            <span class="meaning-pinyin" id="meaning-pinyin">dōng xi</span>
+            <span class="meaning-english" id="meaning-english">(a common "all-purpose" noun that can denote any object or objects in Chinese) / thing / stuff</span>
+          </div>
+          <div class="meaning-level" id="meaning-level">HSK1</div>
+        </div>
+      </section>
+
+      <section class="reader-panel">
+        <div class="reader-toolbar">
+          <div class="display-switches" aria-label="Display controls">
+            <label class="switch">
+              <input type="checkbox" data-toggle="pinyin" checked />
+              <span>Pinyin</span>
+            </label>
+            <label class="switch">
+              <input type="checkbox" data-toggle="english" checked />
+              <span>English</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="reader-content">
+          <section class="title-block">
+            <div class="phrase-card">
+              <div class="pinyin-line">wǒ shì māo</div>
+              <div class="hanzi-line solo">
+                <span class="word underline" data-tip="I am">我是</span>
+                <span class="word underline" data-tip="cat">猫</span>
+              </div>
+              <div class="english-line">I am a cat.</div>
+            </div>
+          </section>
+
+          <section class="lesson-sheet" aria-label="Chinese reader">
+            <article class="reader-row">
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ shì māo</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-tip="I am">我是</span>
+                  <span class="word underline" data-tip="cat">猫</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">I am a cat.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ yí suì le</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-tip="I">我</span>
+                  <span class="word highlight underline" data-tip="am one year old">一岁了</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">I am one year old.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ xǐ huan chī dōng xi</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-tip="I like">我喜欢</span>
+                  <span class="word underline" data-tip="to eat">吃</span>
+                  <span class="word selected underline" data-tip="thing / stuff">东西</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">I like to eat things.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ yě xǐ huan shuì jiào</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-tip="I">我</span>
+                  <span class="word highlight underline" data-tip="also">也</span>
+                  <span class="word underline" data-tip="like">喜欢</span>
+                  <span class="word underline" data-tip="sleep">睡觉</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">I also like sleeping.</div>
+              </div>
+            </article>
+
+            <article class="reader-row">
+              <div class="phrase-card">
+                <div class="pinyin-line">xīng qī yī</div>
+                <div class="hanzi-line">
+                  <span class="word" data-tip="Monday">星期一</span>
+                  <span class="punctuation">，</span>
+                </div>
+                <div class="english-line">Monday,</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ zài shāng diàn chī fàn</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-tip="I am at">我在</span>
+                  <span class="word underline" data-tip="shop">商店</span>
+                  <span class="word underline" data-tip="eat">吃饭</span>
+                  <span class="punctuation">，</span>
+                </div>
+                <div class="english-line">I eat in the shop,</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ zài xué xiào shuì jiào</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-tip="I am at">我在</span>
+                  <span class="word underline" data-tip="school">学校</span>
+                  <span class="word underline" data-tip="sleep">睡觉</span>
+                  <span class="punctuation">；</span>
+                </div>
+                <div class="english-line">I sleep at school;</div>
+              </div>
+            </article>
+
+            <article class="reader-row">
+              <div class="phrase-card">
+                <div class="pinyin-line">xīng qī èr</div>
+                <div class="hanzi-line">
+                  <span class="word" data-tip="Tuesday">星期二</span>
+                  <span class="punctuation">，</span>
+                </div>
+                <div class="english-line">Tuesday,</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">shāng diàn méi yǒu fàn</div>
+                <div class="hanzi-line">
+                  <span class="word" data-tip="shop">商店</span>
+                  <span class="word highlight underline" data-tip="does not have">没有</span>
+                  <span class="word underline" data-tip="food">饭</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">The shop has no food.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ zài xué xiào chī fàn</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-tip="I am at">我在</span>
+                  <span class="word underline" data-tip="school">学校</span>
+                  <span class="word underline" data-tip="eat">吃饭</span>
+                  <span class="punctuation">，</span>
+                </div>
+                <div class="english-line">I eat at school,</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ zài fàn diàn shuì jiào</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-tip="I am at">我在</span>
+                  <span class="word underline" data-tip="restaurant">饭店</span>
+                  <span class="word underline" data-tip="sleep">睡觉</span>
+                  <span class="punctuation">；</span>
+                </div>
+                <div class="english-line">I sleep in the restaurant;</div>
+              </div>
+            </article>
+
+            <article class="reader-row">
+              <div class="phrase-card">
+                <div class="pinyin-line">xīng qī sān</div>
+                <div class="hanzi-line">
+                  <span class="word" data-tip="Wednesday">星期三</span>
+                  <span class="punctuation">，</span>
+                </div>
+                <div class="english-line">Wednesday,</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">shāng diàn méi yǒu fàn</div>
+                <div class="hanzi-line">
+                  <span class="word" data-tip="shop">商店</span>
+                  <span class="word highlight underline" data-tip="does not have">没有</span>
+                  <span class="word underline" data-tip="food">饭</span>
+                  <span class="punctuation">，</span>
+                </div>
+                <div class="english-line">The shop has no food,</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">xué xiào yě méi yǒu fàn</div>
+                <div class="hanzi-line">
+                  <span class="word" data-tip="school">学校</span>
+                  <span class="word highlight underline" data-tip="also does not have">也没有</span>
+                  <span class="word underline" data-tip="food">饭</span>
+                  <span class="punctuation">。</span>
+                </div>
+                <div class="english-line">school has no food either.</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ zài fàn diàn chī fàn</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-tip="I am at">我在</span>
+                  <span class="word underline" data-tip="restaurant">饭店</span>
+                  <span class="word underline" data-tip="eat">吃饭</span>
+                  <span class="punctuation">，</span>
+                </div>
+                <div class="english-line">I eat in the restaurant,</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ zài yī yuàn shuì jiào</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-tip="I am at">我在</span>
+                  <span class="word underline" data-tip="hospital">医院</span>
+                  <span class="word underline" data-tip="sleep">睡觉</span>
+                  <span class="punctuation">；</span>
+                </div>
+                <div class="english-line">I sleep at the hospital;</div>
+              </div>
+            </article>
+
+            <article class="reader-row">
+              <div class="phrase-card">
+                <div class="pinyin-line">xīng qī sì</div>
+                <div class="hanzi-line">
+                  <span class="word" data-tip="Thursday">星期四</span>
+                  <span class="punctuation">，</span>
+                </div>
+                <div class="english-line">Thursday,</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ zài yī yuàn chī fàn</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-tip="I am at">我在</span>
+                  <span class="word underline" data-tip="hospital">医院</span>
+                  <span class="word underline" data-tip="eat">吃饭</span>
+                  <span class="punctuation">，</span>
+                </div>
+                <div class="english-line">I eat at the hospital,</div>
+              </div>
+
+              <div class="phrase-card">
+                <div class="pinyin-line">wǒ zài shāng diàn shuì jiào</div>
+                <div class="hanzi-line">
+                  <span class="word underline" data-tip="I am at">我在</span>
+                  <span class="word underline" data-tip="shop">商店</span>
+                  <span class="word underline" data-tip="sleep">睡觉</span>
+                  <span class="punctuation">……</span>
+                </div>
+                <div class="english-line">I sleep in the shop...</div>
+              </div>
+            </article>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script src="./script.js"></script>
+  </body>
+</html>
