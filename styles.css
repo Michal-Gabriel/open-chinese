@@ -108,11 +108,62 @@ body {
 
 .reader-toolbar {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   gap: 18px;
   padding: 18px 26px;
   border-bottom: 1px solid var(--border);
+}
+
+.audio-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.speed-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 14px;
+}
+
+.speed-control select {
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+}
+
+.audio-button {
+  border: 1px solid var(--text);
+  background: var(--text);
+  color: #fff;
+  border-radius: 999px;
+  padding: 9px 16px;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.audio-button-secondary {
+  background: #fff;
+  color: var(--text);
+}
+
+.audio-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.audio-status {
+  color: #7a7a7a;
+  font-size: 14px;
 }
 
 .display-switches {
@@ -165,6 +216,12 @@ body {
   align-items: flex-start;
   width: max-content;
   flex: 0 0 auto;
+}
+
+.phrase-card.reading .word {
+  background: #9fe3d7;
+  border-radius: 8px;
+  box-shadow: 0 0 0 2px rgba(159, 227, 215, 0.35);
 }
 
 .pinyin-line {
@@ -230,6 +287,12 @@ body {
 .word.selected {
   background: #bfeee5;
   border-radius: 8px;
+}
+
+.word.reading {
+  background: #9fe3d7;
+  border-radius: 8px;
+  box-shadow: 0 0 0 2px rgba(159, 227, 215, 0.35);
 }
 
 .underline {

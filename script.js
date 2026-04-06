@@ -5,6 +5,11 @@ const meaningHanzi = document.querySelector("#meaning-hanzi");
 const meaningPinyin = document.querySelector("#meaning-pinyin");
 const meaningEnglish = document.querySelector("#meaning-english");
 const meaningLevel = document.querySelector("#meaning-level");
+const playStoryButton = document.querySelector("#play-story");
+const stopStoryButton = document.querySelector("#stop-story");
+const speedSelect = document.querySelector("#story-speed");
+const audioStatus = document.querySelector("#audio-status");
+const phraseCards = document.querySelectorAll(".reader-content .phrase-card");
 
 const fallbackCsv = `key,hanzi,pinyin,english,level
 我家,我家,wǒ jiā,my family / my home,HSK1
@@ -48,6 +53,9 @@ const fallbackCsv = `key,hanzi,pinyin,english,level
 很高兴,很高兴,hěn gāo xìng,very happy,HSK1`;
 
 let lexicon = {};
+let currentAudio = null;
+let storyQueue = [];
+let storyIndex = 0;
 
 function applyToggle(name, checked) {
   root.classList.toggle(`hide-${name}`, !checked);
@@ -116,9 +124,126 @@ function bindInteractions() {
   });
 }
 
+function setAudioStatus(message) {
+  if (audioStatus) {
+    audioStatus.textContent = message;
+  }
+}
+
+function getPlaybackRate() {
+  if (!speedSelect) return 0.75;
+
+  const rate = Number.parseFloat(speedSelect.value);
+  return Number.isFinite(rate) ? rate : 0.75;
+}
+
+function clearReadingHighlight() {
+  words.forEach((word) => word.classList.remove("reading"));
+  phraseCards.forEach((card) => card.classList.remove("reading"));
+}
+
+function stopStoryPlayback() {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    currentAudio = null;
+  }
+  storyQueue = [];
+  storyIndex = 0;
+  clearReadingHighlight();
+
+  if (playStoryButton) playStoryButton.disabled = false;
+  if (stopStoryButton) stopStoryButton.disabled = true;
+
+  setAudioStatus("Ready to listen");
+}
+
+function buildStoryQueue() {
+  return Array.from(phraseCards).map((card, index) => ({
+    card,
+    audioSrc: `./audio/story1/${String(index + 1).padStart(3, "0")}.mp3`,
+  }));
+}
+
+function playQueueItem(index) {
+  if (index >= storyQueue.length) {
+    currentAudio = null;
+    clearReadingHighlight();
+
+    if (playStoryButton) playStoryButton.disabled = false;
+    if (stopStoryButton) stopStoryButton.disabled = true;
+
+    setAudioStatus("Finished");
+    return;
+  }
+
+  storyIndex = index;
+  const item = storyQueue[index];
+
+  clearReadingHighlight();
+  item.card.classList.add("reading");
+
+  const firstWord = item.card.querySelector(".word");
+  if (firstWord) {
+    updateMeaning(firstWord);
+  }
+
+  const audio = new Audio(item.audioSrc);
+  audio.playbackRate = getPlaybackRate();
+
+  audio.onplay = () => {
+    currentAudio = audio;
+    if (playStoryButton) playStoryButton.disabled = true;
+    if (stopStoryButton) stopStoryButton.disabled = false;
+    setAudioStatus(`Playing sentence ${index + 1} of ${storyQueue.length}`);
+  };
+
+  audio.onended = () => {
+    playQueueItem(index + 1);
+  };
+
+  audio.onerror = () => {
+    currentAudio = null;
+    clearReadingHighlight();
+    if (playStoryButton) playStoryButton.disabled = false;
+    if (stopStoryButton) stopStoryButton.disabled = true;
+    setAudioStatus("Playback failed");
+  };
+
+  audio.play().catch(() => {
+    currentAudio = null;
+    clearReadingHighlight();
+    if (playStoryButton) playStoryButton.disabled = false;
+    if (stopStoryButton) stopStoryButton.disabled = true;
+    setAudioStatus("Playback failed");
+  });
+}
+
+function playStory() {
+  storyQueue = buildStoryQueue();
+  if (!storyQueue.length) {
+    setAudioStatus("Story text is not available");
+    return;
+  }
+
+  stopStoryPlayback();
+  storyQueue = buildStoryQueue();
+  playQueueItem(0);
+}
+
+function bindAudioControls() {
+  if (!playStoryButton || !stopStoryButton) return;
+
+  stopStoryButton.disabled = true;
+
+  playStoryButton.addEventListener("click", playStory);
+  stopStoryButton.addEventListener("click", stopStoryPlayback);
+}
+
 async function init() {
   await loadLexicon();
   bindInteractions();
+  bindAudioControls();
 }
 
 init();
