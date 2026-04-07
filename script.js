@@ -56,6 +56,7 @@ let lexicon = {};
 let currentAudio = null;
 let storyQueue = [];
 let storyIndex = 0;
+let readingTimers = [];
 
 function applyToggle(name, checked) {
   root.classList.toggle(`hide-${name}`, !checked);
@@ -142,6 +143,11 @@ function clearReadingHighlight() {
   phraseCards.forEach((card) => card.classList.remove("reading"));
 }
 
+function clearReadingTimers() {
+  readingTimers.forEach((timerId) => window.clearTimeout(timerId));
+  readingTimers = [];
+}
+
 function stopStoryPlayback() {
   if (currentAudio) {
     currentAudio.pause();
@@ -150,6 +156,7 @@ function stopStoryPlayback() {
   }
   storyQueue = [];
   storyIndex = 0;
+  clearReadingTimers();
   clearReadingHighlight();
 
   if (playStoryButton) playStoryButton.disabled = false;
@@ -162,12 +169,53 @@ function buildStoryQueue() {
   return Array.from(phraseCards).map((card, index) => ({
     card,
     audioSrc: `./audio/story1/${String(index + 1).padStart(3, "0")}.mp3`,
+    words: Array.from(card.querySelectorAll(".word")),
   }));
+}
+
+function getWordWeight(word) {
+  const pinyin = word.dataset.pinyin?.trim();
+  if (pinyin) {
+    return Math.max(pinyin.split(/\s+/).length, 1);
+  }
+
+  const text = word.dataset.key || word.textContent.trim();
+  return Math.max(text.length, 1);
+}
+
+function highlightWord(word, card) {
+  clearReadingHighlight();
+  card.classList.add("reading");
+  word.classList.add("reading");
+  updateMeaning(word);
+}
+
+function scheduleWordHighlights(item, durationSeconds) {
+  clearReadingTimers();
+
+  if (!item.words.length) return;
+
+  const effectiveDurationMs = Math.max((durationSeconds * 1000) / getPlaybackRate(), 300);
+  const totalWeight = item.words.reduce((sum, word) => sum + getWordWeight(word), 0);
+
+  let elapsedWeight = 0;
+  item.words.forEach((word) => {
+    const startMs = totalWeight === 0 ? 0 : (elapsedWeight / totalWeight) * effectiveDurationMs;
+    const timerId = window.setTimeout(() => {
+      if (currentAudio) {
+        highlightWord(word, item.card);
+      }
+    }, Math.max(0, startMs));
+
+    readingTimers.push(timerId);
+    elapsedWeight += getWordWeight(word);
+  });
 }
 
 function playQueueItem(index) {
   if (index >= storyQueue.length) {
     currentAudio = null;
+    clearReadingTimers();
     clearReadingHighlight();
 
     if (playStoryButton) playStoryButton.disabled = false;
@@ -180,12 +228,11 @@ function playQueueItem(index) {
   storyIndex = index;
   const item = storyQueue[index];
 
+  clearReadingTimers();
   clearReadingHighlight();
-  item.card.classList.add("reading");
-
-  const firstWord = item.card.querySelector(".word");
+  const firstWord = item.words[0];
   if (firstWord) {
-    updateMeaning(firstWord);
+    highlightWord(firstWord, item.card);
   }
 
   const audio = new Audio(item.audioSrc);
@@ -193,17 +240,20 @@ function playQueueItem(index) {
 
   audio.onplay = () => {
     currentAudio = audio;
+    scheduleWordHighlights(item, Number.isFinite(audio.duration) ? audio.duration : 1);
     if (playStoryButton) playStoryButton.disabled = true;
     if (stopStoryButton) stopStoryButton.disabled = false;
     setAudioStatus(`Playing sentence ${index + 1} of ${storyQueue.length}`);
   };
 
   audio.onended = () => {
+    clearReadingTimers();
     playQueueItem(index + 1);
   };
 
   audio.onerror = () => {
     currentAudio = null;
+    clearReadingTimers();
     clearReadingHighlight();
     if (playStoryButton) playStoryButton.disabled = false;
     if (stopStoryButton) stopStoryButton.disabled = true;
@@ -212,6 +262,7 @@ function playQueueItem(index) {
 
   audio.play().catch(() => {
     currentAudio = null;
+    clearReadingTimers();
     clearReadingHighlight();
     if (playStoryButton) playStoryButton.disabled = false;
     if (stopStoryButton) stopStoryButton.disabled = true;

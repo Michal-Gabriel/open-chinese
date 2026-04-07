@@ -218,10 +218,17 @@ body {
   flex: 0 0 auto;
 }
 
-.phrase-card.reading .word {
-  background: #9fe3d7;
-  border-radius: 8px;
-  box-shadow: 0 0 0 2px rgba(159, 227, 215, 0.35);
+.phrase-card.reading {
+  position: relative;
+}
+
+.phrase-card.reading::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 14px;
+  border: 1px solid rgba(159, 227, 215, 0.55);
+  pointer-events: none;
 }
 
 .pinyin-line {
