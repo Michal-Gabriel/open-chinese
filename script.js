@@ -10,8 +10,10 @@ const stopStoryButton = document.querySelector("#stop-story");
 const speedSelect = document.querySelector("#story-speed");
 const audioStatus = document.querySelector("#audio-status");
 const phraseCards = document.querySelectorAll(".reader-content .phrase-card");
+const storyId = document.body.dataset.storyId || "story1";
 
-const fallbackCsv = `key,hanzi,pinyin,english,level
+const storyFallbackCsv = {
+ story1: `key,hanzi,pinyin,english,level
 我家,我家,wǒ jiā,my family / my home,HSK1
 有,有,yǒu,to have,HSK1
 四口人,四口人,sì kǒu rén,four people in a family,HSK1
@@ -34,15 +36,20 @@ const fallbackCsv = `key,hanzi,pinyin,english,level
 今天,今天,jīn tiān,today,HSK1
 星期一,星期一,xīng qī yī,Monday,HSK1
 上午,上午,shàng wǔ,morning,HSK1
+下午,下午,xià wǔ,afternoon,HSK1
 我和朋友,我和朋友,wǒ hé péng you,my friend and I,HSK1
 去,去,qù,to go,HSK1
 学校,学校,xué xiào,school,HSK1
+看见,看见,kàn jiàn,to see,HSK1
+谢谢,谢谢,xiè xie,thanks,HSK1
+高兴,高兴,gāo xìng,happy,HSK1
 说,说,shuō,to say / speak,HSK1
 你好,你好,nǐ hǎo,hello,HSK1
 我说,我说,wǒ shuō,I say,HSK1
 老师好,老师好,lǎo shī hǎo,hello teacher,HSK1
 中午,中午,zhōng wǔ,noon,HSK1
 我们,我们,wǒ men,we / us,HSK1
+也,也,yě,also,HSK1
 喝水,喝水,hē shuǐ,drink water,HSK1
 吃米饭,吃米饭,chī mǐ fàn,eat rice / eat a meal,HSK1
 看书,看书,kàn shū,read books,HSK1
@@ -50,7 +57,90 @@ const fallbackCsv = `key,hanzi,pinyin,english,level
 爸爸妈妈,爸爸妈妈,bà ba mā ma,dad and mom,HSK1
 都,都,dōu,both / all,HSK1
 在家,在家,zài jiā,at home,HSK1
-很高兴,很高兴,hěn gāo xìng,very happy,HSK1`;
+很,很,hěn,very,HSK1
+很高兴,很高兴,hěn gāo xìng,very happy,HSK1`,
+ story2: `key,hanzi,pinyin,english,level
+今天,今天,jīn tiān,today,HSK1
+星期一,星期一,xīng qī yī,Monday,HSK1
+上午,上午,shàng wǔ,morning,HSK1
+我,我,wǒ,I / me,HSK1
+去,去,qù,to go,HSK1
+学校,学校,xué xiào,school,HSK1
+里,里,lǐ,inside,HSK1
+有,有,yǒu,to have,HSK1
+是,是,shì,to be,HSK1
+学生,学生,xué sheng,student,HSK1
+老师,老师,lǎo shī,teacher,HSK1
+在,在,zài,to be at / in,HSK1
+和,和,hé,and / with,HSK1
+同学,同学,tóng xué,classmate,HSK1
+看,看,kàn,to look / read,HSK1
+书,书,shū,book,HSK1
+朋友,朋友,péng you,friend,HSK1
+看见,看见,kàn jiàn,to see,HSK1
+对,对,duì,to / toward,HSK1
+说,说,shuō,to say / speak,HSK1
+你好,你好,nǐ hǎo,hello,HSK1
+谢谢,谢谢,xiè xie,thanks,HSK1
+不客气,不客气,bú kè qi,you're welcome,HSK1
+下午,下午,xià wǔ,afternoon,HSK1
+打电话,打电话,dǎ diàn huà,call by phone,HSK1
+给,给,gěi,to / give,HSK1
+妈妈,妈妈,mā ma,mom,HSK1
+高兴,高兴,gāo xìng,happy,HSK1
+晚上,晚上,wǎn shang,evening,HSK1
+电视,电视,diàn shì,television,HSK1
+电影,电影,diàn yǐng,movie,HSK1
+明天,明天,míng tiān,tomorrow,HSK1
+还,还,hái,still / also,HSK1
+爸爸,爸爸,bà ba,dad,HSK1
+家,家,jiā,home,HSK1
+我们,我们,wǒ men,we / us,HSK1
+都,都,dōu,all,HSK1
+很,很,hěn,very,HSK1
+回家,回家,huí jiā,go home,HSK1
+也,也,yě,also,HSK1`,
+ story3: `key,hanzi,pinyin,english,level
+今天,今天,jīn tiān,today,HSK1
+星期一,星期一,xīng qī yī,Monday,HSK1
+是,是,shì,to be,HSK1
+爸爸,爸爸,bà ba,dad,HSK1
+妈妈,妈妈,mā ma,mom,HSK1
+去,去,qù,to go,HSK1
+在,在,zài,to be at / in,HSK1
+商店,商店,shāng diàn,shop,HSK1
+买,买,mǎi,to buy,HSK1
+苹果,苹果,píng guǒ,apple,HSK1
+和,和,hé,and / with,HSK1
+水果,水果,shuǐ guǒ,fruit,HSK1
+我,我,wǒ,I / me,HSK1
+有,有,yǒu,to have,HSK1
+杯子,杯子,bēi zi,cup,HSK1
+我们,我们,wǒ men,we / us,HSK1
+钱,钱,qián,money,HSK1
+叫,叫,jiào,to call,HSK1
+给,给,gěi,to / give,HSK1
+出租车,出租车,chū zū chē,taxi,HSK1
+饭馆,饭馆,fàn guǎn,restaurant,HSK1
+里,里,lǐ,inside,HSK1
+菜,菜,cài,dish / vegetables,HSK1
+米饭,米饭,mǐ fàn,rice,HSK1
+吃,吃,chī,to eat,HSK1
+喝,喝,hē,to drink,HSK1
+水,水,shuǐ,water,HSK1
+看见,看见,kàn jiàn,to see,HSK1
+朋友,朋友,péng you,friend,HSK1
+说,说,shuō,to say / speak,HSK1
+你好,你好,nǐ hǎo,hello,HSK1
+谢谢,谢谢,xiè xie,thanks,HSK1
+都,都,dōu,all,HSK1
+很,很,hěn,very,HSK1
+高兴,高兴,gāo xìng,happy,HSK1
+回家,回家,huí jiā,go home,HSK1
+家,家,jiā,home,HSK1
+喜欢,喜欢,xǐ huan,to like,HSK1
+也,也,yě,also,HSK1`,
+};
 
 let lexicon = {};
 let currentAudio = null;
@@ -69,29 +159,23 @@ function parseCsv(text) {
     const [key, hanzi, pinyin, english, level] = row.split(",");
     if (!key) return acc;
 
-    acc[key] = {
-      hanzi,
-      pinyin,
-      english,
-      level,
-    };
-
+    acc[key] = { hanzi, pinyin, english, level };
     return acc;
   }, {});
 }
 
 async function loadLexicon() {
   try {
-    const response = await fetch("./data/story1-vocabulary.csv");
+    const response = await fetch(`./data/${storyId}-vocabulary.csv`);
 
     if (!response.ok) {
-      throw new Error("Could not load story1 vocabulary.");
+      throw new Error(`Could not load ${storyId} vocabulary.`);
     }
 
     const csv = await response.text();
     lexicon = parseCsv(csv);
   } catch (error) {
-    lexicon = parseCsv(fallbackCsv);
+    lexicon = parseCsv(storyFallbackCsv[storyId] || storyFallbackCsv.story1);
   }
 }
 
@@ -131,10 +215,10 @@ function setAudioStatus(message) {
 }
 
 function getPlaybackRate() {
-  if (!speedSelect) return 0.75;
+  if (!speedSelect) return 1;
 
   const rate = Number.parseFloat(speedSelect.value);
-  return Number.isFinite(rate) ? rate : 0.75;
+  return Number.isFinite(rate) ? rate : 1;
 }
 
 function clearReadingHighlight() {
@@ -164,7 +248,7 @@ function stopStoryPlayback() {
 function buildStoryQueue() {
   return Array.from(phraseCards).map((card, index) => ({
     card,
-    audioSrc: `./audio/story1/${String(index + 1).padStart(3, "0")}.mp3`,
+    audioSrc: `./audio/${storyId}/${String(index + 1).padStart(3, "0")}.mp3`,
     words: Array.from(card.querySelectorAll(".word")),
   }));
 }

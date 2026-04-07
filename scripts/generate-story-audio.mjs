@@ -63,6 +63,7 @@ async function main() {
   const model = getArg("model", "gpt-4o-mini-tts");
   const voice = getArg("voice", "alloy");
   const format = getArg("format", "mp3");
+  const overwrite = process.argv.includes("--overwrite");
 
   if (process.argv.includes("--help")) {
     usage();
@@ -82,12 +83,14 @@ async function main() {
     const filename = `${sentence.id}.${format}`;
     const outputPath = path.join(outputDir, filename);
 
-    try {
-      await access(outputPath);
-      console.log(`Skipping ${filename}, already exists.`);
-      continue;
-    } catch {
-      // File does not exist yet, continue generation.
+    if (!overwrite) {
+      try {
+        await access(outputPath);
+        console.log(`Skipping ${filename}, already exists.`);
+        continue;
+      } catch {
+        // File does not exist yet, continue generation.
+      }
     }
 
     console.log(`Generating ${filename} ...`);

@@ -305,6 +305,45 @@ body {
   box-shadow: 0 0 0 2px rgba(159, 227, 215, 0.35);
 }
 
+.word.new-word {
+  background: rgba(255, 236, 153, 0.75);
+  border-radius: 8px;
+  box-shadow: inset 0 -8px 0 rgba(255, 217, 77, 0.18);
+}
+
+.word.new-word:hover,
+.word.new-word.selected {
+  background: #ffe67a;
+}
+
+.word.new-word.reading {
+  background: #ffd94d;
+  box-shadow: 0 0 0 2px rgba(255, 217, 77, 0.35);
+}
+
+body[data-story-id="story1"] .word.new-word {
+  background: transparent;
+  box-shadow: none;
+}
+
+body[data-story-id="story1"] .word.new-word:hover,
+body[data-story-id="story1"] .word.new-word.selected,
+body[data-story-id="story1"] .word.new-word.reading {
+  background: transparent;
+  box-shadow: none;
+}
+
+body[data-story-id="story1"] .word.reading {
+  background: #9fe3d7;
+  border-radius: 8px;
+  box-shadow: 0 0 0 2px rgba(159, 227, 215, 0.35);
+}
+
+body[data-story-id="story1"] .word.new-word.reading {
+  background: #9fe3d7;
+  box-shadow: 0 0 0 2px rgba(159, 227, 215, 0.35);
+}
+
 .underline {
   border-bottom: 0;
   padding-bottom: 0;
