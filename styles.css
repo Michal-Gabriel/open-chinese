@@ -50,6 +50,10 @@ body {
   z-index: 20;
 }
 
+.hide-word-meaning .sticky-word-panel {
+  display: none;
+}
+
 .info-header {
   display: flex;
   justify-content: space-between;
@@ -162,8 +166,7 @@ body {
 }
 
 .audio-status {
-  color: #7a7a7a;
-  font-size: 14px;
+  display: none;
 }
 
 .display-switches {

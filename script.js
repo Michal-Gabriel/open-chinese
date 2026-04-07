@@ -56,7 +56,6 @@ let lexicon = {};
 let currentAudio = null;
 let storyQueue = [];
 let storyIndex = 0;
-let readingTimers = [];
 
 function applyToggle(name, checked) {
   root.classList.toggle(`hide-${name}`, !checked);
@@ -143,20 +142,17 @@ function clearReadingHighlight() {
   phraseCards.forEach((card) => card.classList.remove("reading"));
 }
 
-function clearReadingTimers() {
-  readingTimers.forEach((timerId) => window.clearTimeout(timerId));
-  readingTimers = [];
-}
-
 function stopStoryPlayback() {
   if (currentAudio) {
+    currentAudio.ontimeupdate = null;
+    currentAudio.onended = null;
+    currentAudio.onerror = null;
     currentAudio.pause();
     currentAudio.currentTime = 0;
     currentAudio = null;
   }
   storyQueue = [];
   storyIndex = 0;
-  clearReadingTimers();
   clearReadingHighlight();
 
   if (playStoryButton) playStoryButton.disabled = false;
@@ -190,32 +186,34 @@ function highlightWord(word, card) {
   updateMeaning(word);
 }
 
-function scheduleWordHighlights(item, durationSeconds) {
-  clearReadingTimers();
-
+function updatePlaybackWord(item, currentTime, duration) {
   if (!item.words.length) return;
 
-  const effectiveDurationMs = Math.max((durationSeconds * 1000) / getPlaybackRate(), 300);
+  if (!Number.isFinite(duration) || duration <= 0) {
+    highlightWord(item.words[0], item.card);
+    return;
+  }
+
   const totalWeight = item.words.reduce((sum, word) => sum + getWordWeight(word), 0);
+  const progressWeight = Math.min(Math.max(currentTime / duration, 0), 0.999999) * totalWeight;
 
   let elapsedWeight = 0;
-  item.words.forEach((word) => {
-    const startMs = totalWeight === 0 ? 0 : (elapsedWeight / totalWeight) * effectiveDurationMs;
-    const timerId = window.setTimeout(() => {
-      if (currentAudio) {
-        highlightWord(word, item.card);
-      }
-    }, Math.max(0, startMs));
+  let activeWord = item.words[item.words.length - 1];
 
-    readingTimers.push(timerId);
+  for (const word of item.words) {
     elapsedWeight += getWordWeight(word);
-  });
+    if (progressWeight < elapsedWeight) {
+      activeWord = word;
+      break;
+    }
+  }
+
+  highlightWord(activeWord, item.card);
 }
 
 function playQueueItem(index) {
   if (index >= storyQueue.length) {
     currentAudio = null;
-    clearReadingTimers();
     clearReadingHighlight();
 
     if (playStoryButton) playStoryButton.disabled = false;
@@ -228,7 +226,6 @@ function playQueueItem(index) {
   storyIndex = index;
   const item = storyQueue[index];
 
-  clearReadingTimers();
   clearReadingHighlight();
   const firstWord = item.words[0];
   if (firstWord) {
@@ -240,20 +237,23 @@ function playQueueItem(index) {
 
   audio.onplay = () => {
     currentAudio = audio;
-    scheduleWordHighlights(item, Number.isFinite(audio.duration) ? audio.duration : 1);
+    updatePlaybackWord(item, audio.currentTime, audio.duration);
     if (playStoryButton) playStoryButton.disabled = true;
     if (stopStoryButton) stopStoryButton.disabled = false;
     setAudioStatus(`Playing sentence ${index + 1} of ${storyQueue.length}`);
   };
 
+  audio.ontimeupdate = () => {
+    if (currentAudio !== audio) return;
+    updatePlaybackWord(item, audio.currentTime, audio.duration);
+  };
+
   audio.onended = () => {
-    clearReadingTimers();
     playQueueItem(index + 1);
   };
 
   audio.onerror = () => {
     currentAudio = null;
-    clearReadingTimers();
     clearReadingHighlight();
     if (playStoryButton) playStoryButton.disabled = false;
     if (stopStoryButton) stopStoryButton.disabled = true;
@@ -262,7 +262,6 @@ function playQueueItem(index) {
 
   audio.play().catch(() => {
     currentAudio = null;
-    clearReadingTimers();
     clearReadingHighlight();
     if (playStoryButton) playStoryButton.disabled = false;
     if (stopStoryButton) stopStoryButton.disabled = true;
