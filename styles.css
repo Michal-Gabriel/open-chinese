@@ -76,6 +76,30 @@ body {
   font-size: 16px;
 }
 
+.visit-counter {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #6d6d6d;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.visit-counter strong {
+  color: inherit;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.visit-counter-home {
+  margin: 0;
+}
+
 .word-meaning {
   display: flex;
   justify-content: space-between;
@@ -690,6 +714,34 @@ body.story-page .story-error a {
   text-decoration: none;
 }
 
+body.story-page .visit-counter {
+  box-shadow: 0 8px 18px rgba(29, 39, 35, 0.06);
+}
+
+.site-footer,
+.story-footer {
+  position: fixed;
+  inset: auto 4px 4px auto;
+  z-index: 30;
+  display: flex;
+  justify-content: flex-end;
+  margin: 0;
+  pointer-events: none;
+}
+
+.story-footer {
+  inset: auto 4px 4px auto;
+}
+
+.site-footer .visit-counter,
+.story-footer .visit-counter {
+  opacity: 0.8;
+}
+
+.visit-counter-story {
+  margin: 0;
+}
+
 @media (max-width: 1400px) {
   .reader-content {
     padding-left: 90px;
@@ -788,6 +840,11 @@ body.story-page .story-error a {
 
   .story-next-button {
     width: 100%;
+  }
+
+  .site-footer,
+  .story-footer {
+    inset: auto 4px 4px auto;
   }
 
   .reader-row {
