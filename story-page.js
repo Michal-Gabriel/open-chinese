@@ -613,9 +613,14 @@ function renderStoryPage(story, stories) {
           </div>
         </div>
       </section>
+
+      <footer class="story-footer">
+        <p class="visit-counter visit-counter-story" aria-live="polite"><strong data-visit-count>0</strong></p>
+      </footer>
     </main>
   `;
 
+  window.OpenChineseVisits?.render?.();
   bindStoryInteractions(story.slug, story, lexicon);
 }
 
@@ -1095,6 +1100,7 @@ async function init() {
         </section>
       </main>
     `;
+    window.OpenChineseVisits?.render?.();
   }
 }
 

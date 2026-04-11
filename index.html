@@ -115,6 +115,30 @@
         margin-top: 40px;
       }
 
+      .site-footer {
+        position: fixed;
+        right: 4px;
+        bottom: 4px;
+        z-index: 30;
+        margin: 0;
+        pointer-events: none;
+      }
+
+      .site-footer .visit-counter {
+        display: inline-flex;
+        align-items: baseline;
+        font-size: 10px;
+        line-height: 1;
+        color: #6d6d6d;
+        white-space: nowrap;
+      }
+
+      .site-footer .visit-counter strong {
+        font-size: 10px;
+        line-height: 1;
+        color: inherit;
+      }
+
       .story-section {
         width: min(920px, calc(100% - 48px));
         margin: 18px auto 48px;
@@ -383,5 +407,9 @@
         </a>
       </div>
     </section>
+    <footer class="site-footer">
+      <p class="visit-counter visit-counter-home" aria-live="polite"><strong data-visit-count>0</strong></p>
+    </footer>
+    <script src="./visit-counter.js"></script>
   </body>
 </html>
