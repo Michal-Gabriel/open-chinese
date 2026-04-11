@@ -1,0 +1,728 @@
+[
+  {
+    "id": "1",
+    "slug": "story1",
+    "title": "去四川看奶奶",
+    "englishTitle": "Visiting Grandma in Sichuan",
+    "level": "HSK 1-2",
+    "summary": "A trip to Sichuan to visit grandma, from the early morning departure to the warm hello at the end of the journey.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "今天我和妈妈去四川看奶奶。",
+        "pinyin": "Jīn tiān wǒ hé māma qù Sìchuān kàn nǎinai.",
+        "english": "Today my mom and I go to Sichuan to visit grandma."
+      },
+      {
+        "id": "002",
+        "text": "我很高兴，因为我很爱奶奶，也很想她。",
+        "pinyin": "Wǒ hěn gāoxìng, yīnwèi wǒ hěn ài nǎinai.",
+        "english": "I am very happy because I love grandma very much."
+      },
+      {
+        "id": "003",
+        "text": "早上我们起得很早。",
+        "pinyin": "Zǎoshang wǒmen qǐ de hěn zǎo.",
+        "english": "We get up very early in the morning."
+      },
+      {
+        "id": "004",
+        "text": "妈妈说：“我们早点走吧。”",
+        "pinyin": "Māma shuō: \"Wǒmen zǎodiǎn zǒu ba.\"",
+        "english": "Mom says, 'Let's leave a little early.'"
+      },
+      {
+        "id": "005",
+        "text": "不然人很多。",
+        "pinyin": "Bùrán rén hěn duō.",
+        "english": "Otherwise, there will be a lot of people."
+      },
+      {
+        "id": "006",
+        "text": "我说：“好，我们坐车去吗？”",
+        "pinyin": "Wǒ shuō: \"Hǎo, wǒmen zuò chē qù ma?\"",
+        "english": "I say, 'Okay, are we taking a bus?'"
+      },
+      {
+        "id": "007",
+        "text": "妈妈说：“对，我们坐车去。”",
+        "pinyin": "Māma shuō: \"Duì, wǒmen zuò chē qù.\"",
+        "english": "Mom says, 'Yes, we are going by bus.'"
+      },
+      {
+        "id": "008",
+        "text": "我拿了一个小包，里面有水和一点吃的。",
+        "pinyin": "Wǒ ná le yí ge xiǎo bāo, lǐmiàn yǒu shuǐ hé yì diǎn chī de.",
+        "english": "I took a small bag with water and a little food inside."
+      },
+      {
+        "id": "009",
+        "text": "我在想奶奶现在在做什么。",
+        "pinyin": "Wǒ zài xiǎng nǎinai xiànzài zài zuò shénme.",
+        "english": "I am thinking about what grandma is doing now."
+      },
+      {
+        "id": "010",
+        "text": "妈妈看着我说：“你很想她吗？”",
+        "pinyin": "Māma kànzhe wǒ shuō: \"Nǐ hěn xiǎng tā ma?\"",
+        "english": "Mom looks at me and says, 'Do you miss her a lot?'"
+      },
+      {
+        "id": "011",
+        "text": "我说：“是的，我很想她。”",
+        "pinyin": "Wǒ shuō: \"Shì de, wǒ hěn xiǎng tā.\"",
+        "english": "I say, 'Yes, I miss her very much.'"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "slug": "story2",
+    "title": "在车上",
+    "englishTitle": "On the Bus",
+    "level": "HSK 1-2",
+    "summary": "A long bus ride where the mountains, water, and people outside the window become part of the trip.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "我们在车上坐了很久。",
+        "pinyin": "Wǒmen zài chē shàng zuò le hěn jiǔ.",
+        "english": "We sat on the bus for a long time."
+      },
+      {
+        "id": "002",
+        "text": "车上有很多人。",
+        "pinyin": "Chē shàng yǒu hěn duō rén.",
+        "english": "There were many people on the bus."
+      },
+      {
+        "id": "003",
+        "text": "有的人在说话。",
+        "pinyin": "Yǒu de rén zài shuōhuà.",
+        "english": "Some people were talking."
+      },
+      {
+        "id": "004",
+        "text": "有的人在看手机。",
+        "pinyin": "Yǒu de rén zài kàn shǒujī.",
+        "english": "Some people were looking at their phones."
+      },
+      {
+        "id": "005",
+        "text": "有的人在睡觉。",
+        "pinyin": "Yǒu de rén zài shuìjiào.",
+        "english": "Some people were sleeping."
+      },
+      {
+        "id": "006",
+        "text": "我看窗外的山和水。",
+        "pinyin": "Wǒ kàn chuāngwài de shān hé shuǐ.",
+        "english": "I look at the mountains and water outside the window."
+      },
+      {
+        "id": "007",
+        "text": "山很大，水也很长。",
+        "pinyin": "Shān hěn dà, shuǐ yě hěn cháng.",
+        "english": "The mountains are big, and the water is long too."
+      },
+      {
+        "id": "008",
+        "text": "我说：“妈妈，这里很美。”",
+        "pinyin": "Wǒ shuō: \"Māma, zhèlǐ hěn měi.\"",
+        "english": "I say, 'Mom, this place is beautiful.'"
+      },
+      {
+        "id": "009",
+        "text": "妈妈说：“是的，四川有很多山和水。”",
+        "pinyin": "Māma shuō: \"Shì de, Sìchuān yǒu hěn duō shān hé shuǐ.\"",
+        "english": "Mom says, 'Yes, Sichuan has many mountains and rivers.'"
+      },
+      {
+        "id": "010",
+        "text": "我看到路边有小房子。",
+        "pinyin": "Wǒ kàn dào lù biān yǒu xiǎo fángzi.",
+        "english": "I see small houses by the road."
+      },
+      {
+        "id": "011",
+        "text": "还有人在走。",
+        "pinyin": "Hái yǒu rén zài zǒu.",
+        "english": "There are also people walking."
+      },
+      {
+        "id": "012",
+        "text": "一个小孩子在跑。",
+        "pinyin": "Yí ge xiǎoháizi zài pǎo.",
+        "english": "A little child is running."
+      },
+      {
+        "id": "013",
+        "text": "他看起来很高兴。",
+        "pinyin": "Tā kàn qǐlái hěn gāoxìng.",
+        "english": "He looks very happy."
+      },
+      {
+        "id": "014",
+        "text": "我问：“我们还要多久？”",
+        "pinyin": "Wǒ wèn: \"Wǒmen hái yào duō jiǔ?\"",
+        "english": "I ask, 'How much longer do we need?'"
+      },
+      {
+        "id": "015",
+        "text": "妈妈说：“再等一会儿。”",
+        "pinyin": "Māma shuō: \"Zài děng yí huìr.\"",
+        "english": "Mom says, 'Wait a little longer.'"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "slug": "story3",
+    "title": "到奶奶家",
+    "englishTitle": "Arriving at Grandma's House",
+    "level": "HSK 1-2",
+    "summary": "Arriving at grandma's house, with a warm welcome, tea on the table, and a very happy reunion.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "我们到了奶奶家。",
+        "pinyin": "Wǒmen dào le nǎinai jiā.",
+        "english": "We arrived at grandma's house."
+      },
+      {
+        "id": "002",
+        "text": "奶奶在门口等我们，她看到我们很高兴。",
+        "pinyin": "Nǎinai zài ménkǒu děng wǒmen, tā kàn dào wǒmen hěn gāoxìng.",
+        "english": "Grandma is waiting at the door, and she is very happy to see us."
+      },
+      {
+        "id": "003",
+        "text": "她说：“你们来了！”",
+        "pinyin": "Tā shuō: \"Nǐmen lái le!\"",
+        "english": "She says, 'You’re here!'"
+      },
+      {
+        "id": "004",
+        "text": "我说：“奶奶好！”",
+        "pinyin": "Wǒ shuō: \"Nǎinai hǎo!\"",
+        "english": "I say, 'Hello, grandma!'"
+      },
+      {
+        "id": "005",
+        "text": "奶奶走过来抱我，说：“你长大了。”",
+        "pinyin": "Nǎinai zǒu guòlai bào wǒ, shuō: \"Nǐ zhǎng dà le.\"",
+        "english": "Grandma comes over and hugs me, saying, 'You've grown up.'"
+      },
+      {
+        "id": "006",
+        "text": "我说：“我也很想你。”",
+        "pinyin": "Wǒ shuō: \"Wǒ yě hěn xiǎng nǐ.\"",
+        "english": "I say, 'I miss you too.'"
+      },
+      {
+        "id": "007",
+        "text": "我们一起走进家里。",
+        "pinyin": "Wǒmen yìqǐ zǒu jìn jiā li.",
+        "english": "We walk into the house together."
+      },
+      {
+        "id": "008",
+        "text": "家不大，但是很干净，也很舒服。",
+        "pinyin": "Jiā bú dà, dànshì hěn gānjìng, yě hěn shūfu.",
+        "english": "The house is not big, but it is clean and comfortable."
+      },
+      {
+        "id": "009",
+        "text": "桌子上有茶和水果。",
+        "pinyin": "Zhuōzi shàng yǒu chá hé shuǐguǒ.",
+        "english": "There is tea and fruit on the table."
+      },
+      {
+        "id": "010",
+        "text": "奶奶说：“你们累吗？先坐一下吧。”",
+        "pinyin": "Nǎinai shuō: \"Nǐmen lèi ma? Xiān zuò yíxià ba.\"",
+        "english": "Grandma says, 'Are you tired? Sit down first.'"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "slug": "story4",
+    "title": "奶奶做饭",
+    "englishTitle": "Grandma Cooks",
+    "level": "HSK 2",
+    "summary": "Grandma cooks lunch while everyone watches, helps, and waits for the food to be ready.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "中午奶奶做饭。",
+        "pinyin": "Zhōngwǔ nǎinai zuò fàn.",
+        "english": "At noon, grandma cooks."
+      },
+      {
+        "id": "002",
+        "text": "她在厨房里很忙，我和妈妈在旁边看。",
+        "pinyin": "Tā zài chúfáng li hěn máng, wǒ hé māma zài pángbiān kàn.",
+        "english": "She is busy in the kitchen, and Mom and I watch from the side."
+      },
+      {
+        "id": "003",
+        "text": "我说：“奶奶，我可以帮你吗？”",
+        "pinyin": "Wǒ shuō: \"Nǎinai, wǒ kěyǐ bāng nǐ ma?\"",
+        "english": "I say, 'Grandma, can I help you?'"
+      },
+      {
+        "id": "004",
+        "text": "奶奶说：“可以，你帮我拿菜。”",
+        "pinyin": "Nǎinai shuō: \"Kěyǐ, nǐ bāng wǒ ná cài.\"",
+        "english": "Grandma says, 'Yes, help me carry the vegetables.'"
+      },
+      {
+        "id": "005",
+        "text": "我拿了菜和水。",
+        "pinyin": "Wǒ ná le cài hé shuǐ.",
+        "english": "I brought the vegetables and water."
+      },
+      {
+        "id": "006",
+        "text": "奶奶做了米饭、菜和汤。",
+        "pinyin": "Nǎinai zuò le mǐfàn, cài hé tāng.",
+        "english": "Grandma made rice, vegetables, and soup."
+      },
+      {
+        "id": "007",
+        "text": "厨房里很香，我觉得很饿。",
+        "pinyin": "Chúfáng li hěn xiāng, wǒ juéde hěn è.",
+        "english": "The kitchen smells great, and I feel very hungry."
+      },
+      {
+        "id": "008",
+        "text": "我说：“奶奶，好香啊！”",
+        "pinyin": "Wǒ shuō: \"Nǎinai, hǎo xiāng a!\"",
+        "english": "I say, 'Grandma, it smells so good!'"
+      },
+      {
+        "id": "009",
+        "text": "奶奶说：“一会儿我们一起吃。”",
+        "pinyin": "Nǎinai shuō: \"Yíhuìr wǒmen yìqǐ chī.\"",
+        "english": "Grandma says, 'We’ll eat together in a moment.'"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "slug": "story5",
+    "title": "吃饭聊天",
+    "englishTitle": "Eating and Chatting",
+    "level": "HSK 2",
+    "summary": "A family meal turns into a cheerful conversation about studying, books, and everyday life.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "我们一起吃饭。",
+        "pinyin": "Wǒmen yìqǐ chī fàn.",
+        "english": "We eat together."
+      },
+      {
+        "id": "002",
+        "text": "米饭很好吃，菜也很好吃，汤很好喝。",
+        "pinyin": "Mǐfàn hěn hǎochī, cài yě hěn hǎochī, tāng hěn hǎohē.",
+        "english": "The rice is delicious, the vegetables are delicious, and the soup is tasty too."
+      },
+      {
+        "id": "003",
+        "text": "奶奶问我：“你现在学习吗？”",
+        "pinyin": "Nǎinai wèn wǒ: \"Nǐ xiànzài xuéxí ma?\"",
+        "english": "Grandma asks me, 'Are you studying now?'"
+      },
+      {
+        "id": "004",
+        "text": "我说：“我学习中文。”",
+        "pinyin": "Wǒ shuō: \"Wǒ xuéxí Zhōngwén.\"",
+        "english": "I say, 'I study Chinese.'"
+      },
+      {
+        "id": "005",
+        "text": "我也学习一点英文。",
+        "pinyin": "Wǒ yě xuéxí yì diǎn Yīngwén.",
+        "english": "I also study a little English."
+      },
+      {
+        "id": "006",
+        "text": "奶奶说：“很好，学习很重要。”",
+        "pinyin": "Nǎinai shuō: \"Hěn hǎo, xuéxí hěn zhòngyào.\"",
+        "english": "Grandma says, 'Very good, learning is important.'"
+      },
+      {
+        "id": "007",
+        "text": "妈妈说：“他每天都学习。”",
+        "pinyin": "Māma shuō: \"Tā měitiān dōu xuéxí.\"",
+        "english": "Mom says, 'He studies every day.'"
+      },
+      {
+        "id": "008",
+        "text": "我说：“我很喜欢学习。”",
+        "pinyin": "Wǒ shuō: \"Wǒ hěn xǐhuan xuéxí.\"",
+        "english": "I say, 'I really like studying.'"
+      },
+      {
+        "id": "009",
+        "text": "我也喜欢看书。",
+        "pinyin": "Wǒ yě xǐhuan kàn shū.",
+        "english": "I also like reading books."
+      },
+      {
+        "id": "010",
+        "text": "我们一边吃饭，一边聊天。",
+        "pinyin": "Wǒmen yìbiān chī fàn, yìbiān liáotiān.",
+        "english": "We chat while eating."
+      },
+      {
+        "id": "011",
+        "text": "我觉得很开心。",
+        "pinyin": "Wǒ juéde hěn kāixīn.",
+        "english": "I feel very happy."
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "slug": "story6",
+    "title": "去市场",
+    "englishTitle": "Going to the Market",
+    "level": "HSK 2",
+    "summary": "An afternoon market visit with fruit, tea, heat, and a lot of people.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "下午我和奶奶去市场。",
+        "pinyin": "Xiàwǔ wǒ hé nǎinai qù shìchǎng.",
+        "english": "In the afternoon, Grandma and I go to the market."
+      },
+      {
+        "id": "002",
+        "text": "市场里有很多人，也有很多东西。",
+        "pinyin": "Shìchǎng li yǒu hěn duō rén, yě yǒu hěn duō dōngxi.",
+        "english": "There are many people and many things in the market."
+      },
+      {
+        "id": "003",
+        "text": "我们看到很多水果。",
+        "pinyin": "Wǒmen kàn dào hěn duō shuǐguǒ.",
+        "english": "We see many fruits."
+      },
+      {
+        "id": "004",
+        "text": "有苹果。",
+        "pinyin": "Yǒu píngguǒ.",
+        "english": "There are apples."
+      },
+      {
+        "id": "005",
+        "text": "还有别的水果。",
+        "pinyin": "Hái yǒu bié de shuǐguǒ.",
+        "english": "There are also other fruits."
+      },
+      {
+        "id": "006",
+        "text": "奶奶说：“这些都很好吃。”",
+        "pinyin": "Nǎinai shuō: \"Zhèxiē dōu hěn hǎochī.\"",
+        "english": "Grandma says, 'These are all very tasty.'"
+      },
+      {
+        "id": "007",
+        "text": "我们买了一些水果，也买了茶。",
+        "pinyin": "Wǒmen mǎi le yìxiē shuǐguǒ, yě mǎi le chá.",
+        "english": "We bought some fruit and also some tea."
+      },
+      {
+        "id": "008",
+        "text": "我帮奶奶拿东西。",
+        "pinyin": "Wǒ bāng nǎinai ná dōngxi.",
+        "english": "I help Grandma carry the things."
+      },
+      {
+        "id": "009",
+        "text": "天气有一点热，人很多。",
+        "pinyin": "Tiānqì yǒu yìdiǎn rè, rén hěn duō.",
+        "english": "The weather is a little hot, and there are a lot of people."
+      },
+      {
+        "id": "010",
+        "text": "我说：“这里真的很热。”",
+        "pinyin": "Wǒ shuō: \"Zhèlǐ zhēn de hěn rè.\"",
+        "english": "I say, 'It is really hot here.'"
+      },
+      {
+        "id": "011",
+        "text": "奶奶说：“是的，但是东西很好。”",
+        "pinyin": "Nǎinai shuō: \"Shì de, dànshì dōngxi hěn hǎo.\"",
+        "english": "Grandma says, 'Yes, but the things are good.'"
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "slug": "story7",
+    "title": "在奶奶家的生活",
+    "englishTitle": "Life at Grandma's House",
+    "level": "HSK 2",
+    "summary": "A simple daily routine of water, breakfast, reading, rest, and evening TV at grandma's house.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "在奶奶家，我的生活很简单。",
+        "pinyin": "Zài nǎinai jiā, wǒ de shēnghuó hěn jiǎndān.",
+        "english": "At grandma's house, my life is very simple."
+      },
+      {
+        "id": "002",
+        "text": "早上我喝水，吃早饭。",
+        "pinyin": "Zǎoshang wǒ hē shuǐ, chī zǎofàn.",
+        "english": "In the morning, I drink water and eat breakfast."
+      },
+      {
+        "id": "003",
+        "text": "奶奶做饭，妈妈帮她。",
+        "pinyin": "Nǎinai zuò fàn, māma bāng tā.",
+        "english": "Grandma cooks, and Mom helps her."
+      },
+      {
+        "id": "004",
+        "text": "下午我看书，写字，也学习中文。",
+        "pinyin": "Xiàwǔ wǒ kàn shū, xiě zì, yě xuéxí Zhōngwén.",
+        "english": "In the afternoon, I read, write, and study Chinese."
+      },
+      {
+        "id": "005",
+        "text": "有时候我和妈妈说话，有时候我休息。",
+        "pinyin": "Yǒu shíhou wǒ hé māma shuōhuà, yǒu shíhou wǒ xiūxi.",
+        "english": "Sometimes Mom and I talk, and sometimes I rest."
+      },
+      {
+        "id": "006",
+        "text": "晚上我们一起看电视。",
+        "pinyin": "Wǎnshang wǒmen yìqǐ kàn diànshì.",
+        "english": "At night, we watch TV together."
+      },
+      {
+        "id": "007",
+        "text": "奶奶喜欢说话，她会说很多事情。",
+        "pinyin": "Nǎinai xǐhuan shuōhuà, tā huì shuō hěn duō shìqing.",
+        "english": "Grandma likes to talk, and she can tell many things."
+      },
+      {
+        "id": "008",
+        "text": "我喜欢听，也会问问题。",
+        "pinyin": "Wǒ xǐhuan tīng, yě huì wèn wèntí.",
+        "english": "I like to listen, and I also ask questions."
+      },
+      {
+        "id": "009",
+        "text": "我觉得这样的生活很好。",
+        "pinyin": "Wǒ juéde zhèyàng de shēnghuó hěn hǎo.",
+        "english": "I think this kind of life is very good."
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "slug": "story8",
+    "title": "四川的城市",
+    "englishTitle": "A City in Sichuan",
+    "level": "HSK 2",
+    "summary": "A walk through a big city full of shops, people, and interesting things to see.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "有一天，我和妈妈出去走走。",
+        "pinyin": "Yǒu yì tiān, wǒ hé māma chūqù zǒu zǒu.",
+        "english": "One day, Mom and I go out for a walk."
+      },
+      {
+        "id": "002",
+        "text": "这个城市很大。",
+        "pinyin": "Zhège chéngshì hěn dà.",
+        "english": "This city is very big."
+      },
+      {
+        "id": "003",
+        "text": "人很多，店也很多。",
+        "pinyin": "Rén hěn duō, diàn yě hěn duō.",
+        "english": "There are many people and many shops."
+      },
+      {
+        "id": "004",
+        "text": "我们看到很多人。",
+        "pinyin": "Wǒmen kàn dào hěn duō rén.",
+        "english": "We see many people."
+      },
+      {
+        "id": "005",
+        "text": "有的人在工作。",
+        "pinyin": "Yǒu de rén zài gōngzuò.",
+        "english": "Some people are working."
+      },
+      {
+        "id": "006",
+        "text": "有的人在吃饭。",
+        "pinyin": "Yǒu de rén zài chī fàn.",
+        "english": "Some people are eating."
+      },
+      {
+        "id": "007",
+        "text": "还有很多小店。",
+        "pinyin": "Hái yǒu hěn duō xiǎo diàn.",
+        "english": "There are also many small shops."
+      },
+      {
+        "id": "008",
+        "text": "卖吃的、喝的，还有衣服。",
+        "pinyin": "Mài chī de, hē de, hái yǒu yīfu.",
+        "english": "They sell food, drinks, and clothes."
+      },
+      {
+        "id": "009",
+        "text": "天气很热。",
+        "pinyin": "Tiānqì hěn rè.",
+        "english": "The weather is very hot."
+      },
+      {
+        "id": "010",
+        "text": "但是我还是很开心。",
+        "pinyin": "Dànshì wǒ háishi hěn kāixīn.",
+        "english": "But I am still very happy."
+      },
+      {
+        "id": "011",
+        "text": "我说：“这里很有意思。”",
+        "pinyin": "Wǒ shuō: \"Zhèlǐ hěn yǒuyìsi.\"",
+        "english": "I say, 'This place is interesting.'"
+      },
+      {
+        "id": "012",
+        "text": "妈妈说：“是的，每个地方都不一样。”",
+        "pinyin": "Māma shuō: \"Shì de, měi ge dìfang dōu bù yíyàng.\"",
+        "english": "Mom says, 'Yes, every place is different.'"
+      },
+      {
+        "id": "013",
+        "text": "我们走了很久。",
+        "pinyin": "Wǒmen zǒu le hěn jiǔ.",
+        "english": "We walked for a long time."
+      },
+      {
+        "id": "014",
+        "text": "看了很多东西。",
+        "pinyin": "Kàn le hěn duō dōngxi.",
+        "english": "We saw many things."
+      },
+      {
+        "id": "015",
+        "text": "我有一点累。",
+        "pinyin": "Wǒ yǒu yìdiǎn lèi.",
+        "english": "I am a little tired."
+      },
+      {
+        "id": "016",
+        "text": "但是很开心。",
+        "pinyin": "Dànshì hěn kāixīn.",
+        "english": "But I am very happy."
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "slug": "story9",
+    "title": "回家",
+    "englishTitle": "Going Home",
+    "level": "HSK 2",
+    "summary": "The goodbye before heading home, full of thanks, hugs, and memories that stay with you.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "时间过得很快，我们要回家了。",
+        "pinyin": "Shíjiān guò de hěn kuài, wǒmen yào huí jiā le.",
+        "english": "Time passed very quickly, and we have to go home."
+      },
+      {
+        "id": "002",
+        "text": "明天我们就要走了。",
+        "pinyin": "Míngtiān wǒmen jiù yào zǒu le.",
+        "english": "Tomorrow we will leave."
+      },
+      {
+        "id": "003",
+        "text": "我有一点不开心，因为我不想走。",
+        "pinyin": "Wǒ yǒu yìdiǎn bù kāixīn, yīnwèi wǒ bù xiǎng zǒu.",
+        "english": "I feel a little unhappy because I don't want to leave."
+      },
+      {
+        "id": "004",
+        "text": "我还想和奶奶在一起。",
+        "pinyin": "Wǒ hái xiǎng hé nǎinai zài yìqǐ.",
+        "english": "I still want to be with grandma."
+      },
+      {
+        "id": "005",
+        "text": "我对奶奶说：“谢谢你，我很开心。”",
+        "pinyin": "Wǒ duì nǎinai shuō: \"Xièxie nǐ, wǒ hěn kāixīn.\"",
+        "english": "I say to grandma, 'Thank you, I am very happy.'"
+      },
+      {
+        "id": "006",
+        "text": "奶奶说：“你以后再来。”",
+        "pinyin": "Nǎinai shuō: \"Nǐ yǐhòu zài lái.\"",
+        "english": "Grandma says, 'Come again later.'"
+      },
+      {
+        "id": "007",
+        "text": "我说：“我会再来的。”",
+        "pinyin": "Wǒ shuō: \"Wǒ huì zài lái de.\"",
+        "english": "I say, 'I will come again.'"
+      },
+      {
+        "id": "008",
+        "text": "我们抱了一下。",
+        "pinyin": "Wǒmen bào le yíxià.",
+        "english": "We hugged."
+      },
+      {
+        "id": "009",
+        "text": "我说：“我会很想你。”",
+        "pinyin": "Wǒ shuō: \"Wǒ huì hěn xiǎng nǐ.\"",
+        "english": "I say, 'I will miss you very much.'"
+      },
+      {
+        "id": "010",
+        "text": "奶奶说：“我也会想你。”",
+        "pinyin": "Nǎinai shuō: \"Wǒ yě huì xiǎng nǐ.\"",
+        "english": "Grandma says, 'I will miss you too.'"
+      },
+      {
+        "id": "011",
+        "text": "在回家的路上，我一直在想。",
+        "pinyin": "Zài huí jiā de lù shang, wǒ yìzhí zài xiǎng.",
+        "english": "On the way home, I keep thinking."
+      },
+      {
+        "id": "012",
+        "text": "这几天的生活。",
+        "pinyin": "Zhè jǐ tiān de shēnghuó.",
+        "english": "About these past few days."
+      },
+      {
+        "id": "013",
+        "text": "我觉得很开心。",
+        "pinyin": "Wǒ juéde hěn kāixīn.",
+        "english": "I feel very happy."
+      },
+      {
+        "id": "014",
+        "text": "也很难忘。",
+        "pinyin": "Yě hěn nánwàng.",
+        "english": "And it is unforgettable."
+      }
+    ]
+  }
+]

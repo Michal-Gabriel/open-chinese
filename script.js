@@ -11,6 +11,7 @@ const speedSelect = document.querySelector("#story-speed");
 const audioStatus = document.querySelector("#audio-status");
 const phraseCards = document.querySelectorAll(".reader-content .phrase-card");
 const storyId = document.body.dataset.storyId || "story1";
+const AUDIO_CACHE_BUSTER = "2026-04-11";
 
 const storyFallbackCsv = {
  story1: `key,hanzi,pinyin,english,level
@@ -146,6 +147,7 @@ let lexicon = {};
 let currentAudio = null;
 let storyQueue = [];
 let storyIndex = 0;
+let playbackTimers = [];
 
 function applyToggle(name, checked) {
   root.classList.toggle(`hide-${name}`, !checked);
@@ -175,14 +177,18 @@ async function loadLexicon() {
     const csv = await response.text();
     lexicon = parseCsv(csv);
   } catch (error) {
-    lexicon = parseCsv(storyFallbackCsv[storyId] || storyFallbackCsv.story1);
+    lexicon = {};
   }
 }
 
 function updateMeaning(word) {
   const key = word.dataset.key || word.textContent.trim();
-  const entry = lexicon[key];
-  if (!entry) return;
+  const entry = lexicon[key] || {
+    hanzi: word.dataset.key || word.textContent.trim(),
+    pinyin: word.dataset.pinyin || "",
+    english: word.dataset.tip || "",
+    level: word.dataset.level || "",
+  };
 
   words.forEach((item) => item.classList.remove("selected"));
   word.classList.add("selected");
@@ -235,6 +241,8 @@ function stopStoryPlayback() {
     currentAudio.currentTime = 0;
     currentAudio = null;
   }
+  playbackTimers.forEach((timer) => clearTimeout(timer));
+  playbackTimers = [];
   storyQueue = [];
   storyIndex = 0;
   clearReadingHighlight();
@@ -248,9 +256,34 @@ function stopStoryPlayback() {
 function buildStoryQueue() {
   return Array.from(phraseCards).map((card, index) => ({
     card,
-    audioSrc: `./audio/${storyId}/${String(index + 1).padStart(3, "0")}.mp3`,
+    audioSrc: `./audio/${storyId}/${String(card.dataset.sentenceId || index + 1).padStart(3, "0")}.mp3?v=${AUDIO_CACHE_BUSTER}`,
     words: Array.from(card.querySelectorAll(".word")),
   }));
+}
+
+async function hasPlayableAudio() {
+  const queue = buildStoryQueue();
+  const firstItem = queue[0];
+  if (!firstItem) return false;
+
+  try {
+    const response = await fetch(firstItem.audioSrc, { method: "HEAD" });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
+function buildWordQueue() {
+  return Array.from(phraseCards)
+    .flatMap((card, sentenceIndex) =>
+      Array.from(card.querySelectorAll(".word")).map((word, wordIndex) => ({
+        card,
+        word,
+        sentenceIndex,
+        wordIndex,
+      })),
+    );
 }
 
 function getWordWeight(word) {
@@ -293,6 +326,43 @@ function updatePlaybackWord(item, currentTime, duration) {
   }
 
   highlightWord(activeWord, item.card);
+}
+
+function runSyntheticPlayback() {
+  const queue = buildWordQueue();
+
+  if (!queue.length) {
+    setAudioStatus("Story text is not available");
+    return;
+  }
+
+  if (playStoryButton) playStoryButton.disabled = true;
+  if (stopStoryButton) stopStoryButton.disabled = false;
+
+  let cursor = 0;
+
+  const step = () => {
+    if (cursor >= queue.length) {
+      clearReadingHighlight();
+      if (playStoryButton) playStoryButton.disabled = false;
+      if (stopStoryButton) stopStoryButton.disabled = true;
+      setAudioStatus("Finished");
+      return;
+    }
+
+    const item = queue[cursor];
+    highlightWord(item.word, item.card);
+    setAudioStatus(`Reading word ${cursor + 1} of ${queue.length}`);
+
+    const rate = getPlaybackRate();
+    const text = item.word.dataset.key || item.word.textContent.trim();
+    const baseDuration = Math.max(260, text.length * 140);
+    const duration = Math.max(160, baseDuration / rate);
+    cursor += 1;
+    playbackTimers.push(window.setTimeout(step, duration));
+  };
+
+  step();
 }
 
 function playQueueItem(index) {
@@ -353,7 +423,7 @@ function playQueueItem(index) {
   });
 }
 
-function playStory() {
+async function playStory() {
   storyQueue = buildStoryQueue();
   if (!storyQueue.length) {
     setAudioStatus("Story text is not available");
@@ -362,6 +432,15 @@ function playStory() {
 
   stopStoryPlayback();
   storyQueue = buildStoryQueue();
+
+  const storyNumber = Number.parseInt((storyId.match(/\d+/)?.[0] || "1"), 10);
+  const useSyntheticPlayback = Number.isFinite(storyNumber) && storyNumber >= 4 ? true : !(await hasPlayableAudio());
+
+  if (useSyntheticPlayback) {
+    runSyntheticPlayback();
+    return;
+  }
+
   playQueueItem(0);
 }
 
