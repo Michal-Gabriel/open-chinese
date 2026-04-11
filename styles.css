@@ -253,6 +253,32 @@ body {
   gap: 56px;
 }
 
+.story-next-panel {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 44px;
+}
+
+.story-next-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: #1d2723;
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  box-shadow: 0 10px 24px rgba(29, 39, 35, 0.12);
+}
+
+.story-next-button:hover {
+  background: #28564d;
+}
+
 .reader-row {
   display: flex;
   flex-wrap: wrap;
@@ -753,6 +779,15 @@ body.story-page .story-error a {
 
   .lesson-sheet {
     gap: 28px;
+  }
+
+  .story-next-panel {
+    justify-content: stretch;
+    margin-top: 28px;
+  }
+
+  .story-next-button {
+    width: 100%;
   }
 
   .reader-row {

@@ -422,8 +422,23 @@ function chunk(array, size) {
   return result;
 }
 
-function buildAudioSrc(storyId, sentenceId) {
-  return `./audio/${storyId}/${String(sentenceId).padStart(3, "0")}.mp3?v=${AUDIO_CACHE_BUSTER}`;
+function getAudioSentenceNumber(storyId, sentenceIndex, sentenceId) {
+  const numericId = Number.parseInt(String(sentenceId), 10);
+
+  if (storyId === "story1" && Number.isFinite(numericId) && numericId >= 3) {
+    return numericId + 1;
+  }
+
+  if (Number.isFinite(numericId)) {
+    return numericId;
+  }
+
+  return sentenceIndex + 1;
+}
+
+function buildAudioSrc(storyId, sentenceId, sentenceIndex = 0) {
+  const audioNumber = getAudioSentenceNumber(storyId, sentenceIndex, sentenceId);
+  return `./audio/${storyId}/${String(audioNumber).padStart(3, "0")}.mp3?v=${AUDIO_CACHE_BUSTER}`;
 }
 
 function buildGlobalTokenLexicon(stories, vocabularyIndex) {
@@ -473,6 +488,20 @@ function collectSeenKeys(stories, storyIndex, tokenLexicon) {
   return seen;
 }
 
+function collectStoryKeys(story, tokenLexicon) {
+  const keys = new Set();
+
+  for (const sentence of story.sentences || []) {
+    for (const segment of tokenizeSentence(sentence.text, tokenLexicon)) {
+      if (segment.type === "word") {
+        keys.add(segment.key);
+      }
+    }
+  }
+
+  return keys;
+}
+
 function renderStoryPage(story, stories) {
   const storyIndex = stories.findIndex((entry) => entry.slug === story.slug);
   const vocabularyIndex = stories.reduce((acc, entry) => {
@@ -485,12 +514,17 @@ function renderStoryPage(story, stories) {
   const lexicon = buildLexicon(story.vocab || [], priorKeys);
   const storyNumber = story.id;
   const storyCount = stories.length;
+  const nextStory = stories[storyIndex + 1] || null;
   const firstSentence = story.sentences[0];
   const remainingSentences = story.sentences.slice(1);
   const rows = chunk(remainingSentences, 3);
   const firstSentenceWord = tokenizeSentence(firstSentence.text, lexicon).find((segment) => segment.type === "word");
   const initialEntry = firstSentenceWord ? lexicon.byKey.get(firstSentenceWord.key) : lexicon.entries[0];
-  const newWordCount = Array.from(lexicon.byKey.values()).filter((entry) => entry.isNewWord).length;
+  const storyKeys = collectStoryKeys(story, tokenLexicon);
+  const newWordCount = Array.from(storyKeys).filter((key) => !priorKeys.has(key)).length;
+  const nextStoryLink = nextStory
+    ? `<a class="story-next-button" href="./story.html?story=${escapeHtml(nextStory.slug || `story${nextStory.id}`)}">Read next story</a>`
+    : "";
 
   document.title = `${story.englishTitle} | Open Chinese Reader`;
   document.body.dataset.storyId = story.slug || `story${storyNumber}`;
@@ -573,6 +607,10 @@ function renderStoryPage(story, stories) {
               )
               .join("")}
           </section>
+
+          <div class="story-next-panel">
+            ${nextStoryLink}
+          </div>
         </div>
       </section>
     </main>
@@ -742,6 +780,51 @@ function bindStoryInteractions(storyId, story, lexicon) {
     setAudioStatus("Ready to listen");
   }
 
+  function resetAudioPlaybackState() {
+    if (playbackTimerId) {
+      clearTimeout(playbackTimerId);
+      playbackTimerId = null;
+    }
+
+    if (currentAudio) {
+      currentAudio.ontimeupdate = null;
+      currentAudio.onended = null;
+      currentAudio.onerror = null;
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      currentAudio = null;
+    }
+
+    playbackTimers.forEach((timer) => clearTimeout(timer));
+    playbackTimers = [];
+    audioQueueItems = [];
+    audioQueueIndex = 0;
+    clearReadingHighlight();
+    playbackIndex = 0;
+    playbackStepDuration = 0;
+    playbackStepStartedAt = 0;
+    playbackStepRemaining = 0;
+    playbackState = "idle";
+    playbackMode = null;
+  }
+
+  function startSyntheticPlaybackFromSentence(sentenceIndex = 0) {
+    resetAudioPlaybackState();
+    storyQueue = buildWordQueue();
+    const targetCard = phraseCards[sentenceIndex];
+    const targetIndex = targetCard
+      ? storyQueue.findIndex((item) => item.card === targetCard)
+      : 0;
+    playbackIndex = Math.max(0, targetIndex);
+    playbackMode = "synthetic";
+    playbackState = "playing";
+    if (playStoryButton) playStoryButton.disabled = true;
+    if (stopStoryButton) playStoryButton.disabled = false;
+    syncMeaningControls();
+    setAudioStatus("Reading story");
+    runSyntheticPlaybackStep();
+  }
+
   function ensureStoryQueue() {
     if (!storyQueue.length) {
       storyQueue = buildWordQueue();
@@ -862,8 +945,7 @@ function bindStoryInteractions(storyId, story, lexicon) {
     const firstSentence = phraseCards[0];
     if (!firstSentence) return false;
 
-    const audioSrc = `./audio/${storyId}/${String(1).padStart(3, "0")}.mp3`;
-    const audioSrcWithCacheBuster = buildAudioSrc(storyId, 1);
+    const audioSrcWithCacheBuster = buildAudioSrc(storyId, 1, 0);
     try {
       const response = await fetch(audioSrcWithCacheBuster, { method: "HEAD" });
       return response.ok;
@@ -875,7 +957,7 @@ function bindStoryInteractions(storyId, story, lexicon) {
   function playAudioQueue() {
     audioQueueItems = Array.from(phraseCards).map((card, index) => ({
       card,
-      audioSrc: buildAudioSrc(storyId, card.dataset.sentenceId || index + 1),
+      audioSrc: buildAudioSrc(storyId, card.dataset.sentenceId || index + 1, index),
       words: Array.from(card.querySelectorAll(".word")),
     }));
     audioQueueIndex = 0;
@@ -921,14 +1003,12 @@ function bindStoryInteractions(storyId, story, lexicon) {
 
       audio.onerror = () => {
         currentAudio = null;
-        stopStoryPlayback();
-        startSyntheticPlayback();
+        startSyntheticPlaybackFromSentence(audioQueueIndex);
       };
 
       audio.play().catch(() => {
         currentAudio = null;
-        stopStoryPlayback();
-        startSyntheticPlayback();
+        startSyntheticPlaybackFromSentence(audioQueueIndex);
       });
     };
 

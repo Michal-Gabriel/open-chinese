@@ -256,7 +256,7 @@ function stopStoryPlayback() {
 function buildStoryQueue() {
   return Array.from(phraseCards).map((card, index) => ({
     card,
-    audioSrc: `./audio/${storyId}/${String(card.dataset.sentenceId || index + 1).padStart(3, "0")}.mp3?v=${AUDIO_CACHE_BUSTER}`,
+    audioSrc: `./audio/${storyId}/${String(storyId === "story1" && index >= 2 ? index + 2 : index + 1).padStart(3, "0")}.mp3?v=${AUDIO_CACHE_BUSTER}`,
     words: Array.from(card.querySelectorAll(".word")),
   }));
 }
