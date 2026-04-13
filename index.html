@@ -171,6 +171,11 @@
         margin-top: 24px;
       }
 
+      .story-section--compact .story-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
       .story-card {
         display: flex;
         flex-direction: column;
@@ -213,6 +218,26 @@
         font-size: 15px;
         line-height: 1.6;
         color: var(--muted);
+      }
+
+      .story-section--compact .story-card {
+        padding: 16px 16px 14px;
+        gap: 8px;
+      }
+
+      .story-section--compact .story-card h3 {
+        font-size: 17px;
+      }
+
+      .story-section--compact .story-card p {
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .story-section--compact .story-card .story-link {
+        min-height: 36px;
+        padding: 0 12px;
+        font-size: 13px;
       }
 
       .story-card .story-link {
@@ -291,6 +316,16 @@
 
         .story-grid {
           grid-template-columns: 1fr;
+        }
+
+        .story-section--compact .story-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (min-width: 761px) and (max-width: 1120px) {
+        .story-section--compact .story-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
     </style>
@@ -402,6 +437,96 @@
           <h3>Going Home</h3>
           <p>
             The goodbye before heading home, full of thanks, hugs, and memories that stay with you.
+          </p>
+          <span class="story-link">Read story</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="story-section story-section--compact" aria-label="Read and listen HSK 2 stories">
+      <h2>Read &amp; Listen - HSK 2</h2>
+      <p class="story-intro">
+        The best way to learn Chinese is through context. These HSK 2 stories show new words in real situations, so
+        you can build vocabulary while following a simple story that actually makes sense.
+      </p>
+
+      <div class="story-grid">
+        <a class="story-card" href="./story10.html">
+          <h3>The photo inside the old book</h3>
+          <p>
+            Mr. Chen finds a black-and-white photo hidden inside an old book.
+          </p>
+          <span class="story-link">Read story</span>
+        </a>
+
+        <a class="story-card" href="./story11.html">
+          <h3>Where is the house?</h3>
+          <p>
+            The house in the photo begins to look strangely familiar.
+          </p>
+          <span class="story-link">Read story</span>
+        </a>
+
+        <a class="story-card" href="./story12.html">
+          <h3>The words on the back of the photo</h3>
+          <p>
+            A date and a family name start connecting the past to the present.
+          </p>
+          <span class="story-link">Read story</span>
+        </a>
+
+        <a class="story-card" href="./story13.html">
+          <h3>Going to find the neighbours</h3>
+          <p>
+            Mr. Chen asks the old neighbours if anyone remembers the photo.
+          </p>
+          <span class="story-link">Read story</span>
+        </a>
+
+        <a class="story-card" href="./story14.html">
+          <h3>Grandma Li's story</h3>
+          <p>
+            Grandma Li recognises the family and gives the first real clue.
+          </p>
+          <span class="story-link">Read story</span>
+        </a>
+
+        <a class="story-card" href="./story15.html">
+          <h3>A big question</h3>
+          <p>
+            Mr. Chen starts to see a family connection he never knew about.
+          </p>
+          <span class="story-link">Read story</span>
+        </a>
+
+        <a class="story-card" href="./story16.html">
+          <h3>Calling his mother</h3>
+          <p>
+            A call to Shanghai confirms the mystery goes back decades.
+          </p>
+          <span class="story-link">Read story</span>
+        </a>
+
+        <a class="story-card" href="./story17.html">
+          <h3>Going to the library</h3>
+          <p>
+            Old records in the library point him toward Guangzhou.
+          </p>
+          <span class="story-link">Read story</span>
+        </a>
+
+        <a class="story-card" href="./story18.html">
+          <h3>News from the south</h3>
+          <p>
+            Online research shows Uncle Guohua kept teaching.
+          </p>
+          <span class="story-link">Read story</span>
+        </a>
+
+        <a class="story-card" href="./story19.html">
+          <h3>Reunion</h3>
+          <p>
+            The search ends with a reunion in Guangzhou.
           </p>
           <span class="story-link">Read story</span>
         </a>
