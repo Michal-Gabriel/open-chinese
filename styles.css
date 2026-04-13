@@ -29,6 +29,10 @@ body {
   margin: 0 auto;
 }
 
+body.story-page.chapter-story .story-shell {
+  width: min(980px, 100%);
+}
+
 .info-panel,
 .reader-panel {
   border: 1px solid var(--border);
@@ -267,6 +271,22 @@ body {
   padding: 76px 72px 80px 188px;
 }
 
+body.story-page.chapter-story .reader-content {
+  padding: 44px 42px 52px;
+}
+
+body.story-page.chapter-story .title-block {
+  margin-bottom: 28px;
+}
+
+body.story-page.chapter-story .lesson-sheet {
+  gap: 20px;
+}
+
+body.story-page.chapter-story .story-next-panel {
+  margin-top: 28px;
+}
+
 .title-block {
   margin-bottom: 64px;
 }
@@ -311,12 +331,28 @@ body {
   gap: 44px 22px;
 }
 
+body.story-page.chapter-story .reader-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 26px;
+}
+
 .phrase-card {
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
   width: max-content;
   flex: 0 0 auto;
+}
+
+body.story-page.chapter-story .phrase-card {
+  width: 100%;
+  max-width: 100%;
+  padding: 22px 24px 20px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(29, 39, 35, 0.08);
+  box-shadow: 0 18px 34px rgba(29, 39, 35, 0.06);
 }
 
 .phrase-card.reading {
@@ -348,6 +384,17 @@ body {
   width: max-content;
 }
 
+body.story-page.chapter-story .hanzi-line {
+  display: grid;
+  width: 100%;
+  max-width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 14px 12px;
+  white-space: normal;
+  font-size: clamp(30px, 3.2vw, 42px);
+  line-height: 1.35;
+}
+
 .hanzi-line.solo {
   gap: 16px;
 }
@@ -358,13 +405,15 @@ body {
   align-items: center;
   justify-content: flex-start;
   min-height: auto;
+  min-width: 0;
+  width: 100%;
   line-height: 1;
   gap: 12px;
   text-align: center;
 }
 
 .word[data-pinyin] {
-  min-width: max-content;
+  min-width: 0;
 }
 
 .word[data-pinyin]::before {
@@ -388,7 +437,7 @@ body {
   margin-top: 18px;
   pointer-events: none;
   text-align: center;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .word:hover,
@@ -855,6 +904,10 @@ body.story-page .visit-counter {
     width: 100%;
   }
 
+  body.story-page.chapter-story .phrase-card {
+    padding: 18px 16px 16px;
+  }
+
   .hanzi-line {
     font-size: 28px;
     gap: 8px;
@@ -951,6 +1004,25 @@ body.story-page .visit-counter {
   }
 
   .story-shell {
+    width: 100%;
+  }
+
+  body.story-page.chapter-story .reader-content {
+    padding: 28px 16px 34px;
+  }
+
+  body.story-page.chapter-story .reader-row {
+    gap: 18px;
+  }
+
+  body.story-page.chapter-story .phrase-card {
+    width: 100%;
+  }
+
+  body.story-page.chapter-story .hanzi-line {
+    font-size: 26px;
+    gap: 8px 10px;
+    white-space: normal;
     width: 100%;
   }
 }

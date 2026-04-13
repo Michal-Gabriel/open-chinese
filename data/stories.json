@@ -724,5 +724,963 @@
         "english": "And it is unforgettable."
       }
     ]
+  },
+  {
+    "id": "10",
+    "slug": "story10",
+    "title": "旧书里的照片",
+    "englishTitle": "The photo inside the old book",
+    "level": "HSK 2",
+    "summary": "Mr. Chen is a retired 65-year-old man living in a Beijing hutong. One Saturday he buys an old book at a second-hand market. When he opens it at home, an old black-and-white photograph falls out showing a family of four standing in front of a house.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "陈先生今年六十五岁，已经退休了。",
+        "pinyin": "",
+        "english": "Mr. Chen is sixty-five and already retired."
+      },
+      {
+        "id": "002",
+        "text": "他住在北京一条老胡同里，每天早上出去散步，下午喝茶，晚上看书。",
+        "pinyin": "",
+        "english": "He lives in an old hutong in Beijing, where he takes a walk every morning, drinks tea in the afternoon, and reads at night."
+      },
+      {
+        "id": "003",
+        "text": "他的生活很安静，也很快乐。",
+        "pinyin": "",
+        "english": "His life is quiet and happy."
+      },
+      {
+        "id": "004",
+        "text": "一个星期六的下午，陈先生去附近的旧书市场。",
+        "pinyin": "",
+        "english": "One Saturday afternoon, Mr. Chen goes to a nearby second-hand book market."
+      },
+      {
+        "id": "005",
+        "text": "他很喜欢在那里买书。",
+        "pinyin": "",
+        "english": "He likes buying books there."
+      },
+      {
+        "id": "006",
+        "text": "那天，他看到一本很旧的书，书名叫《北京的春天》。",
+        "pinyin": "",
+        "english": "That day he sees an old book titled Spring in Beijing."
+      },
+      {
+        "id": "007",
+        "text": "他觉得很有意思，就买了。",
+        "pinyin": "",
+        "english": "He thinks it is interesting and buys it."
+      },
+      {
+        "id": "008",
+        "text": "回到家，陈先生打开书，想开始看。",
+        "pinyin": "",
+        "english": "Back home, Mr. Chen opens the book and begins to read."
+      },
+      {
+        "id": "009",
+        "text": "突然，一张照片从书里掉出来，落在地板上。",
+        "pinyin": "",
+        "english": "Suddenly, a photo falls out onto the floor."
+      },
+      {
+        "id": "010",
+        "text": "他捡起来，看了看。",
+        "pinyin": "",
+        "english": "He picks it up and looks at it."
+      },
+      {
+        "id": "011",
+        "text": "照片是黑白的，很旧。",
+        "pinyin": "",
+        "english": "It is an old black-and-white photo."
+      },
+      {
+        "id": "012",
+        "text": "照片上有一家人：爸爸、妈妈还有两个孩子。",
+        "pinyin": "",
+        "english": "In the photo there is a family: a father, a mother, and two children."
+      },
+      {
+        "id": "013",
+        "text": "他们站在一个房子前面。",
+        "pinyin": "",
+        "english": "They are standing in front of a house."
+      }
+    ]
+  },
+  {
+    "id": "11",
+    "slug": "story11",
+    "title": "房子在哪里？",
+    "englishTitle": "Where is the house?",
+    "level": "HSK 2",
+    "summary": "Mr. Chen studies the photo carefully and realises the house in it looks remarkably like his own home — same shape, though the tree and door colour have changed. He turns the photo over and finds small writing on the back, but needs his glasses to read it.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "陈先生坐在椅子上，仔细地看这张照片。",
+        "pinyin": "",
+        "english": "Mr. Chen sits in a chair and carefully studies the photo."
+      },
+      {
+        "id": "002",
+        "text": "那个房子看起来很熟悉。",
+        "pinyin": "",
+        "english": "The house looks familiar."
+      },
+      {
+        "id": "003",
+        "text": "门口有一棵大树，门的颜色是红色的。",
+        "pinyin": "",
+        "english": "There is a big tree by the door, and the door is red."
+      },
+      {
+        "id": "004",
+        "text": "他觉得他在什么地方见过这个房子。",
+        "pinyin": "",
+        "english": "He feels he has seen this house somewhere before."
+      },
+      {
+        "id": "005",
+        "text": "陈先生站起来，走到窗户旁边，看了看外面的胡同。",
+        "pinyin": "",
+        "english": "Mr. Chen stands up, walks to the window, and looks at the hutong outside."
+      },
+      {
+        "id": "006",
+        "text": "他想了很久。",
+        "pinyin": "",
+        "english": "He thinks for a long time."
+      },
+      {
+        "id": "007",
+        "text": "突然，他明白了！",
+        "pinyin": "",
+        "english": "Then suddenly he understands."
+      },
+      {
+        "id": "008",
+        "text": "照片里的房子……好像就是他自己住的房子！",
+        "pinyin": "",
+        "english": "The house in the photo seems to be the very house he lives in."
+      },
+      {
+        "id": "009",
+        "text": "树不一样了，门的颜色也变了，但是房子的形状是一样的。",
+        "pinyin": "",
+        "english": "The tree is different and the door color has changed, but the shape of the house is the same."
+      },
+      {
+        "id": "010",
+        "text": "这是谁的家？",
+        "pinyin": "",
+        "english": "Whose home is this?"
+      },
+      {
+        "id": "011",
+        "text": "他小声问自己。",
+        "pinyin": "",
+        "english": "he asks himself quietly."
+      },
+      {
+        "id": "012",
+        "text": "他觉得很吃惊。",
+        "pinyin": "",
+        "english": "He feels surprised."
+      },
+      {
+        "id": "013",
+        "text": "这家人是谁？",
+        "pinyin": "",
+        "english": "Who is this family?"
+      },
+      {
+        "id": "014",
+        "text": "他们现在在哪里？",
+        "pinyin": "",
+        "english": "Where are they now?"
+      },
+      {
+        "id": "015",
+        "text": "照片的后面有什么字吗？",
+        "pinyin": "",
+        "english": "Is there any writing on the back of the photo?"
+      },
+      {
+        "id": "016",
+        "text": "他把照片翻过来，看到了一行小字，但是字写得太小，他看不清楚。",
+        "pinyin": "",
+        "english": "He turns the photo over and sees a line of small characters, but they are too tiny to read."
+      },
+      {
+        "id": "017",
+        "text": "他需要找他的眼镜。",
+        "pinyin": "",
+        "english": "He needs his glasses."
+      }
+    ]
+  },
+  {
+    "id": "12",
+    "slug": "story12",
+    "title": "照片背面的字",
+    "englishTitle": "The words on the back of the photo",
+    "level": "HSK 2",
+    "summary": "Mr. Chen reads the back of the photo: '1965, spring. The Chen family, Dongcheng District, Beijing.' His own surname is Chen, and he was four years old in 1965. He feels a strange, inexplicable connection to the little boy in the photo.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "陈先生找到了眼镜，再次看照片的后面。",
+        "pinyin": "",
+        "english": "Mr. Chen finds his glasses and looks at the back of the photo again."
+      },
+      {
+        "id": "002",
+        "text": "字很小，但是他可以认出来：一九六五年，春天。",
+        "pinyin": "",
+        "english": "The writing is very small, but he can make it out: spring, 1965."
+      },
+      {
+        "id": "003",
+        "text": "陈家，北京东城区。",
+        "pinyin": "",
+        "english": "The Chen family, Dongcheng District, Beijing."
+      },
+      {
+        "id": "004",
+        "text": "陈先生的心跳得很快。",
+        "pinyin": "",
+        "english": "Mr. Chen's heart beats quickly."
+      },
+      {
+        "id": "005",
+        "text": "陈家！",
+        "pinyin": "",
+        "english": "The Chen family!"
+      },
+      {
+        "id": "006",
+        "text": "他自己也姓陈。",
+        "pinyin": "",
+        "english": "He is also surnamed Chen."
+      },
+      {
+        "id": "007",
+        "text": "一九六五年，他才四岁。",
+        "pinyin": "",
+        "english": "In 1965, he was only four years old."
+      },
+      {
+        "id": "008",
+        "text": "他的爸爸妈妈那时候住在北京吗？",
+        "pinyin": "",
+        "english": "Were his parents living in Beijing then?"
+      },
+      {
+        "id": "009",
+        "text": "他不知道。",
+        "pinyin": "",
+        "english": "He doesn't know."
+      },
+      {
+        "id": "010",
+        "text": "他的爸爸去世得很早，妈妈很少说起以前的事。",
+        "pinyin": "",
+        "english": "His father died very early, and his mother rarely talks about the past."
+      },
+      {
+        "id": "011",
+        "text": "他看着照片里的孩子们。",
+        "pinyin": "",
+        "english": "He looks at the children in the photo."
+      },
+      {
+        "id": "012",
+        "text": "大的孩子是女孩，大概八九岁；小的是男孩，大概四五岁。",
+        "pinyin": "",
+        "english": "The older child is a girl, about eight or nine years old; the younger child is a boy, about four or five."
+      },
+      {
+        "id": "013",
+        "text": "男孩穿着蓝色的衣服，笑得很开心。",
+        "pinyin": "",
+        "english": "The boy is wearing blue clothes and smiling happily."
+      },
+      {
+        "id": "014",
+        "text": "陈先生看着那个小男孩，心里有一种很奇怪的感觉。",
+        "pinyin": "",
+        "english": "As Mr. Chen looks at the little boy, he feels something strange."
+      },
+      {
+        "id": "015",
+        "text": "他不知道为什么，但是他觉得他认识这个孩子。",
+        "pinyin": "",
+        "english": "He does not know why, but he feels he knows this child."
+      }
+    ]
+  },
+  {
+    "id": "13",
+    "slug": "story13",
+    "title": "去找邻居",
+    "englishTitle": "Going to find the neighbours",
+    "level": "HSK 2",
+    "summary": "The next morning Mr. Chen visits Old Uncle Wang, a 78-year-old neighbour who has lived in the hutong for over fifty years. Wang studies the photo with a strange expression, then tells Mr. Chen to go and ask Grandma Li, who has lived there even longer.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "第二天早上，陈先生吃完早饭，决定去问问胡同里的老邻居。",
+        "pinyin": "",
+        "english": "The next morning, after breakfast, Mr. Chen decides to ask the old neighbors in the hutong."
+      },
+      {
+        "id": "002",
+        "text": "他们在这里住了很多年，也许知道一些事情。",
+        "pinyin": "",
+        "english": "They have lived here for many years and might know something."
+      },
+      {
+        "id": "003",
+        "text": "他先去找住在对面的王大爷。",
+        "pinyin": "",
+        "english": "He first goes to see Uncle Wang across the way."
+      },
+      {
+        "id": "004",
+        "text": "王大爷今年七十八岁，在这条胡同里住了五十多年。",
+        "pinyin": "",
+        "english": "Uncle Wang is seventy-eight years old and has lived in this hutong for more than fifty years."
+      },
+      {
+        "id": "005",
+        "text": "王大爷，您好！",
+        "pinyin": "",
+        "english": "Hello, Uncle Wang."
+      },
+      {
+        "id": "006",
+        "text": "我有一个问题想问您。",
+        "pinyin": "",
+        "english": "I have a question for you."
+      },
+      {
+        "id": "007",
+        "text": "陈先生说。",
+        "pinyin": "",
+        "english": "Mr. Chen says."
+      },
+      {
+        "id": "008",
+        "text": "他把照片给王大爷看。",
+        "pinyin": "",
+        "english": "He shows him the photo."
+      },
+      {
+        "id": "009",
+        "text": "王大爷拿出自己的眼镜，仔细地看了看。",
+        "pinyin": "",
+        "english": "Uncle Wang takes out his own glasses and looks carefully."
+      },
+      {
+        "id": "010",
+        "text": "他的脸上出现了一种奇怪的表情。",
+        "pinyin": "",
+        "english": "A strange expression appears on his face."
+      },
+      {
+        "id": "011",
+        "text": "这个房子……王大爷慢慢地说，我以前见过。",
+        "pinyin": "",
+        "english": "This house... Uncle Wang says slowly. I've seen it before."
+      },
+      {
+        "id": "012",
+        "text": "但是……他停了一下，陈先生，你在哪里找到这张照片的？",
+        "pinyin": "",
+        "english": "But... he pauses. Mr. Chen, where did you find this photo?"
+      },
+      {
+        "id": "013",
+        "text": "陈先生告诉他在旧书里发现的。",
+        "pinyin": "",
+        "english": "Mr. Chen tells him he found it in an old book."
+      },
+      {
+        "id": "014",
+        "text": "王大爷点了点头，说：你去问问李奶奶吧。",
+        "pinyin": "",
+        "english": "Uncle Wang nods and says, Go ask Grandma Li."
+      },
+      {
+        "id": "015",
+        "text": "她在这里住的时间更长，知道的事情更多。",
+        "pinyin": "",
+        "english": "She has lived here even longer and knows more."
+      }
+    ]
+  },
+  {
+    "id": "14",
+    "slug": "story14",
+    "title": "李奶奶的故事",
+    "englishTitle": "Grandma Li's story",
+    "level": "HSK 2",
+    "summary": "Grandma Li, aged 82, recognises the photo immediately. She knows the family — the Chens, a man called Chen Guohua. She says they moved away in 1966 and she never heard from them again. She asks Mr. Chen why he is looking for them.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "李奶奶住在胡同的最里面，一个小院子里。",
+        "pinyin": "",
+        "english": "Grandma Li lives at the very end of the hutong in a small courtyard."
+      },
+      {
+        "id": "002",
+        "text": "她今年八十二岁，但是头脑很清楚，记性也很好。",
+        "pinyin": "",
+        "english": "She is eighty-two years old, but her mind is clear and her memory is very good."
+      },
+      {
+        "id": "003",
+        "text": "陈先生进门的时候，她正在浇她的花。",
+        "pinyin": "",
+        "english": "When Mr. Chen enters, she is watering her flowers."
+      },
+      {
+        "id": "004",
+        "text": "李奶奶，您好！",
+        "pinyin": "",
+        "english": "Hello, Grandma Li."
+      },
+      {
+        "id": "005",
+        "text": "陈先生说，然后把照片给她看。",
+        "pinyin": "",
+        "english": "Mr. Chen says, and then he shows her the photo."
+      },
+      {
+        "id": "006",
+        "text": "李奶奶看了照片，没有说话。",
+        "pinyin": "",
+        "english": "Grandma Li looks at it and says nothing."
+      },
+      {
+        "id": "007",
+        "text": "她的眼睛里有了泪水。",
+        "pinyin": "",
+        "english": "Tears appear in her eyes."
+      },
+      {
+        "id": "008",
+        "text": "陈先生很担心，问：您没事吧？",
+        "pinyin": "",
+        "english": "Mr. Chen is worried and asks, Are you okay?"
+      },
+      {
+        "id": "009",
+        "text": "没事，没事，李奶奶说，只是……这张照片我以前见过。",
+        "pinyin": "",
+        "english": "I'm fine, I'm fine, Grandma Li says. It's just... I have seen this photo before."
+      },
+      {
+        "id": "010",
+        "text": "照片里的人我认识。",
+        "pinyin": "",
+        "english": "I know the people in it."
+      },
+      {
+        "id": "011",
+        "text": "那是陈家——陈国华一家。",
+        "pinyin": "",
+        "english": "That is the Chen family - Chen Guohua's family."
+      },
+      {
+        "id": "012",
+        "text": "陈国华是一个很好的人。",
+        "pinyin": "",
+        "english": "Chen Guohua was a very good man."
+      },
+      {
+        "id": "013",
+        "text": "一九六六年，他们搬走了。",
+        "pinyin": "",
+        "english": "In 1966 they moved away."
+      },
+      {
+        "id": "014",
+        "text": "后来……我就不知道他们去哪里了。",
+        "pinyin": "",
+        "english": "After that... I don't know where they went."
+      },
+      {
+        "id": "015",
+        "text": "她停了一下，看着陈先生，你……你为什么想找他们？",
+        "pinyin": "",
+        "english": "She pauses and looks at Mr. Chen. Why... why do you want to find them?"
+      }
+    ]
+  },
+  {
+    "id": "15",
+    "slug": "story15",
+    "title": "一个大问题",
+    "englishTitle": "A big question",
+    "level": "HSK 2",
+    "summary": "Mr. Chen tells Grandma Li his name and birth year. He realises his father's name was Chen Guojian — very similar to Chen Guohua. Grandma Li gently asks whether Guohua might have been his father's brother. Mr. Chen doesn't know — his father died when he was twelve and his mother never mentioned an uncle.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "陈先生把自己的故事告诉了李奶奶。",
+        "pinyin": "",
+        "english": "Mr. Chen tells Grandma Li his story."
+      },
+      {
+        "id": "002",
+        "text": "他说：我叫陈建国，我也姓陈。",
+        "pinyin": "",
+        "english": "He says, My name is Chen Jianguo, and I am also surnamed Chen."
+      },
+      {
+        "id": "003",
+        "text": "我是生于一九六一年。",
+        "pinyin": "",
+        "english": "I was born in 1961."
+      },
+      {
+        "id": "004",
+        "text": "我的爸爸叫……他停了一下，因为他突然想起了一件事。",
+        "pinyin": "",
+        "english": "My father was called... He stops because something suddenly occurs to him."
+      },
+      {
+        "id": "005",
+        "text": "他的爸爸叫陈国建。",
+        "pinyin": "",
+        "english": "His father was called Chen Guojian."
+      },
+      {
+        "id": "006",
+        "text": "国建……国华……",
+        "pinyin": "",
+        "english": "Guojian... Guohua..."
+      },
+      {
+        "id": "007",
+        "text": "国华是您爸爸的兄弟吗？",
+        "pinyin": "",
+        "english": "Was Guohua your father's brother?"
+      },
+      {
+        "id": "008",
+        "text": "李奶奶轻轻地问。",
+        "pinyin": "",
+        "english": "Grandma Li asks gently."
+      },
+      {
+        "id": "009",
+        "text": "陈先生愣了。",
+        "pinyin": "",
+        "english": "Mr. Chen freezes."
+      },
+      {
+        "id": "010",
+        "text": "他的爸爸有兄弟吗？",
+        "pinyin": "",
+        "english": "Did his father have a brother?"
+      },
+      {
+        "id": "011",
+        "text": "他真的不知道。",
+        "pinyin": "",
+        "english": "He truly does not know."
+      },
+      {
+        "id": "012",
+        "text": "他的爸爸去世的时候他才十二岁，妈妈从来没有说过叔叔的事。",
+        "pinyin": "",
+        "english": "His father died when he was twelve, and his mother never mentioned an uncle."
+      },
+      {
+        "id": "013",
+        "text": "我……我真的不知道，陈先生说，我的妈妈现在住在上海，我可以给她打电话问一问。",
+        "pinyin": "",
+        "english": "I... I really don't know, Mr. Chen says. My mother now lives in Shanghai. I can call her and ask."
+      },
+      {
+        "id": "014",
+        "text": "李奶奶点了点头，说：你打吧。",
+        "pinyin": "",
+        "english": "Grandma Li nods and says, Call her."
+      },
+      {
+        "id": "015",
+        "text": "如果真的是陈国华的家，照片里那个小男孩……也许就是你的叔叔。",
+        "pinyin": "",
+        "english": "If this really was Chen Guohua's family, then the little boy in the photo... may be your uncle."
+      }
+    ]
+  },
+  {
+    "id": "16",
+    "slug": "story16",
+    "title": "给妈妈打电话",
+    "englishTitle": "Calling his mother",
+    "level": "HSK 2",
+    "summary": "Mr. Chen calls his mother in Shanghai. After a long silence she confirms: his father did have a younger brother called Guohua. They lost contact in 1966 when Guohua's family moved south. His father spent years trying to find him. Mr. Chen tells his mother he may have found a lead.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "陈先生回到家，坐下来，拿起手机，给妈妈打电话。",
+        "pinyin": "",
+        "english": "Mr. Chen returns home, sits down, picks up his mobile phone, and calls his mother."
+      },
+      {
+        "id": "002",
+        "text": "电话响了很久才接。",
+        "pinyin": "",
+        "english": "The phone rings for a long time before she answers."
+      },
+      {
+        "id": "003",
+        "text": "建国，怎么了？",
+        "pinyin": "",
+        "english": "Jianguo, what's wrong?"
+      },
+      {
+        "id": "004",
+        "text": "妈妈的声音听起来有点紧张。",
+        "pinyin": "",
+        "english": "His mother's voice sounds a little tense."
+      },
+      {
+        "id": "005",
+        "text": "妈，我想问您一个问题。",
+        "pinyin": "",
+        "english": "Mom, I want to ask you a question."
+      },
+      {
+        "id": "006",
+        "text": "爸爸……有没有弟弟？",
+        "pinyin": "",
+        "english": "Did Dad... have a younger brother?"
+      },
+      {
+        "id": "007",
+        "text": "电话那边安静了很久。",
+        "pinyin": "",
+        "english": "There is a long silence on the other end of the line."
+      },
+      {
+        "id": "008",
+        "text": "陈先生的心跳得很快。",
+        "pinyin": "",
+        "english": "Mr. Chen's heart beats quickly."
+      },
+      {
+        "id": "009",
+        "text": "有，妈妈终于说，声音很小，你爸有一个弟弟，叫国华。",
+        "pinyin": "",
+        "english": "Yes, his mother finally says, her voice very soft. Your dad had a younger brother named Guohua."
+      },
+      {
+        "id": "010",
+        "text": "他们小时候感情很好。",
+        "pinyin": "",
+        "english": "They were very close when they were young."
+      },
+      {
+        "id": "011",
+        "text": "但是一九六六年，国华一家去了南方，后来就断了联系。",
+        "pinyin": "",
+        "english": "But in 1966, Guohua's family went south, and after that they lost contact."
+      },
+      {
+        "id": "012",
+        "text": "你爸爸很想他，但是一直找不到他。",
+        "pinyin": "",
+        "english": "Your father missed him very much, but never found him."
+      },
+      {
+        "id": "013",
+        "text": "妈妈停了一下，然后问：建国，你为什么突然问这个？",
+        "pinyin": "",
+        "english": "She pauses and asks, Jianguo, why are you asking all of a sudden?"
+      },
+      {
+        "id": "014",
+        "text": "陈先生深吸一口气，说：妈，我找到了一张旧照片。",
+        "pinyin": "",
+        "english": "Mr. Chen takes a deep breath and says, Mom, I found an old photo."
+      },
+      {
+        "id": "015",
+        "text": "我觉得……我找到叔叔的下落了。",
+        "pinyin": "",
+        "english": "I think... I found Uncle's whereabouts."
+      }
+    ]
+  },
+  {
+    "id": "17",
+    "slug": "story17",
+    "title": "去图书馆",
+    "englishTitle": "Going to the library",
+    "level": "HSK 2",
+    "summary": "At the library's old records department, a librarian finds Chen Guohua's registration: he was a teacher who officially moved to Guangzhou in 1966. Excited, Mr. Chen texts his mother the news and declares he is going to find his uncle.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "第二天，陈先生去了附近的图书馆。",
+        "pinyin": "",
+        "english": "The next day, Mr. Chen goes to the nearby library."
+      },
+      {
+        "id": "002",
+        "text": "他想在旧档案里找到陈国华的信息。",
+        "pinyin": "",
+        "english": "He wants to find information about Chen Guohua in the old archives."
+      },
+      {
+        "id": "003",
+        "text": "图书馆里有一个专门保存北京老户籍资料的部门。",
+        "pinyin": "",
+        "english": "The library has a department that specially preserves old Beijing household registration records."
+      },
+      {
+        "id": "004",
+        "text": "一个年轻的女图书馆员帮他查找。",
+        "pinyin": "",
+        "english": "A young female librarian helps him search."
+      },
+      {
+        "id": "005",
+        "text": "她在电脑上找了很久，然后说：我找到了。",
+        "pinyin": "",
+        "english": "She looks for a long time on the computer and then says, I found it."
+      },
+      {
+        "id": "006",
+        "text": "一九六一年到一九六六年，这个地址有一个陈国华，职业：教师。",
+        "pinyin": "",
+        "english": "From 1961 to 1966, there was a Chen Guohua at this address. Occupation: teacher."
+      },
+      {
+        "id": "007",
+        "text": "一九六六年迁出，地址：广州。",
+        "pinyin": "",
+        "english": "Moved out in 1966. Address: Guangzhou."
+      },
+      {
+        "id": "008",
+        "text": "广州！",
+        "pinyin": "",
+        "english": "Guangzhou!"
+      },
+      {
+        "id": "009",
+        "text": "陈先生很高兴。",
+        "pinyin": "",
+        "english": "Mr. Chen is delighted."
+      },
+      {
+        "id": "010",
+        "text": "叔叔去了广州。",
+        "pinyin": "",
+        "english": "His uncle went to Guangzhou."
+      },
+      {
+        "id": "011",
+        "text": "他现在还在吗？",
+        "pinyin": "",
+        "english": "Is he still there?"
+      },
+      {
+        "id": "012",
+        "text": "他打开手机，给妈妈发了一条消息：短信上写着：妈，叔叔一九六六年去了广州。",
+        "pinyin": "",
+        "english": "He opens his phone and sends his mother a message: Mom, Uncle went to Guangzhou in 1966."
+      },
+      {
+        "id": "013",
+        "text": "我要去找他。",
+        "pinyin": "",
+        "english": "I am going to find him."
+      }
+    ]
+  },
+  {
+    "id": "18",
+    "slug": "story18",
+    "title": "南方的消息",
+    "englishTitle": "News from the south",
+    "level": "HSK 2",
+    "summary": "Mr. Chen's mother remembers a contact in Guangzhou. Online research confirms Chen Guohua worked at a Guangzhou primary school from 1966 to 1985. A community website article titled \"Old teacher Chen Guohua, a lifetime devoted to education\" confirms he was still teaching — Mr. Chen's eyes fill with tears.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "妈妈看到短信，马上打来电话。",
+        "pinyin": "",
+        "english": "After seeing the message, his mother calls right away."
+      },
+      {
+        "id": "002",
+        "text": "她说她记得国华以前在广州有一个同学，姓刘，也是老师。",
+        "pinyin": "",
+        "english": "She says she remembers Guohua once had a classmate in Guangzhou surnamed Liu, also a teacher."
+      },
+      {
+        "id": "003",
+        "text": "也许可以从这里开始找。",
+        "pinyin": "",
+        "english": "Maybe he can start the search there."
+      },
+      {
+        "id": "004",
+        "text": "陈先生记下来，然后开始在网络上查找信息。",
+        "pinyin": "",
+        "english": "Mr. Chen writes it down and begins looking for information online."
+      },
+      {
+        "id": "005",
+        "text": "他找到了广州一所小学的旧教职员名单，上面有一个陈国华，工作时间是一九六六年到一九八五年。",
+        "pinyin": "",
+        "english": "He finds an old staff list from a primary school in Guangzhou. It includes a Chen Guohua, with working years from 1966 to 1985."
+      },
+      {
+        "id": "006",
+        "text": "一九八五年以后就没有了。",
+        "pinyin": "",
+        "english": "After 1985 there is nothing."
+      },
+      {
+        "id": "007",
+        "text": "陈先生的心又开始紧张。",
+        "pinyin": "",
+        "english": "Mr. Chen grows tense again."
+      },
+      {
+        "id": "008",
+        "text": "叔叔那年才四十六岁，不会退休。",
+        "pinyin": "",
+        "english": "His uncle was only forty-six that year, so he would not have retired."
+      },
+      {
+        "id": "009",
+        "text": "发生了什么？",
+        "pinyin": "",
+        "english": "What happened?"
+      },
+      {
+        "id": "010",
+        "text": "他继续查，终于在一个广州的社区网站上找到了一篇文章。",
+        "pinyin": "",
+        "english": "He keeps searching and finally finds an article on a Guangzhou community website."
+      },
+      {
+        "id": "011",
+        "text": "文章的标题是：老教师陈国华，一生奉献给教育。",
+        "pinyin": "",
+        "english": "The headline is: Old Teacher Chen Guohua, a Life Devoted to Education."
+      },
+      {
+        "id": "012",
+        "text": "陈先生的眼睛湿了。",
+        "pinyin": "",
+        "english": "Mr. Chen's eyes fill with tears."
+      },
+      {
+        "id": "013",
+        "text": "叔叔还是一个老师。",
+        "pinyin": "",
+        "english": "His uncle was still a teacher."
+      }
+    ]
+  },
+  {
+    "id": "19",
+    "slug": "story19",
+    "title": "重逢",
+    "englishTitle": "Reunion",
+    "level": "HSK 2",
+    "summary": "Three weeks later Mr. Chen flies to Guangzhou. The article's author turns out to be Uncle Guohua's daughter. The uncle is alive at 87. They meet, look at the old photograph together, and Uncle Guohua weeps when he hears his brother spent a lifetime searching for him. Mr. Chen places the photo in his uncle's hands. Outside, the Guangzhou sun shines warm and bright.",
+    "sentences": [
+      {
+        "id": "001",
+        "text": "三个星期以后，陈先生坐飞机去了广州。",
+        "pinyin": "",
+        "english": "Three weeks later, Mr. Chen flies to Guangzhou."
+      },
+      {
+        "id": "002",
+        "text": "他在网站上找到了联系方式，给那篇文章的作者发了电子邮件，说明了情况。",
+        "pinyin": "",
+        "english": "He finds contact information on the website and emails the article's author, explaining the situation."
+      },
+      {
+        "id": "003",
+        "text": "作者是国华叔叔的女儿——陈小美。",
+        "pinyin": "",
+        "english": "The author is Uncle Guohua's daughter, Chen Xiaomei."
+      },
+      {
+        "id": "004",
+        "text": "她很快就回信了，说爸爸还健在，今年八十七岁，住在广州。",
+        "pinyin": "",
+        "english": "She replies quickly, saying her father is still alive, eighty-seven years old, and living in Guangzhou."
+      },
+      {
+        "id": "005",
+        "text": "陈先生在广州见到了叔叔。",
+        "pinyin": "",
+        "english": "Mr. Chen meets his uncle in Guangzhou."
+      },
+      {
+        "id": "006",
+        "text": "国华叔叔头发全白了，但是眼睛还是很亮。",
+        "pinyin": "",
+        "english": "Uncle Guohua's hair is completely white, but his eyes are still bright."
+      },
+      {
+        "id": "007",
+        "text": "他们两个人坐在一起，看着那张旧照片，说了很久很久的话。",
+        "pinyin": "",
+        "english": "The two of them sit together, looking at the old photo, and talk for a very long time."
+      },
+      {
+        "id": "008",
+        "text": "叔叔说他一直想念北京，想念哥哥国建。",
+        "pinyin": "",
+        "english": "His uncle says he has always missed Beijing and missed his brother Guojian."
+      },
+      {
+        "id": "009",
+        "text": "哥哥走了，陈先生轻轻地说，但是他找了你一辈子。",
+        "pinyin": "",
+        "english": "My father is gone, Mr. Chen says softly, but he searched for you all his life."
+      },
+      {
+        "id": "010",
+        "text": "国华叔叔听了，眼泪流下来了。",
+        "pinyin": "",
+        "english": "Uncle Guohua hears this and tears stream down his face."
+      },
+      {
+        "id": "011",
+        "text": "陈先生把那张旧照片放在叔叔手里，说：这张照片，应该放在您这里。",
+        "pinyin": "",
+        "english": "Mr. Chen places the old photo in his uncle's hands and says, This photo should stay with you."
+      },
+      {
+        "id": "012",
+        "text": "窗外，广州的太阳很大，很暖。",
+        "pinyin": "",
+        "english": "Outside the window, the Guangzhou sun is bright and warm."
+      }
+    ]
   }
 ]

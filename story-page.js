@@ -55,6 +55,54 @@ const COMMON_VOCAB = [
   { key: "不", pinyin: "bù", english: "not", level: "HSK1" },
   { key: "还", pinyin: "hái", english: "still / also", level: "HSK2" },
   { key: "再", pinyin: "zài", english: "again", level: "HSK2" },
+  { key: "今年", pinyin: "jīnnián", english: "this year", level: "HSK2" },
+  { key: "已经", pinyin: "yǐjīng", english: "already", level: "HSK2" },
+  { key: "退休", pinyin: "tuìxiū", english: "retire / retired", level: "HSK2" },
+  { key: "陈先生", pinyin: "Chén xiānsheng", english: "Mr. Chen", level: "HSK2" },
+  { key: "六十五岁", pinyin: "liùshíwǔ suì", english: "sixty-five years old", level: "HSK2" },
+  { key: "老胡同", pinyin: "lǎo hútòng", english: "old hutong", level: "HSK2" },
+  { key: "旧书市场", pinyin: "jiùshū shìchǎng", english: "used-book market", level: "HSK2" },
+  { key: "很喜欢", pinyin: "hěn xǐhuan", english: "really like", level: "HSK2" },
+  { key: "买书", pinyin: "mǎi shū", english: "buy books", level: "HSK2" },
+  { key: "书名", pinyin: "shūmíng", english: "title", level: "HSK2" },
+  { key: "有意思", pinyin: "yǒu yìsi", english: "interesting", level: "HSK2" },
+  { key: "回到家", pinyin: "huídào jiā", english: "go home", level: "HSK2" },
+  { key: "打开书", pinyin: "dǎkāi shū", english: "open the book", level: "HSK2" },
+  { key: "掉出来", pinyin: "diào chūlái", english: "fall out", level: "HSK2" },
+  { key: "黑白", pinyin: "hēibái", english: "black-and-white", level: "HSK2" },
+  { key: "一家人", pinyin: "yì jiārén", english: "a family", level: "HSK2" },
+  { key: "房子前面", pinyin: "fángzi qiánmiàn", english: "in front of a house", level: "HSK2" },
+  { key: "仔细", pinyin: "zǐxì", english: "carefully", level: "HSK2" },
+  { key: "熟悉", pinyin: "shúxī", english: "familiar", level: "HSK2" },
+  { key: "窗户旁边", pinyin: "chuānghu pángbiān", english: "by the window", level: "HSK2" },
+  { key: "想了很久", pinyin: "xiǎng le hěn jiǔ", english: "thought for a long time", level: "HSK2" },
+  { key: "明白", pinyin: "míngbai", english: "understand", level: "HSK2" },
+  { key: "再次", pinyin: "zàicì", english: "again", level: "HSK2" },
+  { key: "眼镜", pinyin: "yǎnjìng", english: "glasses", level: "HSK2" },
+  { key: "王大爷", pinyin: "Wáng Dàyé", english: "Uncle Wang", level: "HSK2" },
+  { key: "李奶奶", pinyin: "Lǐ Nǎinai", english: "Grandma Li", level: "HSK2" },
+  { key: "爸爸妈妈", pinyin: "bàba māma", english: "parents", level: "HSK2" },
+  { key: "兄弟", pinyin: "xiōngdì", english: "brother", level: "HSK2" },
+  { key: "电话", pinyin: "diànhuà", english: "phone call", level: "HSK2" },
+  { key: "手机", pinyin: "shǒujī", english: "mobile phone", level: "HSK2" },
+  { key: "图书馆员", pinyin: "túshūguǎnyuán", english: "librarian", level: "HSK2" },
+  { key: "旧档案", pinyin: "jiù dàng'àn", english: "old archives", level: "HSK2" },
+  { key: "户籍资料", pinyin: "hùjí zīliào", english: "household registration records", level: "HSK2" },
+  { key: "电脑", pinyin: "diànnǎo", english: "computer", level: "HSK2" },
+  { key: "地址", pinyin: "dìzhǐ", english: "address", level: "HSK2" },
+  { key: "职业", pinyin: "zhíyè", english: "occupation", level: "HSK2" },
+  { key: "广州", pinyin: "Guǎngzhōu", english: "Guangzhou", level: "HSK2" },
+  { key: "电子邮件", pinyin: "diànzǐ yóujiàn", english: "email", level: "HSK2" },
+  { key: "健在", pinyin: "jiànzài", english: "still alive", level: "HSK2" },
+  { key: "头发全白", pinyin: "tóufa quán bái", english: "completely white hair", level: "HSK2" },
+  { key: "还是", pinyin: "háishi", english: "still", level: "HSK2" },
+  { key: "社区网站", pinyin: "shèqū wǎngzhàn", english: "community website", level: "HSK2" },
+  { key: "老师", pinyin: "lǎoshī", english: "teacher", level: "HSK2" },
+  { key: "教育", pinyin: "jiàoyù", english: "education", level: "HSK2" },
+  { key: "奉献", pinyin: "fèngxiàn", english: "devote", level: "HSK2" },
+  { key: "女儿", pinyin: "nǚ'ér", english: "daughter", level: "HSK2" },
+  { key: "下落", pinyin: "xiàluò", english: "whereabouts", level: "HSK2" },
+  { key: "哥哥", pinyin: "gēge", english: "older brother", level: "HSK2" },
   { key: "就", pinyin: "jiù", english: "then / just", level: "HSK1" },
   { key: "会", pinyin: "huì", english: "will / can", level: "HSK1" },
   { key: "和", pinyin: "hé", english: "and / with", level: "HSK1" },
@@ -283,6 +331,12 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;");
 }
 
+function normalizeEnglish(value, fallback = "") {
+  const text = String(value || "").trim();
+  if (!text) return fallback;
+  return /[\u4e00-\u9fff]/.test(text) ? fallback : text;
+}
+
 function getStoryId() {
   const params = new URLSearchParams(window.location.search);
   const raw = params.get("story") || "1";
@@ -301,6 +355,14 @@ async function loadVocabulary() {
   const response = await fetch("./data/story-vocab.json");
   if (!response.ok) {
     throw new Error("Could not load story vocabulary.");
+  }
+  return response.json();
+}
+
+async function loadCharacterPinyin() {
+  const response = await fetch("./data/hsk2-char-pinyin.json");
+  if (!response.ok) {
+    throw new Error("Could not load fallback pinyin data.");
   }
   return response.json();
 }
@@ -370,6 +432,31 @@ function tokenizeSentence(sentenceText, lexicon) {
       continue;
     }
 
+    if (/[\u4e00-\u9fff]/.test(char)) {
+      let end = index + 1;
+
+      while (end < sentenceText.length) {
+        const nextChar = sentenceText[end];
+        if (STORY_PUNCTUATION.has(nextChar) || /\s/.test(nextChar)) {
+          break;
+        }
+
+        if (matchToken(sentenceText, end, lexicon.keys)) {
+          break;
+        }
+
+        if (!/[\u4e00-\u9fff]/.test(nextChar)) {
+          break;
+        }
+
+        end += 1;
+      }
+
+      segments.push({ type: "word", key: sentenceText.slice(index, end) });
+      index = end;
+      continue;
+    }
+
     segments.push({ type: "text", text: char });
     index += 1;
   }
@@ -390,28 +477,86 @@ function renderSentence(sentence, story, lexicon, isTitle = false) {
       }
 
       const entry = lexicon.byKey.get(segment.key);
-      if (!entry) {
-        return escapeHtml(segment.key);
-      }
 
       const classes = ["word", "underline"];
-      if (entry.isNewWord) {
+      if (entry?.isNewWord) {
         classes.push("new-word");
         classes.push(entry.newWordTone === "hsk1" ? "new-word-hsk1" : "new-word-hsk2plus");
       }
-      return `<span class="${classes.join(" ")}" data-pinyin="${escapeHtml(entry.pinyin)}" data-tip="${escapeHtml(entry.english)}" data-level="${escapeHtml(entry.level)}" data-key="${escapeHtml(entry.key)}">${escapeHtml(entry.key)}</span>`;
+
+      const fallbackPinyin = buildFallbackPinyin(segment.key, window.__HSK2_CHAR_PINYIN || {});
+      const pinyin = entry?.pinyin || fallbackPinyin;
+      const english = normalizeEnglish(entry?.english);
+      const level = entry?.level || "";
+      const key = entry?.key || segment.key;
+
+      return `<span class="${classes.join(" ")}" data-pinyin="${escapeHtml(pinyin)}" data-tip="${escapeHtml(english)}" data-sentence-english="${escapeHtml(normalizeEnglish(sentence.english || ""))}" data-level="${escapeHtml(level)}" data-key="${escapeHtml(key)}">${escapeHtml(segment.key)}</span>`;
     })
     .join("");
 
   return `
     <div class="phrase-card" data-sentence-id="${escapeHtml(sentence.id)}">
-      <div class="pinyin-line">${escapeHtml(sentence.pinyin)}</div>
+      <div class="pinyin-line">${escapeHtml(buildSentencePinyin(sentence, lexicon))}</div>
       <div class="hanzi-line${isTitle ? " solo" : ""}">
         ${hanzi}
       </div>
-      <div class="english-line">${escapeHtml(sentence.english)}</div>
+      <div class="english-line">${escapeHtml(normalizeEnglish(sentence.english || ""))}</div>
     </div>
   `;
+}
+
+function buildFallbackPinyin(text, pinyinMap) {
+  const chars = Array.from(String(text || ""));
+  if (!chars.length) return "";
+
+  return chars
+    .map((char) => {
+      if (STORY_PUNCTUATION.has(char) || /\s/.test(char)) return char;
+      return pinyinMap[char] || char;
+    })
+    .join(" ")
+    .replace(/\s+([，。！？：；])/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function buildSentencePinyin(sentence, lexicon) {
+  const provided = String(sentence.pinyin || "").trim();
+  if (provided) {
+    return provided;
+  }
+
+  const segments = tokenizeSentence(sentence.text || "", lexicon);
+  if (!segments.length) {
+    return "";
+  }
+
+  const parts = [];
+
+  for (const segment of segments) {
+    if (segment.type === "punctuation") {
+      if (parts.length) {
+        parts[parts.length - 1] += segment.text;
+      } else {
+        parts.push(segment.text);
+      }
+      continue;
+    }
+
+    if (segment.type === "text") {
+      parts.push(segment.text);
+      continue;
+    }
+
+    const entry = lexicon.byKey.get(segment.key);
+    parts.push(entry?.pinyin || segment.key);
+  }
+
+  return parts
+    .join(" ")
+    .replace(/\s+([，。！？：；])/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function chunk(array, size) {
@@ -525,9 +670,11 @@ function renderStoryPage(story, stories) {
   const nextStoryLink = nextStory
     ? `<a class="story-next-button" href="./story.html?story=${escapeHtml(nextStory.slug || `story${nextStory.id}`)}">Read next story</a>`
     : "";
+  const isChapterStory = Number.parseInt(story.id, 10) >= 10;
 
   document.title = `${story.englishTitle} | Open Chinese Reader`;
   document.body.dataset.storyId = story.slug || `story${storyNumber}`;
+  document.body.classList.toggle("chapter-story", isChapterStory);
   document.body.innerHTML = `
     <main class="reader-shell">
       <section class="info-panel">
@@ -671,15 +818,20 @@ function bindStoryInteractions(storyId, story, lexicon) {
   }
 
   function updateMeaning(word) {
-    const entry = lexicon.byKey.get(word.dataset.key || word.textContent.trim());
-    if (!entry) return;
+    const key = word.dataset.key || word.textContent.trim();
+    const entry = lexicon.byKey.get(key) || {
+      key,
+      pinyin: word.dataset.pinyin || "",
+      english: normalizeEnglish(word.dataset.tip || ""),
+      level: word.dataset.level || "",
+    };
 
     words.forEach((item) => item.classList.remove("selected"));
     word.classList.add("selected");
 
     meaningHanzi.textContent = entry.key;
     meaningPinyin.textContent = entry.pinyin;
-    meaningEnglish.textContent = entry.english;
+    meaningEnglish.textContent = normalizeEnglish(entry.english);
     meaningLevel.textContent = entry.level;
   }
 
@@ -1075,7 +1227,11 @@ function bindStoryInteractions(storyId, story, lexicon) {
 
 async function init() {
   try {
-    const [stories, vocabularyIndex] = await Promise.all([loadStories(), loadVocabulary()]);
+    const [stories, vocabularyIndex, characterPinyin] = await Promise.all([
+      loadStories(),
+      loadVocabulary(),
+      loadCharacterPinyin(),
+    ]);
     const storyId = getStoryId();
     const story = stories.find((entry) => entry.slug === storyId || entry.id === storyId.replace("story", ""));
 
@@ -1087,6 +1243,7 @@ async function init() {
       entry.vocab = vocabularyIndex[entry.slug] || vocabularyIndex[entry.id] || [];
     });
 
+    window.__HSK2_CHAR_PINYIN = characterPinyin;
     renderStoryPage(story, stories);
   } catch (error) {
     document.body.innerHTML = `
