@@ -268,7 +268,7 @@ body.story-page.chapter-story .story-shell {
 }
 
 .reader-content {
-  padding: 76px 72px 80px 188px;
+  padding: 76px 72px 80px;
 }
 
 body.story-page.chapter-story .reader-content {
@@ -355,19 +355,6 @@ body.story-page.chapter-story .phrase-card {
   box-shadow: 0 18px 34px rgba(29, 39, 35, 0.06);
 }
 
-.phrase-card.reading {
-  position: relative;
-}
-
-.phrase-card.reading::after {
-  content: "";
-  position: absolute;
-  inset: -8px;
-  border-radius: 14px;
-  border: 1px solid rgba(159, 227, 215, 0.55);
-  pointer-events: none;
-}
-
 .pinyin-line {
   display: none;
 }
@@ -376,9 +363,9 @@ body.story-page.chapter-story .phrase-card {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: 14px;
+  gap: 8px;
   font-family: "Noto Sans SC", sans-serif;
-  font-size: 50px;
+  font-size: 38px;
   line-height: 1;
   white-space: nowrap;
   width: max-content;
@@ -388,15 +375,15 @@ body.story-page.chapter-story .hanzi-line {
   display: grid;
   width: 100%;
   max-width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
-  gap: 14px 12px;
+  grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+  gap: 10px 8px;
   white-space: normal;
-  font-size: clamp(30px, 3.2vw, 42px);
+  font-size: clamp(24px, 2.4vw, 32px);
   line-height: 1.35;
 }
 
 .hanzi-line.solo {
-  gap: 16px;
+  gap: 10px;
 }
 
 .word {
@@ -406,9 +393,9 @@ body.story-page.chapter-story .hanzi-line {
   justify-content: flex-start;
   min-height: auto;
   min-width: 0;
-  width: 100%;
+  width: auto;
   line-height: 1;
-  gap: 12px;
+  gap: 6px;
   text-align: center;
 }
 
@@ -421,7 +408,7 @@ body.story-page.chapter-story .hanzi-line {
   position: static;
   display: block;
   font-family: "Inter", sans-serif;
-  font-size: 23px;
+  font-size: 16px;
   line-height: 1.1;
   color: var(--pinyin);
   white-space: nowrap;
@@ -431,87 +418,24 @@ body.story-page.chapter-story .hanzi-line {
   content: attr(data-tip);
   display: block;
   font-family: "Inter", sans-serif;
-  font-size: 15px;
+  font-size: 12px;
   line-height: 1.35;
   color: #8a8a8a;
-  margin-top: 18px;
+  margin-top: 10px;
   pointer-events: none;
   text-align: center;
   white-space: normal;
 }
 
-.word:hover,
-.word.selected {
+.word:hover {
   background: #bfeee5;
   border-radius: 8px;
 }
 
 .word.reading {
-  background: #9fe3d7;
+  background: #bfeee5;
   border-radius: 8px;
   box-shadow: 0 0 0 2px rgba(159, 227, 215, 0.35);
-}
-
-.word.current-word {
-  background: #bfeee5;
-  border-radius: 10px;
-  box-shadow:
-    0 0 0 3px rgba(47, 150, 123, 0.18),
-    0 10px 20px rgba(29, 39, 35, 0.08);
-}
-
-.word.new-word {
-  border-radius: 8px;
-}
-
-.word.new-word-hsk1 {
-  background: rgba(182, 219, 255, 0.32);
-  box-shadow: inset 0 -8px 0 rgba(120, 185, 255, 0.1);
-}
-
-.word.new-word-hsk2plus {
-  background: rgba(255, 236, 153, 0.75);
-  box-shadow: inset 0 -8px 0 rgba(255, 217, 77, 0.18);
-}
-
-.word.new-word:hover,
-.word.new-word.selected,
-.word.new-word-hsk1:hover,
-.word.new-word-hsk1.selected,
-.word.new-word-hsk2plus:hover,
-.word.new-word-hsk2plus.selected {
-  background: #bfeee5;
-}
-
-.word.new-word.reading,
-.word.new-word-hsk1.reading,
-.word.new-word-hsk2plus.reading {
-  background: #9fe3d7;
-  box-shadow: 0 0 0 2px rgba(159, 227, 215, 0.35);
-}
-
-.word.new-word.current-word,
-.word.new-word-hsk1.current-word,
-.word.new-word-hsk2plus.current-word {
-  background: #bfeee5;
-  box-shadow:
-    0 0 0 3px rgba(47, 150, 123, 0.18),
-    0 10px 20px rgba(29, 39, 35, 0.08);
-}
-
-body[data-story-id="story1"] .word.new-word-hsk1 {
-  background: transparent;
-  box-shadow: none;
-}
-
-body[data-story-id="story1"] .word.new-word-hsk1:hover,
-body[data-story-id="story1"] .word.new-word-hsk1.selected,
-body[data-story-id="story1"] .word.new-word-hsk1.reading,
-body[data-story-id="story1"] .word.new-word-hsk1.current-word {
-  background: #bfeee5;
-  box-shadow:
-    0 0 0 2px rgba(159, 227, 215, 0.35),
-    0 10px 20px rgba(29, 39, 35, 0.08);
 }
 
 .underline {
@@ -548,7 +472,7 @@ body.story-page {
 }
 
 body.story-page .story-shell {
-  width: min(1120px, 100%);
+  width: min(1280px, 100%);
   margin: 0 auto;
 }
 
@@ -855,11 +779,11 @@ body.story-page .visit-counter {
 
 @media (max-width: 760px) {
   body {
-    padding: 12px 10px 18px;
+    padding: 10px 8px 16px;
   }
 
   .info-panel {
-    padding: 10px 16px 16px;
+    padding: 10px 14px 14px;
   }
 
   .reader-panel {
@@ -867,19 +791,19 @@ body.story-page .visit-counter {
   }
 
   .reader-toolbar {
-    padding: 14px 16px;
+    padding: 12px 14px;
   }
 
   .reader-content {
-    padding: 18px 14px 28px;
+    padding: 14px 12px 24px;
   }
 
   .title-block {
-    margin-bottom: 28px;
+    margin-bottom: 24px;
   }
 
   .lesson-sheet {
-    gap: 28px;
+    gap: 24px;
   }
 
   .story-next-panel {
@@ -897,7 +821,7 @@ body.story-page .visit-counter {
   }
 
   .reader-row {
-    gap: 22px 14px;
+    gap: 18px 12px;
   }
 
   .phrase-card {
@@ -909,57 +833,29 @@ body.story-page .visit-counter {
   }
 
   .hanzi-line {
-    font-size: 28px;
-    gap: 8px;
+    font-size: 20px;
+    gap: 4px;
     white-space: normal;
     width: 100%;
   }
 
   .word {
-    gap: 6px;
+    gap: 2px;
     scroll-margin-top: 160px;
   }
 
   .word[data-pinyin]::before {
-    font-size: 12px;
+    font-size: 8px;
   }
 
   .word[data-tip]::after {
-    font-size: 9px;
-    margin-top: 8px;
-  }
-
-  .word:hover,
-  .word.selected,
-  .word.reading {
-    position: relative;
-    z-index: 1;
-  }
-
-  .word.reading,
-  .word.selected,
-  .word.current-word {
-    box-shadow:
-      0 0 0 2px rgba(53, 146, 127, 0.24),
-      0 8px 18px rgba(29, 39, 35, 0.08);
-  }
-
-  .word.current-word {
-    background: #bfeee5;
-    outline: 2px solid rgba(29, 39, 35, 0.06);
-    transform: translateY(-1px);
-  }
-
-  .word.new-word-hsk1,
-  .word.new-word-hsk2plus {
-    box-shadow:
-      inset 0 -6px 0 rgba(0, 0, 0, 0.03),
-      0 0 0 1px rgba(29, 39, 35, 0.04);
+    font-size: 7px;
+    margin-top: 4px;
   }
 
   .punctuation {
-    font-size: 26px;
-    transform: translateY(8px);
+    font-size: 24px;
+    transform: translateY(6px);
   }
 
   .sticky-word-panel {
@@ -975,32 +871,39 @@ body.story-page .visit-counter {
   .reader-toolbar {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
+  }
+
+  .audio-controls,
+  .display-switches,
+  .meaning-main,
+  .meaning-side {
+    width: 100%;
   }
 
   .meaning-side {
     margin-left: 0;
-    width: 100%;
     justify-content: space-between;
   }
 
   .meaning-main {
-    gap: 6px 8px;
-    font-size: 18px;
+    gap: 4px 6px;
+    font-size: 16px;
   }
 
   .meaning-hanzi {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .meaning-level {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .audio-status,
   .switch,
   .speed-control,
   .story-meta {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .story-shell {

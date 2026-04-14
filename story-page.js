@@ -1,4 +1,4 @@
-const STORY_PUNCTUATION = new Set(["。", "，", "！", "？", "：", "；", "“", "”", "（", "）", "《", "》", "、"]);
+const STORY_PUNCTUATION = new Set(["。", "，", "！", "？", "：", "；", "“", "”", "（", "）", "《", "》", "、", "…", "."]);
 const AUDIO_CACHE_BUSTER = "2026-04-11";
 const COMMON_VOCAB = [
   { key: "我", pinyin: "wǒ", english: "I / me", level: "HSK1" },
@@ -55,6 +55,7 @@ const COMMON_VOCAB = [
   { key: "不", pinyin: "bù", english: "not", level: "HSK1" },
   { key: "还", pinyin: "hái", english: "still / also", level: "HSK2" },
   { key: "再", pinyin: "zài", english: "again", level: "HSK2" },
+  { key: "知道", pinyin: "zhīdao", english: "know", level: "HSK1" },
   { key: "今年", pinyin: "jīnnián", english: "this year", level: "HSK2" },
   { key: "已经", pinyin: "yǐjīng", english: "already", level: "HSK2" },
   { key: "退休", pinyin: "tuìxiū", english: "retire / retired", level: "HSK2" },
@@ -182,6 +183,216 @@ const COMMON_VOCAB = [
   { key: "但", pinyin: "dàn", english: "but", level: "HSK1" },
   { key: "要", pinyin: "yào", english: "want / need / will", level: "HSK1" },
   { key: "对了", pinyin: "duì le", english: "right / by the way", level: "HSK1" },
+];
+
+const EXTRA_VOCAB = [
+  { key: "照片", pinyin: "zhàopiàn", english: "photo", level: "HSK2" },
+  { key: "椅子", pinyin: "yǐzi", english: "chair", level: "HSK2" },
+  { key: "北京", pinyin: "Běijīng", english: "Beijing", level: "HSK2" },
+  { key: "胡同", pinyin: "hútòng", english: "hutong", level: "HSK2" },
+  { key: "看着", pinyin: "kànzhe", english: "looking at", level: "HSK2" },
+  { key: "突然", pinyin: "tūrán", english: "suddenly", level: "HSK2" },
+  { key: "房子", pinyin: "fángzi", english: "house", level: "HSK2" },
+  { key: "男孩", pinyin: "nánhái", english: "boy", level: "HSK2" },
+  { key: "很好", pinyin: "hěn hǎo", english: "very good", level: "HSK2" },
+  { key: "附近", pinyin: "fùjìn", english: "nearby", level: "HSK2" },
+  { key: "开始", pinyin: "kāishǐ", english: "start", level: "HSK2" },
+  { key: "颜色", pinyin: "yánsè", english: "color", level: "HSK2" },
+  { key: "自己", pinyin: "zìjǐ", english: "self / oneself", level: "HSK2" },
+  { key: "后面", pinyin: "hòumiàn", english: "back / behind", level: "HSK2" },
+  { key: "清楚", pinyin: "qīngchu", english: "clear", level: "HSK2" },
+  { key: "第二天", pinyin: "dì èr tiān", english: "the next day", level: "HSK2" },
+  { key: "以前", pinyin: "yǐqián", english: "before / previously", level: "HSK2" },
+  { key: "点头", pinyin: "diǎntóu", english: "nod", level: "HSK2" },
+  { key: "眼睛", pinyin: "yǎnjing", english: "eyes", level: "HSK2" },
+  { key: "没事", pinyin: "méi shì", english: "it's okay", level: "HSK2" },
+  { key: "轻轻地", pinyin: "qīngqīngde", english: "gently", level: "HSK2" },
+  { key: "弟弟", pinyin: "dìdi", english: "younger brother", level: "HSK2" },
+  { key: "终于", pinyin: "zhōngyú", english: "finally", level: "HSK2" },
+  { key: "生活", pinyin: "shēnghuó", english: "life", level: "HSK2" },
+  { key: "快乐", pinyin: "kuàilè", english: "happy", level: "HSK2" },
+  { key: "星期六", pinyin: "xīngqīliù", english: "Saturday", level: "HSK2" },
+  { key: "很有意思", pinyin: "hěn yǒu yìsi", english: "very interesting", level: "HSK2" },
+  { key: "捡起", pinyin: "jiǎnqǐ", english: "pick up", level: "HSK2" },
+  { key: "两个孩子", pinyin: "liǎng ge háizi", english: "two children", level: "HSK2" },
+  { key: "看起来", pinyin: "kàn qǐlái", english: "look like / seem", level: "HSK2" },
+  { key: "红色", pinyin: "hóngsè", english: "red", level: "HSK2" },
+  { key: "什么地方", pinyin: "shénme dìfang", english: "what place", level: "HSK2" },
+  { key: "站起", pinyin: "zhàn qǐ", english: "stand up", level: "HSK2" },
+  { key: "不一样", pinyin: "bù yíyàng", english: "different", level: "HSK2" },
+  { key: "什么字", pinyin: "shénme zì", english: "what characters", level: "HSK2" },
+  { key: "翻过", pinyin: "fān guò", english: "turn over", level: "HSK2" },
+  { key: "春天", pinyin: "chūntiān", english: "spring", level: "HSK2" },
+  { key: "孩子们", pinyin: "háizimen", english: "children", level: "HSK2" },
+  { key: "女孩", pinyin: "nǚhái", english: "girl", level: "HSK2" },
+  { key: "笑得", pinyin: "xiào de", english: "smiling", level: "HSK2" },
+  { key: "很开心", pinyin: "hěn kāixīn", english: "very happy", level: "HSK2" },
+  { key: "奇怪", pinyin: "qíguài", english: "strange", level: "HSK2" },
+  { key: "感觉", pinyin: "gǎnjué", english: "feel", level: "HSK2" },
+  { key: "决定", pinyin: "juédìng", english: "decide", level: "HSK2" },
+  { key: "老邻居", pinyin: "lǎo línjū", english: "old neighbor", level: "HSK2" },
+  { key: "事情", pinyin: "shìqing", english: "matter / thing", level: "HSK2" },
+  { key: "出现", pinyin: "chūxiàn", english: "appear", level: "HSK2" },
+  { key: "慢慢地", pinyin: "mànmàn de", english: "slowly", level: "HSK2" },
+  { key: "告诉", pinyin: "gàosu", english: "tell", level: "HSK2" },
+  { key: "发现", pinyin: "fāxiàn", english: "discover", level: "HSK2" },
+  { key: "院子", pinyin: "yuànzi", english: "courtyard", level: "HSK2" },
+  { key: "记性", pinyin: "jìxing", english: "memory", level: "HSK2" },
+  { key: "进门", pinyin: "jìnmén", english: "enter", level: "HSK2" },
+  { key: "故事", pinyin: "gùshì", english: "story", level: "HSK2" },
+  { key: "怎么", pinyin: "zěnme", english: "how", level: "HSK2" },
+  { key: "安静", pinyin: "ānjìng", english: "quiet", level: "HSK2" },
+  { key: "南方", pinyin: "nánfāng", english: "south", level: "HSK2" },
+  { key: "深吸", pinyin: "shēn xī", english: "take a deep breath", level: "HSK2" },
+  { key: "口气", pinyin: "kǒuqì", english: "breath", level: "HSK2" },
+  { key: "信息", pinyin: "xìnxī", english: "information", level: "HSK2" },
+  { key: "年轻", pinyin: "niánqīng", english: "young", level: "HSK2" },
+  { key: "查找", pinyin: "cházhǎo", english: "search", level: "HSK2" },
+  { key: "很高兴", pinyin: "hěn gāoxìng", english: "very happy", level: "HSK2" },
+  { key: "打开", pinyin: "dǎkāi", english: "open", level: "HSK2" },
+  { key: "写着", pinyin: "xiězhe", english: "written", level: "HSK2" },
+  { key: "短信", pinyin: "duǎnxìn", english: "text message", level: "HSK2" },
+  { key: "名单", pinyin: "míngdān", english: "list", level: "HSK2" },
+  { key: "工作", pinyin: "gōngzuò", english: "work", level: "HSK2" },
+  { key: "又开始", pinyin: "yòu kāishǐ", english: "start again", level: "HSK2" },
+  { key: "紧张", pinyin: "jǐnzhāng", english: "nervous", level: "HSK2" },
+  { key: "发生", pinyin: "fāshēng", english: "happen", level: "HSK2" },
+  { key: "继续查", pinyin: "jìxù chá", english: "keep searching", level: "HSK2" },
+  { key: "三个星期", pinyin: "sān ge xīngqī", english: "three weeks", level: "HSK2" },
+  { key: "网站", pinyin: "wǎngzhàn", english: "website", level: "HSK2" },
+  { key: "联系方式", pinyin: "liánxì fāngshì", english: "contact info", level: "HSK2" },
+  { key: "文章", pinyin: "wénzhāng", english: "article", level: "HSK2" },
+  { key: "作者", pinyin: "zuòzhě", english: "author", level: "HSK2" },
+  { key: "情况", pinyin: "qíngkuàng", english: "situation", level: "HSK2" },
+  { key: "回信", pinyin: "huíxìn", english: "reply", level: "HSK2" },
+  { key: "眼泪", pinyin: "yǎnlèi", english: "tears", level: "HSK2" },
+  { key: "应该", pinyin: "yīnggāi", english: "should", level: "HSK2" },
+  { key: "窗外", pinyin: "chuāngwài", english: "outside the window", level: "HSK2" },
+];
+
+const EXTRA_CHAR_VOCAB = [
+  { key: "个", english: "classifier", level: "HSK1" },
+  { key: "坐", english: "sit", level: "HSK2" },
+  { key: "地", english: "particle", level: "HSK1" },
+  { key: "张", english: "classifier", level: "HSK1" },
+  { key: "给", english: "give / to", level: "HSK1" },
+  { key: "您", english: "you (polite)", level: "HSK2" },
+  { key: "找", english: "find / look for", level: "HSK1" },
+  { key: "旧", english: "old", level: "HSK1" },
+  { key: "没", english: "not", level: "HSK1" },
+  { key: "久", english: "long time", level: "HSK1" },
+  { key: "从", english: "from", level: "HSK1" },
+  { key: "哪", english: "which / where", level: "HSK1" },
+  { key: "快", english: "fast", level: "HSK1" },
+  { key: "点", english: "point / a little", level: "HSK1" },
+  { key: "妈", english: "mom", level: "HSK1" },
+  { key: "条", english: "classifier", level: "HSK1" },
+  { key: "出", english: "out", level: "HSK1" },
+  { key: "叫", english: "call / be called", level: "HSK1" },
+  { key: "树", english: "tree", level: "HSK1" },
+  { key: "门", english: "door", level: "HSK1" },
+  { key: "谁", english: "who", level: "HSK1" },
+  { key: "字", english: "character", level: "HSK1" },
+  { key: "事", english: "thing / matter", level: "HSK1" },
+  { key: "种", english: "kind / type", level: "HSK1" },
+  { key: "面", english: "side / face", level: "HSK1" },
+  { key: "题", english: "question / topic", level: "HSK2" },
+  { key: "后", english: "after / behind", level: "HSK1" },
+  { key: "真", english: "really", level: "HSK1" },
+  { key: "打", english: "hit / call", level: "HSK1" },
+  { key: "老", english: "old", level: "HSK1" },
+  { key: "发", english: "send / hair", level: "HSK1" },
+  { key: "篇", english: "piece / article", level: "HSK2" },
+  { key: "念", english: "read aloud / miss", level: "HSK2" },
+  { key: "放", english: "put / place", level: "HSK1" },
+  { key: "每", english: "every", level: "HSK1" },
+  { key: "天", english: "day / sky", level: "HSK1" },
+  { key: "本", english: "book / classifier", level: "HSK1" },
+  { key: "落", english: "fall", level: "HSK2" },
+  { key: "站", english: "stand", level: "HSK1" },
+  { key: "棵", english: "classifier", level: "HSK1" },
+  { key: "像", english: "resemble", level: "HSK1" },
+  { key: "变", english: "change", level: "HSK1" },
+  { key: "样", english: "kind / sort", level: "HSK1" },
+  { key: "行", english: "okay / line", level: "HSK1" },
+  { key: "需", english: "need", level: "HSK2" },
+  { key: "区", english: "district", level: "HSK2" },
+  { key: "得", english: "particle / get", level: "HSK1" },
+  { key: "早", english: "early", level: "HSK1" },
+  { key: "少", english: "few / little", level: "HSK1" },
+  { key: "完", english: "finish", level: "HSK1" },
+  { key: "表", english: "express", level: "HSK2" },
+  { key: "正", english: "just / exactly", level: "HSK1" },
+  { key: "花", english: "flower", level: "HSK1" },
+  { key: "担", english: "carry", level: "HSK2" },
+  { key: "只", english: "only / classifier", level: "HSK1" },
+  { key: "愣", english: "stunned", level: "HSK2" },
+  { key: "响", english: "sound / ring", level: "HSK2" },
+  { key: "边", english: "side", level: "HSK1" },
+  { key: "记", english: "remember", level: "HSK1" },
+  { key: "所", english: "place", level: "HSK2" },
+  { key: "学", english: "study", level: "HSK1" },
+  { key: "美", english: "beautiful", level: "HSK1" },
+  { key: "亮", english: "bright", level: "HSK2" },
+  { key: "话", english: "speech / words", level: "HSK1" },
+  { key: "直", english: "straight / directly", level: "HSK2" },
+  { key: "辈", english: "generation", level: "HSK2" },
+  { key: "手", english: "hand", level: "HSK1" },
+  { key: "暖", english: "warm", level: "HSK2" },
+  { key: "陈", english: "Chen", level: "HSK2" },
+  { key: "国", english: "country", level: "HSK2" },
+  { key: "华", english: "China / Chinese", level: "HSK2" },
+  { key: "建", english: "build", level: "HSK2" },
+  { key: "马", english: "horse", level: "HSK1" },
+  { key: "明", english: "bright", level: "HSK1" },
+  { key: "海", english: "sea", level: "HSK1" },
+  { key: "声", english: "sound", level: "HSK1" },
+  { key: "住", english: "live / stay", level: "HSK1" },
+  { key: "停", english: "stop", level: "HSK2" },
+  { key: "抱", english: "hug", level: "HSK2" },
+  { key: "爸", english: "dad", level: "HSK1" },
+  { key: "房", english: "house / room", level: "HSK1" },
+  { key: "前", english: "front", level: "HSK1" },
+  { key: "才", english: "only / just", level: "HSK1" },
+  { key: "年", english: "year", level: "HSK1" },
+  { key: "来", english: "come", level: "HSK1" },
+  { key: "去", english: "go", level: "HSK1" },
+  { key: "到", english: "arrive / reach", level: "HSK1" },
+  { key: "看", english: "look / see / watch", level: "HSK1" },
+  { key: "说", english: "say / speak", level: "HSK1" },
+  { key: "把", english: "ba particle", level: "HSK2" },
+  { key: "过", english: "particle / over", level: "HSK1" },
+  { key: "起", english: "up / rise", level: "HSK1" },
+  { key: "跳", english: "jump", level: "HSK1" },
+  { key: "姓", english: "surname", level: "HSK2" },
+  { key: "更", english: "more", level: "HSK2" },
+  { key: "许", english: "perhaps", level: "HSK2" },
+  { key: "音", english: "sound", level: "HSK1" },
+  { key: "写", english: "write", level: "HSK1" },
+  { key: "太", english: "too / very", level: "HSK1" },
+  { key: "四", english: "four", level: "HSK1" },
+  { key: "情", english: "feeling", level: "HSK2" },
+  { key: "最", english: "most", level: "HSK1" },
+  { key: "件", english: "item / piece", level: "HSK2" },
+  { key: "接", english: "answer / receive", level: "HSK2" },
+  { key: "专", english: "special", level: "HSK2" },
+  { key: "女", english: "female", level: "HSK1" },
+  { key: "生", english: "person / life", level: "HSK1" },
+  { key: "湿", english: "wet", level: "HSK2" },
+  { key: "两", english: "two", level: "HSK1" },
+  { key: "子", english: "child / suffix", level: "HSK1" },
+  { key: "孩子", english: "child", level: "HSK1" },
+  { key: "两个", english: "two", level: "HSK1" },
+  { key: "声音", english: "sound / voice", level: "HSK1" },
+  { key: "概", english: "about", level: "HSK2" },
+  { key: "五", english: "five", level: "HSK1" },
+  { key: "刘", english: "Liu", level: "HSK2" },
+  { key: "十", english: "ten", level: "HSK1" },
+  { key: "二", english: "two", level: "HSK1" },
+  { key: "六", english: "six", level: "HSK1" },
+  { key: "七", english: "seven", level: "HSK1" },
+  { key: "八", english: "eight", level: "HSK1" },
+  { key: "九", english: "nine", level: "HSK1" },
 ];
 
 const LEVEL_RANK = {
@@ -337,6 +548,11 @@ function normalizeEnglish(value, fallback = "") {
   return /[\u4e00-\u9fff]/.test(text) ? fallback : text;
 }
 
+function buildEnglishGloss(key, lexicon) {
+  const entry = lexicon.byKey.get(key);
+  return normalizeEnglish(entry?.english);
+}
+
 function getStoryId() {
   const params = new URLSearchParams(window.location.search);
   const raw = params.get("story") || "1";
@@ -369,7 +585,7 @@ async function loadCharacterPinyin() {
 
 function buildLexicon(vocab = [], priorKeys = new Set()) {
   const merged = new Map(
-    COMMON_VOCAB.map((entry) => [
+    [...COMMON_VOCAB, ...EXTRA_VOCAB, ...EXTRA_CHAR_VOCAB].map((entry) => [
       entry.key,
       {
         ...entry,
@@ -413,6 +629,16 @@ function tokenizeSentence(sentenceText, lexicon) {
 
   while (index < sentenceText.length) {
     const char = sentenceText[index];
+
+    if (char === "." || char === "…") {
+      let end = index + 1;
+      while (end < sentenceText.length && sentenceText[end] === char) {
+        end += 1;
+      }
+      segments.push({ type: "punctuation", text: sentenceText.slice(index, end) });
+      index = end;
+      continue;
+    }
 
     if (STORY_PUNCTUATION.has(char)) {
       segments.push({ type: "punctuation", text: char });
@@ -486,7 +712,7 @@ function renderSentence(sentence, story, lexicon, isTitle = false) {
 
       const fallbackPinyin = buildFallbackPinyin(segment.key, window.__HSK2_CHAR_PINYIN || {});
       const pinyin = entry?.pinyin || fallbackPinyin;
-      const english = normalizeEnglish(entry?.english);
+      const english = buildEnglishGloss(segment.key, lexicon);
       const level = entry?.level || "";
       const key = entry?.key || segment.key;
 
@@ -511,6 +737,7 @@ function buildFallbackPinyin(text, pinyinMap) {
 
   return chars
     .map((char) => {
+      if (char === "." || char === "…") return char;
       if (STORY_PUNCTUATION.has(char) || /\s/.test(char)) return char;
       return pinyinMap[char] || char;
     })
@@ -588,7 +815,7 @@ function buildAudioSrc(storyId, sentenceId, sentenceIndex = 0) {
 
 function buildGlobalTokenLexicon(stories, vocabularyIndex) {
   const merged = new Map(
-    COMMON_VOCAB.map((entry) => [
+    [...COMMON_VOCAB, ...EXTRA_VOCAB, ...EXTRA_CHAR_VOCAB].map((entry) => [
       entry.key,
       {
         ...entry,
@@ -670,7 +897,9 @@ function renderStoryPage(story, stories) {
   const nextStoryLink = nextStory
     ? `<a class="story-next-button" href="./story.html?story=${escapeHtml(nextStory.slug || `story${nextStory.id}`)}">Read next story</a>`
     : "";
-  const isChapterStory = Number.parseInt(story.id, 10) >= 10;
+  const isChapterStory = false;
+  const initialWordKey = firstSentenceWord ? firstSentenceWord.key : firstSentence.text;
+  const initialEnglish = buildEnglishGloss(initialWordKey, lexicon);
 
   document.title = `${story.englishTitle} | Open Chinese Reader`;
   document.body.dataset.storyId = story.slug || `story${storyNumber}`;
@@ -691,9 +920,9 @@ function renderStoryPage(story, stories) {
         </div>
         <div class="word-meaning">
           <div class="meaning-main">
-            <span class="meaning-hanzi" id="meaning-hanzi">${escapeHtml(initialEntry?.key || firstSentence.text)}</span>
+            <span class="meaning-hanzi" id="meaning-hanzi">${escapeHtml(initialEntry?.key || initialWordKey)}</span>
             <span class="meaning-pinyin" id="meaning-pinyin">${escapeHtml(initialEntry?.pinyin || firstSentence.pinyin)}</span>
-            <span class="meaning-english" id="meaning-english">${escapeHtml(initialEntry?.english || firstSentence.english)}</span>
+            <span class="meaning-english" id="meaning-english">${escapeHtml(initialEntry?.english || initialEnglish)}</span>
           </div>
           <div class="meaning-side">
             <div class="meaning-level" id="meaning-level">${escapeHtml(initialEntry?.level || story.level)}</div>
