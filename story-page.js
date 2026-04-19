@@ -1,5 +1,5 @@
 const STORY_PUNCTUATION = new Set(["。", "，", "！", "？", "：", "；", "“", "”", "（", "）", "《", "》", "、", "…", "."]);
-const AUDIO_CACHE_BUSTER = "2026-04-11";
+const AUDIO_CACHE_BUSTER = "2026-04-19";
 const COMMON_VOCAB = [
   { key: "我", pinyin: "wǒ", english: "I / me", level: "HSK1" },
   { key: "你", pinyin: "nǐ", english: "you", level: "HSK1" },
@@ -14,6 +14,7 @@ const COMMON_VOCAB = [
   { key: "朋友", pinyin: "péngyou", english: "friend", level: "HSK1" },
   { key: "今天", pinyin: "jīn tiān", english: "today", level: "HSK1" },
   { key: "明天", pinyin: "míng tiān", english: "tomorrow", level: "HSK1" },
+  { key: "什么", pinyin: "shénme", english: "what", level: "HSK1" },
   { key: "早上", pinyin: "zǎoshang", english: "morning", level: "HSK1" },
   { key: "下午", pinyin: "xiàwǔ", english: "afternoon", level: "HSK1" },
   { key: "晚上", pinyin: "wǎnshang", english: "evening / night", level: "HSK1" },
@@ -172,6 +173,8 @@ const COMMON_VOCAB = [
   { key: "一起", pinyin: "yìqǐ", english: "together", level: "HSK2" },
   { key: "一会儿", pinyin: "yí huìr", english: "a little while", level: "HSK3" },
   { key: "一下", pinyin: "yíxià", english: "a moment", level: "HSK1" },
+  { key: "为什么", pinyin: "wèishénme", english: "why", level: "HSK1" },
+  { key: "认识", pinyin: "rènshi", english: "know / recognize", level: "HSK2" },
   { key: "很多东西", pinyin: "hěn duō dōngxi", english: "many things", level: "HSK2" },
   { key: "有的人", pinyin: "yǒu de rén", english: "some people", level: "HSK2" },
   { key: "觉得", pinyin: "juéde", english: "feel / think", level: "HSK2" },
@@ -183,6 +186,8 @@ const COMMON_VOCAB = [
   { key: "但", pinyin: "dàn", english: "but", level: "HSK1" },
   { key: "要", pinyin: "yào", english: "want / need / will", level: "HSK1" },
   { key: "对了", pinyin: "duì le", english: "right / by the way", level: "HSK1" },
+  { key: "教师", pinyin: "jiàoshī", english: "teacher", level: "HSK2" },
+  { key: "叔叔", pinyin: "shūshu", english: "uncle", level: "HSK1" },
 ];
 
 const EXTRA_VOCAB = [
@@ -447,25 +452,31 @@ const OFFICIAL_HSK_LEVEL_OVERRIDES = new Map([
   ["睡觉", "HSK1"],
   ["说话", "HSK1"],
   ["学习", "HSK1"],
+  ["什么", "HSK1"],
+  ["认识", "HSK1"],
+  ["时候", "HSK1"],
+  ["现在", "HSK1"],
+  ["学校", "HSK1"],
+  ["为什么", "HSK3"],
   ["时间", "HSK2"],
   ["路", "HSK2"],
   ["到", "HSK2"],
-  ["手机", "HSK2"],
-  ["休息", "HSK2"],
-  ["忙", "HSK2"],
-  ["累", "HSK2"],
-  ["觉得", "HSK2"],
-  ["可以", "HSK2"],
-  ["旁边", "HSK2"],
-  ["还", "HSK3"],
+  ["手机", "HSK3"],
+  ["休息", "HSK3"],
+  ["忙", "HSK3"],
+  ["累", "HSK3"],
+  ["觉得", "HSK3"],
+  ["可以", "HSK3"],
+  ["旁边", "HSK3"],
+  ["还", "HSK4"],
   ["再", "HSK3"],
   ["因为", "HSK3"],
-  ["以后", "HSK3"],
+  ["以后", "HSK4"],
   ["一起", "HSK3"],
   ["要", "HSK3"],
   ["走", "HSK3"],
-  ["城市", "HSK3"],
-  ["聊天", "HSK2"],
+  ["城市", "HSK4"],
+  ["聊天", "HSK4"],
   ["市场", "HSK4"],
   ["干净", "HSK4"],
   ["简单", "HSK4"],
@@ -475,6 +486,8 @@ const OFFICIAL_HSK_LEVEL_OVERRIDES = new Map([
   ["一直", "HSK4"],
   ["重要", "HSK4"],
   ["难忘", "HSK4"],
+  ["叔叔", "HSK4"],
+  ["教师", "HSK5"],
 ]);
 
 function normalizeLevelLabel(level) {
@@ -885,11 +898,12 @@ function renderStoryPage(story, stories) {
   const priorKeys = collectSeenKeys(stories, storyIndex, tokenLexicon);
   const lexicon = buildLexicon(story.vocab || [], priorKeys);
   const storyNumber = story.id;
+  const isChapterStory = Number.parseInt(storyNumber, 10) >= 11;
   const storyCount = stories.length;
   const nextStory = stories[storyIndex + 1] || null;
   const firstSentence = story.sentences[0];
   const remainingSentences = story.sentences.slice(1);
-  const rows = chunk(remainingSentences, 3);
+  const rows = chunk(remainingSentences, isChapterStory ? 1 : 3);
   const firstSentenceWord = tokenizeSentence(firstSentence.text, lexicon).find((segment) => segment.type === "word");
   const initialEntry = firstSentenceWord ? lexicon.byKey.get(firstSentenceWord.key) : lexicon.entries[0];
   const storyKeys = collectStoryKeys(story, tokenLexicon);
@@ -897,7 +911,6 @@ function renderStoryPage(story, stories) {
   const nextStoryLink = nextStory
     ? `<a class="story-next-button" href="./story.html?story=${escapeHtml(nextStory.slug || `story${nextStory.id}`)}">Read next story</a>`
     : "";
-  const isChapterStory = false;
   const initialWordKey = firstSentenceWord ? firstSentenceWord.key : firstSentence.text;
   const initialEnglish = buildEnglishGloss(initialWordKey, lexicon);
 
