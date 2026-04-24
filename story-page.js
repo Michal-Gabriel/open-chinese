@@ -1,5 +1,5 @@
 const STORY_PUNCTUATION = new Set(["。", "，", "！", "？", "：", "；", "“", "”", "（", "）", "《", "》", "、", "…", "."]);
-const AUDIO_CACHE_BUSTER = "2026-04-19";
+const AUDIO_CACHE_BUSTER = "2026-04-24";
 const COMMON_VOCAB = [
   { key: "我", pinyin: "wǒ", english: "I / me", level: "HSK1" },
   { key: "你", pinyin: "nǐ", english: "you", level: "HSK1" },
