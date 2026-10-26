@@ -10,6 +10,8 @@ const MAX_CROWNS = 3;
 const defaults = () => ({
   xp: 0, streak: 0, lastDay: null,
   progress: {},                          // lessonId -> crowns
+  cloudUid: null,                        // which account this copy belongs to, if any
+  nudged: false,                         // have we offered cloud saving yet
   totalLessons: 0,
 });
 
@@ -27,6 +29,53 @@ function save() {
 }
 function today() { return new Date().toISOString().slice(0, 10); }
 function daysBetween(a, b) { return Math.round((Date.parse(b) - Date.parse(a)) / 864e5); }
+
+/* ======================= cloud sync (optional) =======================
+   sync.js sets window.DuoSync when a backend is configured and reachable.
+   Everything below is written so that its absence changes nothing: no
+   backend, no network, blocked CDN or a paused project all degrade to the
+   local-storage-only app this has always been. */
+
+function syncNow() {
+  const sync = window.DuoSync;
+  if (!sync) return;
+  try { sync.push(S); } catch (e) {}
+}
+
+/* The server merges and hands back the authoritative row (see
+   supabase/schema.sql); the client never merges, so the two can't drift. */
+window.addEventListener('duo:remote', e => {
+  const d = e.detail || {};
+  if (!d.state) return;
+  S.xp = d.state.xp;
+  S.streak = d.state.streak;
+  S.lastDay = d.state.lastDay;
+  S.progress = d.state.progress || {};
+  S.cloudUid = d.uid || S.cloudUid;
+  save();
+  if (screen === 'path') render();       // never yank the screen out mid-lesson
+});
+
+window.addEventListener('duo:auth', e => {
+  const u = (e.detail || {}).user;
+  // Someone else used this browser: adopt their account's state rather than
+  // merging this machine's leftovers into it.
+  if (u && S.cloudUid && S.cloudUid !== u.id) { S = defaults(); save(); }
+  if (u) syncNow();
+  if (screen === 'path') render();
+});
+
+// Status only moves a dot — repaint it in place, so the path keeps its scroll.
+window.addEventListener('duo:status', e => {
+  const dot = document.querySelector('.auth .dot');
+  if (dot) dot.className = 'dot ' + ((e.detail || {}).status || 'idle');
+});
+
+// Catch anything earned just before the tab goes away — but never mint an
+// account merely because a tab was hidden.
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden' && window.DuoSync && window.DuoSync.user) syncNow();
+});
 
 function bumpStreak() {
   const d = today();
@@ -236,8 +285,11 @@ function renderPath() {
   top.appendChild(mk('gem', '💎', S.xp));
   top.appendChild(mk('heart', '❤️', '∞'));
   top.appendChild(el('div', 'spacer'));
+  top.appendChild(authControl());
   const reset = on(el('button', null, 'Reset'), () => {
-    if (confirm('Reset all progress?')) { S = defaults(); save(); render(); }
+    if (!confirm('Reset all progress?')) return;
+    if (window.DuoSync) { try { window.DuoSync.forget(); } catch (e) {} }
+    S = defaults(); save(); render();
   });
   reset.style.cssText = 'color:var(--grey);font-size:12px;text-transform:uppercase;letter-spacing:.6px';
   top.appendChild(reset);
@@ -296,6 +348,37 @@ function renderPath() {
   app.appendChild(path);
 }
 
+/* Sign-in control. Renders nothing at all when no backend is configured. */
+function authControl() {
+  const box = el('div', 'auth');
+  const sync = window.DuoSync;
+  if (!sync) return box;
+  const u = sync.user;
+
+  if (u && !u.anonymous) {
+    const who = el('button', 'who');
+    if (u.avatar) {
+      const img = document.createElement('img');
+      img.src = u.avatar; img.alt = ''; img.referrerPolicy = 'no-referrer';
+      who.appendChild(img);
+    }
+    who.appendChild(el('span', null, (u.name || 'Account').split(' ')[0]));
+    who.title = 'Signed in — progress saves to your account';
+    on(who, () => {
+      if (!confirm('Sign out? Your progress stays saved to your account.')) return;
+      sync.signOut();
+      S = defaults(); save(); render();
+    });
+    box.appendChild(who);
+  } else {
+    const b = on(el('button', 'signin', 'Sign in'), () => sync.signIn());
+    b.title = 'Save your progress and pick it up on any device';
+    box.appendChild(b);
+  }
+  box.appendChild(el('span', 'dot ' + (sync.status || 'idle')));
+  return box;
+}
+
 function shade(hex) {
   const n = parseInt(hex.slice(1), 16);
   const f = c => Math.max(0, Math.round(c * 0.78));
@@ -328,7 +411,11 @@ function renderLesson() {
 
   /* top bar */
   const top = el('div', 'lesson-top');
-  top.appendChild(on(el('button', 'close', '✕'), () => { if (confirm('Quit this lesson? Progress will be lost.')) { screen = 'path'; render(); } }));
+  top.appendChild(on(el('button', 'close', '✕'), () => {
+    if (!confirm('Quit this lesson? Progress will be lost.')) return;
+    if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
+    screen = 'path'; render();
+  }));
   const bar = el('div', 'bar');
   const fill = el('i');
   fill.style.width = Math.round(ses.i / ses.queue.length * 100) + '%';
@@ -447,7 +534,7 @@ function rPairs(stage, c) {
           dingOK();
           if (ses.matched >= c.items.length) {
             ses.state = 'checked'; ses.ok = true; ses.right++;
-            setTimeout(() => { next(); }, 400);
+            advanceTimer = setTimeout(() => { advanceTimer = null; next(); }, 400);
           }
           return render();
         }
@@ -590,7 +677,11 @@ function speakTarget(c) {
   else if (c.t === 'hanzi' || c.t === 'audio') speak(c.options[c.answer][0]);
 }
 
+let advanceTimer = null;                 // pairs auto-advance; see rPairs
+
 function next() {
+  if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
+  if (!ses || screen !== 'lesson') return;   // already finished, or we left the lesson
   const c = cur();
   if (!ses.ok) ses.queue.push(c);          // wrong answers come back at the end
   ses.i++;
@@ -603,6 +694,8 @@ function next() {
 }
 
 function finish() {
+  if (ses.finished) return;              // never award the same lesson twice
+  ses.finished = true;
   const id = ses.lesson.id;
   const perfect = ses.wrong === 0;
   ses.gainedXp = 10 + (perfect ? 5 : 0);
@@ -610,6 +703,7 @@ function finish() {
   S.progress[id] = Math.min(MAX_CROWNS, (S.progress[id] || 0) + 1);
   bumpStreak();
   save();
+  syncNow();                             // a finished lesson is the first thing worth an account
   screen = 'done';
   tone([523, 659, 784, 1046], 0.18);
   render();
@@ -634,6 +728,17 @@ function renderDone() {
   cards.appendChild(card('blue', 'Time', (secs < 60 ? secs + 's' : Math.floor(secs / 60) + 'm ' + (secs % 60) + 's')));
   cards.appendChild(card('red', 'Accuracy', acc + '%'));
   box.appendChild(cards);
+
+  const sync = window.DuoSync;
+  if (sync && (!sync.user || sync.user.anonymous) && !S.nudged) {
+    S.nudged = true; save();
+    const nudge = el('div', 'nudge');
+    nudge.appendChild(el('span', null, 'Want this on your phone too? '));
+    nudge.appendChild(on(el('button', 'link', 'Sign in'), () => sync.signIn()));
+    nudge.appendChild(el('span', null, ' to keep your progress on any device.'));
+    box.appendChild(nudge);
+  }
+
   wrap.appendChild(box);
   app.appendChild(wrap);
 

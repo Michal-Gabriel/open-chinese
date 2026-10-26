@@ -203,3 +203,24 @@ button{font-family:inherit;font-weight:800;cursor:pointer;border:0;background:no
 .empty{padding:40px 18px;text-align:center;color:var(--grey)}
 .hint{font-size:13px;color:var(--grey);font-weight:700;text-align:center;margin-top:18px}
 .kbd{font-size:11px;color:var(--grey);text-align:center;margin-top:10px}
+
+/* ---------- account / sync ---------- */
+.auth{display:flex;align-items:center;gap:8px}
+.auth .signin{
+  font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--green-t);
+  border:2px solid var(--grey-l);border-radius:12px;padding:6px 12px;
+}
+.auth .signin:active{transform:translateY(1px)}
+.auth .who{display:flex;align-items:center;gap:7px;font-size:14px;color:var(--ink)}
+.auth .who img{width:26px;height:26px;border-radius:50%;display:block}
+.auth .dot{width:8px;height:8px;border-radius:50%;background:transparent;flex:none}
+.auth .dot.syncing{background:var(--blue);animation:pulse 1s ease-in-out infinite}
+.auth .dot.saved{background:var(--green)}
+.auth .dot.error{background:var(--yellow)}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+.nudge{margin-top:22px;font-size:14px;font-weight:700;color:var(--grey);line-height:1.5}
+.nudge .link{
+  color:var(--blue);font-size:14px;font-weight:800;text-decoration:underline;
+  text-underline-offset:3px;
+}

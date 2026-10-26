@@ -42,8 +42,39 @@ sentence uses a word before the lesson that introduces it.
 * **Keyboard**: `1`–`9` pick an option, `Enter` checks / continues, `Backspace`
   removes the last word tile.
 
-Progress is kept in `localStorage`, so it is per-browser; the Reset button in the
-header clears it.
+## Accounts and cloud progress
+
+Progress lives in `localStorage` by default, so it is per-browser. Point `sync.js` at a
+Supabase project and it also syncs to an account:
+
+* **No account until there is something to save.** Nobody is signed in on arrival; a guest
+  account is created silently on your first finished lesson. Signing in with Google then
+  *links* that guest account, so the progress you already earned comes with you.
+* **The server merges, and only ever forwards.** Pushes go through a Postgres function
+  (`supabase/schema.sql`) that takes the greater of each value, so two devices can push in
+  any order, a retry after a dropped connection is harmless, and no device can pull another
+  one's progress backwards. The one exception is the streak, which follows whichever side
+  has the later activity date — taking the maximum would resurrect a streak you had broken.
+* **It is entirely optional.** Leave the two constants at the top of `sync.js` empty and the
+  module stays inert. If the CDN is blocked, the network is down or the project is paused,
+  the app keeps playing on local storage and the header dot turns amber rather than
+  pretending to save.
+
+`supabase/schema.test.sql` runs the schema against a throwaway Postgres — merge semantics,
+the streak edge case, row-level security between two users, and a 300-batch fuzz asserting
+the merge is order-independent and never loses progress:
+
+```bash
+docker run -d --name duo-pg -e POSTGRES_PASSWORD=test -e POSTGRES_DB=duo postgres:17-alpine
+docker cp supabase/. duo-pg:/t/
+docker exec -w /t duo-pg psql -U postgres -d duo -v ON_ERROR_STOP=1 -f schema.test.sql
+```
+
+Free Supabase projects pause after about a week of inactivity;
+`.github/workflows/keepalive.yml` pings a heartbeat table every three days to delay that.
+Read the caveats in that file — it is a mitigation, not a guarantee.
+
+The Reset button in the header clears both the local and the cloud copy.
 
 ## Running locally
 

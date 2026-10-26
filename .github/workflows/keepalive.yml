@@ -1,0 +1,47 @@
+# Free Supabase projects pause after about a week of inactivity, and a paused
+# project means sign-in and progress sync just fail. This runs a real query
+# (not a bare REST ping — there are reports those don't count as activity)
+# against the one-row heartbeat table every three days.
+#
+# Two things this cannot protect against, both worth knowing:
+#   1. People report projects pausing despite a cron. The activity threshold
+#      isn't documented, so this is a mitigation, not a guarantee.
+#   2. GitHub disables scheduled workflows in a repo with no commits for 60
+#      days — so the keep-alive can go quiet exactly when it is needed. The
+#      run summary below is the place to notice that.
+#
+# Set these two repository secrets (Settings → Secrets and variables → Actions):
+#   SUPABASE_URL       https://<ref>.supabase.co
+#   SUPABASE_ANON_KEY  the public anon key (same one in config.js)
+
+name: Keep Supabase awake
+
+on:
+  schedule:
+    - cron: '17 6 */3 * *'     # every 3 days, 06:17 UTC
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query the heartbeat table
+        env:
+          URL: ${{ secrets.SUPABASE_URL }}
+          KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${URL:-}" ] || [ -z "${KEY:-}" ]; then
+            echo "::error::SUPABASE_URL / SUPABASE_ANON_KEY secrets are not set."
+            exit 1
+          fi
+          code=$(curl -sS -o /tmp/body -w '%{http_code}' \
+            "$URL/rest/v1/heartbeat?select=pinged&limit=1" \
+            -H "apikey: $KEY" -H "Authorization: Bearer $KEY")
+          echo "HTTP $code"
+          cat /tmp/body
+          if [ "$code" != "200" ]; then
+            echo "::error::Heartbeat query failed — the project may already be paused."
+            exit 1
+          fi
+          echo "### Supabase heartbeat ok ($(date -u))" >> "$GITHUB_STEP_SUMMARY"
