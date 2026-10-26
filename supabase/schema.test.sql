@@ -20,14 +20,18 @@ do $$ begin
   if not exists (select 1 from pg_roles where rolname = 'authenticated') then
     create role authenticated nologin;
   end if;
+  if not exists (select 1 from pg_roles where rolname = 'anon') then
+    create role anon nologin;
+  end if;
 end $$;
 
 \i schema.sql
 
-grant usage on schema public, auth to authenticated;
-grant select on auth.users to authenticated;
-grant select, insert, update, delete on public.profiles to authenticated;
-grant select on public.heartbeat to authenticated;
+-- Deliberately NOT granting anything on public here: schema.sql must stand on
+-- its own, exactly as it will on a project created with "Automatically expose
+-- new tables" switched off. Only the auth stand-ins get grants.
+grant usage on schema auth to anon, authenticated;
+grant select on auth.users to anon, authenticated;
 
 insert into auth.users (id) values
   ('11111111-1111-1111-1111-111111111111'),
@@ -235,6 +239,33 @@ begin
   end loop;
 
   raise notice 'T11 fuzz: 300 batches, order-independent & monotonic  ok';
+end $$;
+
+-- ===========================================================================
+-- 12. The anon role: can read the heartbeat (the keep-alive cron uses it) but
+--     must not be able to touch profiles.
+-- ===========================================================================
+reset role;
+set role anon;
+do $$
+declare n int;
+begin
+  select count(*) into n from public.heartbeat;
+  if n <> 1 then
+    raise exception 'T12 anon cannot read heartbeat (% rows) — keep-alive would fail', n;
+  end if;
+  -- profiles is granted to `authenticated` only, so anon must be refused
+  -- outright. Asserting the refusal happens, rather than tolerating either
+  -- outcome, is the difference between a test and a formality.
+  begin
+    perform 1 from public.profiles limit 1;
+    raise exception 'T12 anon was allowed to query profiles';
+  exception
+    when insufficient_privilege then null;  -- expected
+    when others then
+      if sqlerrm like 'T12 %' then raise; end if;
+  end;
+  raise notice 'T12 anon reads heartbeat, not profiles  ok';
 end $$;
 
 reset role;

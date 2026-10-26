@@ -34,6 +34,15 @@ create policy "own row update" on public.profiles
 create policy "own row delete" on public.profiles
   for delete using (auth.uid() = id);
 
+-- Table privileges, stated explicitly rather than inherited from Supabase's
+-- default privileges. That default is the "Automatically expose new tables"
+-- switch on the project-creation screen, and Supabase recommends turning it
+-- off. With it off, a table with perfect RLS policies is still unreachable
+-- because the role has no privilege on it at all — so the grants live here,
+-- and this schema works either way.
+grant usage on schema public to anon, authenticated;
+grant select, insert, update, delete on public.profiles to authenticated;
+
 -- ---------------------------------------------------------------------------
 -- 2. The merge. Called over RPC instead of a plain upsert so that two devices
 --    pushing at once cannot interleave into a lost update.
@@ -123,3 +132,7 @@ insert into public.heartbeat (id) values (1) on conflict (id) do nothing;
 alter table public.heartbeat enable row level security;
 drop policy if exists "heartbeat readable" on public.heartbeat;
 create policy "heartbeat readable" on public.heartbeat for select using (true);
+
+-- the keep-alive cron calls this with the anon key and no user session,
+-- so it arrives as `anon`, not `authenticated`
+grant select on public.heartbeat to anon, authenticated;
