@@ -215,14 +215,12 @@ function render() {
 
 /* ---------- path ---------- */
 
-function unlocked(lessonId) {
-  const idx = ALL_LESSONS.findIndex(l => l.id === lessonId);
-  if (idx <= 0) return true;
-  return (S.progress[ALL_LESSONS[idx - 1].id] || 0) > 0;
-}
+/* Every lesson is open from the start — jump straight to whichever one you
+   want to try. Lessons you have not touched yet are drawn faded, so the path
+   still shows how far you have got. The bubble points at the next one to do. */
 function currentLesson() {
-  return ALL_LESSONS.find(l => !S.progress[l.id] && unlocked(l.id))
-      || ALL_LESSONS.find(l => (S.progress[l.id] || 0) < MAX_CROWNS && unlocked(l.id))
+  return ALL_LESSONS.find(l => !S.progress[l.id])
+      || ALL_LESSONS.find(l => (S.progress[l.id] || 0) < MAX_CROWNS)
       || null;
 }
 
@@ -275,18 +273,14 @@ function renderPath() {
 
       const wrap = el('div', 'node-wrap');
       const crowns = S.progress[l.id] || 0;
-      const open = unlocked(l.id);
       const full = crowns >= MAX_CROWNS;
 
-      const btn = el('button', 'node' + (open ? '' : ' locked') + (crowns ? ' done' : ''));
-      btn.textContent = !open ? '🔒' : full ? '👑' : l.review ? '🏆' : '★';
-      if (open) {
-        btn.style.background = full ? '#FFC800' : crowns ? u.color : u.color;
-        btn.style.boxShadow = '0 7px 0 ' + (full ? '#E0A900' : shade(u.color));
-        if (!crowns) btn.style.opacity = '.96';
-      }
+      const btn = el('button', 'node' + (crowns ? ' done' : ' fresh'));
+      btn.textContent = full ? '👑' : l.review ? '🏆' : '★';
+      btn.style.background = full ? '#FFC800' : u.color;
+      btn.style.boxShadow = '0 7px 0 ' + (full ? '#E0A900' : shade(u.color));
       btn.title = l.title;
-      if (open) on(btn, () => startLesson(l.id));
+      on(btn, () => startLesson(l.id));
       wrap.appendChild(btn);
 
       if (crowns > 0) wrap.appendChild(el('div', 'crowns', '👑' + crowns));

@@ -69,8 +69,8 @@ button{font-family:inherit;font-weight:800;cursor:pointer;border:0;background:no
   background:var(--grey-l);box-shadow:0 7px 0 #BFBFBF;
   transition:transform .08s;
 }
-.node:active:not(.locked){transform:translateY(3px);box-shadow:0 4px 0 rgba(0,0,0,.2)}
-.node.locked{color:#fff;opacity:.85;cursor:not-allowed}
+.node:active{transform:translateY(3px);box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.node.fresh{opacity:.5}                /* open, but not started yet */
 .node.done{box-shadow:0 7px 0 rgba(0,0,0,.22)}
 .node .lbl{position:absolute;bottom:-20px;font-size:11px;color:var(--grey);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
 .node-wrap{position:relative;margin-bottom:52px}
