@@ -914,7 +914,7 @@ function renderStoryPage(story, stories) {
   const initialWordKey = firstSentenceWord ? firstSentenceWord.key : firstSentence.text;
   const initialEnglish = buildEnglishGloss(initialWordKey, lexicon);
 
-  document.title = `${story.englishTitle} | Open Chinese Reader`;
+  document.title = `${story.englishTitle} | Voice Stories · OpenChinese`;
   document.body.dataset.storyId = story.slug || `story${storyNumber}`;
   document.body.classList.toggle("chapter-story", isChapterStory);
   document.body.innerHTML = `

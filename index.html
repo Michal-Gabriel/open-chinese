@@ -3,355 +3,72 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Open Chinese Reader</title>
+    <title>OpenChinese — learn Chinese with stories and lessons</title>
     <meta
       name="description"
-      content="Learn Chinese with stories through an open, community-built reading and listening experience."
+      content="An open, community-built place to learn Mandarin: narrated stories with pinyin and glosses, and a free gamified HSK 1 course."
     />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>汉</text></svg>" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <style>
-      :root {
-        --bg: #f7f6f2;
-        --card: rgba(255, 255, 255, 0.88);
-        --text: #252525;
-        --muted: #666666;
-        --line: rgba(37, 37, 37, 0.12);
-        --accent: #a9e7dc;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        background:
-          radial-gradient(circle at top left, rgba(169, 231, 220, 0.8), transparent 28%),
-          linear-gradient(180deg, #fbfaf6 0%, var(--bg) 100%);
-        font-family: "Inter", sans-serif;
-        color: var(--text);
-      }
-
-      .landing {
-        width: min(920px, calc(100% - 48px));
-        margin: 48px auto;
-        padding: 56px 56px 48px;
-        border: 1px solid var(--line);
-        border-radius: 28px;
-        background: var(--card);
-        backdrop-filter: blur(8px);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
-      }
-
-      .eyebrow {
-        display: inline-block;
-        margin-bottom: 20px;
-        padding: 8px 14px;
-        border-radius: 999px;
-        background: var(--accent);
-        font-size: 14px;
-        font-weight: 600;
-        letter-spacing: 0.02em;
-      }
-
-      h1 {
-        margin: 0;
-        font-size: clamp(40px, 7vw, 72px);
-        line-height: 0.95;
-        letter-spacing: -0.04em;
-      }
-
-      .subtitle {
-        margin: 18px 0 0;
-        font-size: clamp(22px, 3.2vw, 32px);
-        line-height: 1.15;
-        color: var(--muted);
-      }
-
-      .intro {
-        max-width: 680px;
-        margin: 32px 0 0;
-        font-size: 19px;
-        line-height: 1.65;
-        color: #444444;
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 18px;
-        margin-top: 40px;
-      }
-
-      .card {
-        padding: 22px 22px 20px;
-        border: 1px solid var(--line);
-        border-radius: 20px;
-        background: rgba(255, 255, 255, 0.78);
-      }
-
-      .card h2 {
-        margin: 0 0 10px;
-        font-size: 18px;
-      }
-
-      .card p {
-        margin: 0;
-        font-size: 16px;
-        line-height: 1.6;
-        color: var(--muted);
-      }
-
-      .actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 14px;
-        margin-top: 40px;
-      }
-
-      .site-footer {
-        position: fixed;
-        right: 4px;
-        bottom: 4px;
-        z-index: 30;
-        margin: 0;
-        pointer-events: none;
-      }
-
-      .site-footer .visit-counter {
-        display: inline-flex;
-        align-items: baseline;
-        font-size: 10px;
-        line-height: 1;
-        color: #6d6d6d;
-        white-space: nowrap;
-      }
-
-      .site-footer .visit-counter strong {
-        font-size: 10px;
-        line-height: 1;
-        color: inherit;
-      }
-
-      .story-section {
-        width: min(920px, calc(100% - 48px));
-        margin: 18px auto 48px;
-        padding: 28px 30px 30px;
-        border: 1px solid var(--line);
-        border-radius: 28px;
-        background: rgba(255, 255, 255, 0.84);
-        backdrop-filter: blur(8px);
-        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.04);
-      }
-
-      .story-section h2 {
-        margin: 0;
-        font-size: clamp(28px, 4vw, 42px);
-        letter-spacing: -0.03em;
-      }
-
-      .story-section .story-intro {
-        max-width: 760px;
-        margin: 14px 0 0;
-        font-size: 18px;
-        line-height: 1.65;
-        color: #444444;
-      }
-
-      .story-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 16px;
-        margin-top: 24px;
-      }
-
-      .story-section--compact .story-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 12px;
-      }
-
-      .story-card {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        padding: 20px;
-        border: 1px solid var(--line);
-        border-radius: 20px;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(249, 248, 244, 0.95));
-        text-decoration: none;
-        color: inherit;
-        min-height: 100%;
-      }
-
-      .story-card:hover {
-        transform: translateY(-1px);
-        border-color: rgba(37, 37, 37, 0.2);
-      }
-
-      .story-card .story-number {
-        display: inline-flex;
-        align-self: flex-start;
-        padding: 0;
-        border-radius: 0;
-        background: transparent;
-        font-size: 13px;
-        font-weight: 600;
-        letter-spacing: 0.02em;
-        text-transform: uppercase;
-        color: var(--muted);
-      }
-
-      .story-card h3 {
-        margin: 0;
-        font-size: 20px;
-        line-height: 1.2;
-      }
-
-      .story-card p {
-        margin: 0;
-        font-size: 15px;
-        line-height: 1.6;
-        color: var(--muted);
-      }
-
-      .story-section--compact .story-card {
-        padding: 16px 16px 14px;
-        gap: 8px;
-      }
-
-      .story-section--compact .story-card h3 {
-        font-size: 17px;
-      }
-
-      .story-section--compact .story-card p {
-        font-size: 13px;
-        line-height: 1.45;
-      }
-
-      .story-section--compact .story-card .story-link {
-        min-height: 36px;
-        padding: 0 12px;
-        font-size: 13px;
-      }
-
-      .story-card .story-link {
-        margin-top: auto;
-        display: inline-flex;
-        align-self: flex-start;
-        align-items: center;
-        justify-content: center;
-        min-height: 40px;
-        padding: 0 15px;
-        border-radius: 999px;
-        background: rgba(169, 231, 220, 0.22);
-        color: var(--text);
-        font-size: 14px;
-        font-weight: 600;
-        text-decoration: none;
-        border: 1px solid transparent;
-        box-shadow: none;
-      }
-
-      .button,
-      .text-link {
-        color: var(--text);
-        text-decoration: none;
-      }
-
-      .button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 52px;
-        padding: 0 22px;
-        border-radius: 999px;
-        background: var(--text);
-        color: #ffffff;
-        font-size: 16px;
-        font-weight: 600;
-      }
-
-      .text-link {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 52px;
-        padding: 0 22px;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.7);
-        font-size: 16px;
-      }
-
-      .text-link.contact-link {
-        background: rgba(169, 231, 220, 0.22);
-        border-color: transparent;
-        color: var(--text);
-      }
-
-      @media (max-width: 760px) {
-        .landing {
-          width: min(100% - 24px, 920px);
-          margin: 12px auto;
-          padding: 28px 22px 26px;
-          border-radius: 22px;
-        }
-
-        .story-section {
-          width: min(100% - 24px, 920px);
-          margin: 12px auto 28px;
-          padding: 24px 20px 22px;
-          border-radius: 22px;
-        }
-
-        .grid {
-          grid-template-columns: 1fr;
-        }
-
-        .story-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .story-section--compact .story-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      @media (min-width: 761px) and (max-width: 1120px) {
-        .story-section--compact .story-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="./shared/nav.css?v=9" />
+    <link rel="stylesheet" href="./shared/site.css?v=9" />
   </head>
   <body>
+    <div id="site-nav" data-home="./"></div>
+
     <main class="landing">
-      <span class="eyebrow">Open Chinese Reader</span>
-      <h1>Learn Chinese with Stories</h1>
-      <p class="subtitle">Chinese reading and listening practice</p>
+      <span class="eyebrow">OpenChinese</span>
+      <h1>Learn Chinese Your Way</h1>
+      <p class="subtitle">Two ways in: listen to stories, or drill the basics</p>
 
       <p class="intro">
-        A community-built space for Chinese learners to read, listen to, and learn from clear, enjoyable stories.
+        A community-built space for Chinese learners. Read and listen to clear, enjoyable
+        stories — or work through the HSK 1 vocabulary one short lesson at a time.
       </p>
+
+      <div class="section-grid">
+        <a class="section-card" href="./stories/">
+          <span class="section-icon">🎧</span>
+          <h2>Voice Stories</h2>
+          <p>
+            Nineteen narrated stories with pinyin, English, per-word glosses and
+            sentence-by-sentence audio. Read along at your own speed.
+          </p>
+          <span class="section-meta">HSK 1–2 · 19 stories</span>
+          <span class="story-link">Start reading</span>
+        </a>
+
+        <a class="section-card" href="./lessons/">
+          <span class="section-icon">🐲</span>
+          <h2>Gamified Lessons</h2>
+          <p>
+            The complete HSK 1 vocabulary — all 150 words — as short lessons with
+            matching, listening and sentence building. Unlimited hearts.
+          </p>
+          <span class="section-meta">HSK 1 · 150 words · 39 lessons</span>
+          <span class="story-link">Start learning</span>
+        </a>
+      </div>
 
       <div class="grid">
         <section class="card">
           <h2>Built together</h2>
           <p>
-            This project is created with learners and contributors who help improve the reader, add features, and shape how lessons work.
+            This project is created with learners and contributors who help improve the
+            reader, add features, and shape how lessons work.
           </p>
         </section>
 
         <section class="card">
           <h2>Community stories</h2>
           <p>
-            People can create, review, and grow the story library, so learners get more useful and more varied content over time.
+            People can create, review, and grow the story library, so learners get more
+            useful and more varied content over time.
           </p>
         </section>
       </div>
@@ -361,180 +78,7 @@
       </div>
     </main>
 
-    <section class="story-section" aria-label="Read and listen stories">
-      <h2>Read &amp; Listen - HSK 1</h2>
-      <p class="story-intro">
-        The best way to learn Chinese is through context. These nine short stories show new words in real situations,
-        so you can build vocabulary while following a simple story that actually makes sense.
-      </p>
-
-      <div class="story-grid">
-        <a class="story-card" href="./story1.html">
-          <h3>A Trip to Sichuan</h3>
-          <p>
-            A family trip to Sichuan to see grandma, from the early morning departure to the warm hello.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story2.html">
-          <h3>On the Bus</h3>
-          <p>
-            A long bus ride where mountains, water, and quiet window watching fill the trip.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story3.html">
-          <h3>Arriving at Grandma's House</h3>
-          <p>
-            Arriving at grandma's house, with tea, fruit, hugs, and a warm welcome.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story4.html">
-          <h3>Grandma Cooks</h3>
-          <p>
-            Grandma cooks lunch while the kitchen fills with smell, help, and hungry anticipation.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story5.html">
-          <h3>Eating and Chatting</h3>
-          <p>
-            A simple meal turns into a cheerful conversation about study and books.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story6.html">
-          <h3>Going to the Market</h3>
-          <p>
-            An afternoon market visit with fruit, tea, heat, and lots of people.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story7.html">
-          <h3>Life at Grandma's House</h3>
-          <p>
-            A quiet daily rhythm of reading, writing, resting, and evening TV at grandma's home.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story8.html">
-          <h3>A City in Sichuan</h3>
-          <p>
-            A walk through a big city full of shops, people, and interesting things to see.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story9.html">
-          <h3>Going Home</h3>
-          <p>
-            The goodbye before heading home, full of thanks, hugs, and memories that stay with you.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-      </div>
-    </section>
-
-    <section class="story-section story-section--compact" aria-label="Read and listen HSK 2 stories">
-      <h2>Read &amp; Listen - HSK 2</h2>
-      <p class="story-intro">
-        The best way to learn Chinese is through context. These HSK 2 stories show new words in real situations, so
-        you can build vocabulary while following a simple story that actually makes sense.
-      </p>
-
-      <div class="story-grid">
-        <a class="story-card" href="./story10.html">
-          <h3>The photo inside the old book</h3>
-          <p>
-            Mr. Chen finds a black-and-white photo hidden inside an old book.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story11.html">
-          <h3>Where is the house?</h3>
-          <p>
-            The house in the photo begins to look strangely familiar.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story12.html">
-          <h3>The words on the back of the photo</h3>
-          <p>
-            A date and a family name start connecting the past to the present.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story13.html">
-          <h3>Going to find the neighbours</h3>
-          <p>
-            Mr. Chen asks the old neighbours if anyone remembers the photo.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story14.html">
-          <h3>Grandma Li's story</h3>
-          <p>
-            Grandma Li recognises the family and gives the first real clue.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story15.html">
-          <h3>A big question</h3>
-          <p>
-            Mr. Chen starts to see a family connection he never knew about.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story16.html">
-          <h3>Calling his mother</h3>
-          <p>
-            A call to Shanghai confirms the mystery goes back decades.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story17.html">
-          <h3>Going to the library</h3>
-          <p>
-            Old records in the library point him toward Guangzhou.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story18.html">
-          <h3>News from the south</h3>
-          <p>
-            Online research shows Uncle Guohua kept teaching.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-
-        <a class="story-card" href="./story19.html">
-          <h3>Reunion</h3>
-          <p>
-            The search ends with a reunion in Guangzhou.
-          </p>
-          <span class="story-link">Read story</span>
-        </a>
-      </div>
-    </section>
-    <footer class="site-footer">
-      <p class="visit-counter visit-counter-home" aria-live="polite"><strong data-visit-count>0</strong></p>
-    </footer>
-    <script src="./visit-counter.js"></script>
+    <script type="module" src="./shared/auth.js?v=9"></script>
+    <script type="module" src="./shared/nav.js?v=9"></script>
   </body>
 </html>

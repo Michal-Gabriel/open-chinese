@@ -285,6 +285,10 @@ function renderPath() {
   top.appendChild(mk('gem', '💎', S.xp));
   top.appendChild(mk('heart', '❤️', '∞'));
   top.appendChild(el('div', 'spacer'));
+  const home = el('a', 'home-link', '← OpenChinese');
+  home.href = '../';
+  home.title = 'Back to OpenChinese';
+  top.appendChild(home);
   top.appendChild(authControl());
   const reset = on(el('button', null, 'Reset'), () => {
     if (!confirm('Reset all progress?')) return;
