@@ -5,13 +5,10 @@
 /* ======================= state ======================= */
 
 const KEY = 'duochinese.v2';   // v1 had different lesson ids
-const MAX_HEARTS = 5;
-const HEART_MS = 20 * 60 * 1000;        // one heart back every 20 minutes
 const MAX_CROWNS = 3;
 
 const defaults = () => ({
   xp: 0, streak: 0, lastDay: null,
-  hearts: MAX_HEARTS, heartStamp: Date.now(),
   progress: {},                          // lessonId -> crowns
   totalLessons: 0,
 });
@@ -31,20 +28,6 @@ function save() {
 function today() { return new Date().toISOString().slice(0, 10); }
 function daysBetween(a, b) { return Math.round((Date.parse(b) - Date.parse(a)) / 864e5); }
 
-function regenHearts() {
-  if (S.hearts >= MAX_HEARTS) { S.heartStamp = Date.now(); return; }
-  const gained = Math.floor((Date.now() - S.heartStamp) / HEART_MS);
-  if (gained > 0) {
-    S.hearts = Math.min(MAX_HEARTS, S.hearts + gained);
-    S.heartStamp += gained * HEART_MS;
-    save();
-  }
-}
-function loseHeart() {
-  if (S.hearts === MAX_HEARTS) S.heartStamp = Date.now();
-  S.hearts = Math.max(0, S.hearts - 1);
-  save();
-}
 function bumpStreak() {
   const d = today();
   if (S.lastDay === d) return;
@@ -224,12 +207,10 @@ let ses = null;                                     // active lesson session
 
 function clear() { app.innerHTML = ''; }
 function render() {
-  regenHearts();
   clear();
   if (screen === 'path') return renderPath();
   if (screen === 'lesson') return renderLesson();
   if (screen === 'done') return renderDone();
-  if (screen === 'empty') return renderOutOfHearts();
 }
 
 /* ---------- path ---------- */
@@ -250,12 +231,12 @@ function renderPath() {
   const mk = (cls, icon, val) => {
     const s = el('div', 'stat ' + cls);
     s.appendChild(el('span', 'icon', icon));
-    s.appendChild(el('span', null, val));
+    s.appendChild(el('span', val === '∞' ? 'inf' : null, val));
     return s;
   };
   top.appendChild(mk('fire', '🔥', S.streak));
   top.appendChild(mk('gem', '💎', S.xp));
-  top.appendChild(mk('heart', '❤️', S.hearts));
+  top.appendChild(mk('heart', '❤️', '∞'));
   top.appendChild(el('div', 'spacer'));
   const reset = on(el('button', null, 'Reset'), () => {
     if (confirm('Reset all progress?')) { S = defaults(); save(); render(); }
@@ -331,8 +312,6 @@ function shade(hex) {
 /* ---------- session ---------- */
 
 function startLesson(id) {
-  regenHearts();
-  if (S.hearts <= 0) { screen = 'empty'; return render(); }
   const l = lessonById(id);
   const queue = generate(l, S.progress[id] || 0);
   if (!queue.length) return;                     // nothing to ask — don't open an empty lesson
@@ -363,7 +342,7 @@ function renderLesson() {
   top.appendChild(bar);
   const h = el('div', 'hearts');
   h.appendChild(el('span', null, '❤️'));
-  h.appendChild(el('span', null, S.hearts));
+  h.appendChild(el('span', 'inf', '∞'));
   top.appendChild(h);
   wrap.appendChild(top);
 
@@ -607,7 +586,7 @@ function check() {
   ses.ok = ok;
   ses.state = 'checked';
   if (ok) { ses.right++; dingOK(); if (c.t !== 'pairs') speakTarget(c); }
-  else { ses.wrong++; loseHeart(); dingNo(); }
+  else { ses.wrong++; dingNo(); }
   render();
 }
 
@@ -625,7 +604,6 @@ function next() {
   ses.sel = null; ses.built = []; ses.used = {};
   ses.pairLeft = null; ses.pairRight = null; ses.pairSel = null; ses.matched = 0; ses.gone = {};
 
-  if (S.hearts <= 0) { screen = 'empty'; return render(); }
   if (ses.i >= ses.queue.length) return finish();
   render();
 }
@@ -673,32 +651,10 @@ function renderDone() {
   app.appendChild(foot);
 }
 
-function renderOutOfHearts() {
-  const wrap = el('div', 'finish');
-  const box = el('div');
-  box.appendChild(el('div', 'trophy', '💔'));
-  box.appendChild(el('h1', null, 'You ran out of hearts!'));
-  const wait = Math.max(0, HEART_MS - (Date.now() - S.heartStamp));
-  box.appendChild(el('p', null, 'One heart comes back every 20 minutes — next in ' +
-    Math.ceil(wait / 60000) + ' min.'));
-  wrap.appendChild(box);
-  app.appendChild(wrap);
-
-  const foot = el('div', 'foot');
-  const inner = el('div', 'foot-in');
-  inner.appendChild(el('div', 'verdict'));
-  inner.appendChild(on(el('button', 'btn', 'Refill now (free)'), () => {
-    S.hearts = MAX_HEARTS; S.heartStamp = Date.now(); save();
-    screen = 'path'; render();
-  }));
-  foot.appendChild(inner);
-  app.appendChild(foot);
-}
-
 /* ---------- keyboard ---------- */
 
 document.addEventListener('keydown', e => {
-  if (screen === 'done' || screen === 'empty') {
+  if (screen === 'done') {
     if (e.key === 'Enter') {
       e.preventDefault();
       const b = document.querySelector('.foot .btn');

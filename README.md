@@ -27,10 +27,11 @@ sentence uses a word before the lesson that introduces it.
   * listen-and-tap
   * tap-the-matching-pairs
   * build the sentence from a word bank, in both directions and by ear
-* **Duolingo-style game layer** — a lesson path with locked nodes and crowns, five
-  hearts that regenerate one per 20 minutes, XP, a day streak, a progress bar that
-  grows when you get something wrong (missed items are re-queued), and an
-  end-of-lesson XP / time / accuracy screen.
+* **Duolingo-style game layer** — a lesson path with locked nodes and crowns, XP, a
+  day streak, a progress bar that grows when you get something wrong (missed items
+  are re-queued until you get them right), and an end-of-lesson XP / time / accuracy
+  screen. **Hearts are unlimited**: mistakes still cost you the perfect-lesson bonus
+  and bring the item back, but they never end a lesson or lock you out.
 * **Audio** from the browser's own speech synthesis (`zh-CN`). If the device has no
   Chinese voice, the listening exercises are automatically swapped for reading ones.
 * Homophones are handled: 他/她 and 坐/做 are never offered against each other in a

@@ -48,6 +48,7 @@ button{font-family:inherit;font-weight:800;cursor:pointer;border:0;background:no
 .stat{display:flex;align-items:center;gap:6px;font-size:17px;font-weight:800}
 .stat .icon{font-size:20px}
 .stat.fire{color:var(--orange)} .stat.gem{color:var(--blue)} .stat.heart{color:var(--red)}
+.inf{font-size:24px;line-height:.8;position:relative;top:2px}
 .top .spacer{flex:1}
 
 .path{max-width:460px;width:100%;margin:0 auto;padding:0 18px 120px}
