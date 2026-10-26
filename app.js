@@ -4,7 +4,7 @@
 
 /* ======================= state ======================= */
 
-const KEY = 'duochinese.v1';
+const KEY = 'duochinese.v2';   // v1 had different lesson ids
 const MAX_HEARTS = 5;
 const HEART_MS = 20 * 60 * 1000;        // one heart back every 20 minutes
 const MAX_CROWNS = 3;
@@ -111,8 +111,22 @@ function distractorWords(exclude, n) {
   const pool = ALL_WORDS.filter(w => !exclude.includes(w[0]) && !exclude.includes(w[2]));
   return pick(pool, n);
 }
+/* 他/她 and 坐/做 are homophones: as distractors they make a listening or a
+   pinyin question impossible to answer, so sound-alikes are filtered out. */
+function soundAlikeSafe(w, n) {
+  const pool = shuffle(ALL_WORDS.filter(x => x[0] !== w[0] && x[2] !== w[2]));
+  const out = [], taken = [w[1]];
+  for (const x of pool) {
+    if (taken.includes(x[1])) continue;          // also keeps two distractors apart
+    taken.push(x[1]); out.push(x);
+    if (out.length === n) break;
+  }
+  return out;
+}
 const EN_FILLER = ['very', 'not', 'good', 'tea', 'friend', 'teacher', 'buy', 'want', 'where',
-  'today', 'money', 'school', 'eat', 'drink', 'hello', 'name', 'this', 'that', 'three', 'home'];
+  'today', 'money', 'school', 'eat', 'drink', 'hello', 'name', 'this', 'that', 'three', 'home',
+  'book', 'water', 'cat', 'dog', 'hot', 'cold', 'big', 'small', 'happy', 'doctor', 'who',
+  'know', 'study', 'write', 'see', 'come', 'return', 'shop', 'apple', 'rice'];
 
 function el(tag, cls, text) {
   const n = document.createElement(tag);
@@ -133,11 +147,11 @@ function cSelectHanzi(w) {                         // English -> hanzi tile
   return { t: 'hanzi', q: 'Which one of these is “' + w[2] + '”?', options: opts, answer: opts.indexOf(w) };
 }
 function cAudio(w) {                               // listen -> pick hanzi
-  const opts = shuffle([w].concat(distractorWords([w[0]], 2)));
+  const opts = shuffle([w].concat(soundAlikeSafe(w, 2)));
   return { t: 'audio', q: 'Tap what you hear', hz: w[0], options: opts, answer: opts.indexOf(w) };
 }
 function cPinyin(w) {                              // hanzi -> pinyin
-  const opts = shuffle([w].concat(distractorWords([w[0]], 2))).map(x => x[1]);
+  const opts = shuffle([w].concat(soundAlikeSafe(w, 2))).map(x => x[1]);
   return { t: 'pinyin', hz: w[0], q: 'How is this pronounced?', options: opts, answer: opts.indexOf(w[1]) };
 }
 function cPairs(words) {
@@ -255,7 +269,7 @@ function renderPath() {
   const doneCount = Object.values(S.progress).filter(v => v > 0).length;
   hero.appendChild(el('p', null, doneCount
     ? doneCount + ' of ' + ALL_LESSONS.length + ' lessons started · keep going!'
-    : 'Learn Mandarin in bite-sized lessons. Free, forever.'));
+    : 'The complete HSK 1 vocabulary — 150 words, 39 lessons. Free, forever.'));
   app.appendChild(hero);
 
   const path = el('div', 'path');
@@ -320,9 +334,11 @@ function startLesson(id) {
   regenHearts();
   if (S.hearts <= 0) { screen = 'empty'; return render(); }
   const l = lessonById(id);
+  const queue = generate(l, S.progress[id] || 0);
+  if (!queue.length) return;                     // nothing to ask — don't open an empty lesson
   ses = {
     lesson: l,
-    queue: generate(l, S.progress[id] || 0),
+    queue: queue,
     i: 0, right: 0, wrong: 0, state: 'answering',
     sel: null, built: [], used: {}, matched: 0, pairSel: null,
     startedAt: Date.now(),
