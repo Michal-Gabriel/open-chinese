@@ -1,9 +1,9 @@
-# 🐲 DuoChinese
+# 🐲 Gamified Lessons
 
-A small, dependency-free re-creation of the Duolingo lesson experience, built as a
-free **HSK 1 Mandarin Chinese** course.
+The gamified half of [OpenChinese](../README.md): a dependency-free re-creation of the
+Duolingo lesson experience, as a free **HSK 1 Mandarin Chinese** course.
 
-**Play it: https://michal-gabriel.github.io/duochinese/**
+**Play it: https://michal-gabriel.github.io/open-chinese/lessons/**
 
 ## The course
 

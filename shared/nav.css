@@ -1,0 +1,76 @@
+/* ---------- shared header (home + account) ---------- */
+.site-nav {
+  width: min(920px, calc(100% - 48px));
+  margin: 24px auto 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.site-nav .home {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text, #252525);
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line, rgba(37, 37, 37, 0.12));
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.site-nav .spacer { flex: 1; }
+
+.site-nav .account {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.site-nav .account button {
+  font: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: rgba(169, 231, 220, 0.3);
+  color: var(--text, #252525);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.site-nav .account button img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: block;
+}
+
+.site-nav .account .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: transparent;
+  flex: none;
+}
+.site-nav .account .dot.syncing { background: #1cb0f6; animation: nav-pulse 1s ease-in-out infinite; }
+.site-nav .account .dot.saved   { background: #58cc02; }
+.site-nav .account .dot.error   { background: #ffc800; }
+@keyframes nav-pulse { 0%,100% { opacity: .3 } 50% { opacity: 1 } }
+
+@media (max-width: 760px) {
+  .site-nav { width: min(100% - 24px, 920px); margin-top: 12px; }
+}
+
+.site-nav .home--current {
+  background: transparent;
+  border-color: transparent;
+  padding-left: 0;
+  cursor: default;
+}
