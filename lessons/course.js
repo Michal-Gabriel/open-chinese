@@ -1,4 +1,4 @@
-/* DuoChinese — the complete HSK 1 syllabus (150 words), and nothing outside it.
+/* Gamified Lessons — the complete HSK 1 syllabus (150 words), and nothing outside it.
    word     : [hanzi, pinyin, english]
    sentence : [hanzi, pinyin, english, [hanzi tokens]]
    Every token below is itself an HSK 1 word, and every sentence only uses

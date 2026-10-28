@@ -1,4 +1,4 @@
-/* DuoChinese — a small Duolingo-style engine for Mandarin. */
+/* Gamified Lessons — a small Duolingo-style engine for Mandarin. */
 (function () {
 'use strict';
 
@@ -300,7 +300,7 @@ function renderPath() {
   app.appendChild(top);
 
   const hero = el('div', 'hero');
-  hero.appendChild(el('h1', null, '🐲 DuoChinese'));
+  hero.appendChild(el('h1', null, '🐲 Gamified Lessons'));
   const doneCount = Object.values(S.progress).filter(v => v > 0).length;
   hero.appendChild(el('p', null, doneCount
     ? doneCount + ' of ' + ALL_LESSONS.length + ' lessons started · keep going!'
