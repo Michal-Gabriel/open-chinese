@@ -48,11 +48,19 @@ function setStatus(s) {
 function describe(u) {
   if (!u) return null;
   const m = u.user_metadata || {};
+  /* When a guest account is UPGRADED by linking Google, Supabase leaves the
+     provider's profile in identities[].identity_data and does not merge it
+     into user_metadata the way a fresh sign-in does. Reading only
+     user_metadata left us falling back to the raw email with no avatar. */
+  const link = (u.identities || [])
+    .map(i => i.identity_data || {})
+    .find(d => d.full_name || d.name || d.avatar_url || d.picture) || {};
   return {
     id: u.id,
     anonymous: !!u.is_anonymous,
-    name: m.full_name || m.name || m.email || u.email || null,
-    avatar: m.avatar_url || m.picture || null,
+    name: m.full_name || m.name || link.full_name || link.name
+       || m.email || link.email || u.email || null,
+    avatar: m.avatar_url || m.picture || link.avatar_url || link.picture || null,
   };
 }
 

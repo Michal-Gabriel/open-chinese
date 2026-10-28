@@ -13,6 +13,12 @@ const home = (slot && slot.dataset.home) || './';
 const node = document.createElement('nav');
 node.className = 'site-nav';
 
+/* First name if we have one; otherwise the part before the @, never the whole
+   address — the header is on screen in public. */
+function shortName(name) {
+  return String(name || 'Account').split('@')[0].split(' ')[0];
+}
+
 function render() {
   node.textContent = '';
 
@@ -41,7 +47,7 @@ function render() {
       img.src = u.avatar; img.alt = ''; img.referrerPolicy = 'no-referrer';
       btn.appendChild(img);
     }
-    btn.appendChild(document.createTextNode((u.name || 'Account').split(' ')[0]));
+    btn.appendChild(document.createTextNode(shortName(u.name)));
     btn.title = 'Signed in — your progress saves to this account';
     btn.addEventListener('click', () => {
       if (confirm('Sign out? Your progress stays saved to your account.')) auth.signOut();
