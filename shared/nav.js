@@ -15,6 +15,10 @@ node.className = 'site-nav';
 
 /* First name if we have one; otherwise the part before the @, never the whole
    address — the header is on screen in public. */
+function openAccount() {
+  if (window.OpenChineseAccount) window.OpenChineseAccount.open();
+}
+
 function shortName(name) {
   return String(name || 'Account').split('@')[0].split(' ')[0];
 }
@@ -48,14 +52,18 @@ function render() {
       btn.appendChild(img);
     }
     btn.appendChild(document.createTextNode(shortName(u.name)));
-    btn.title = 'Signed in — your progress saves to this account';
-    btn.addEventListener('click', () => {
-      if (confirm('Sign out? Your progress stays saved to your account.')) auth.signOut();
-    });
+    btn.title = 'Your account and what we store';
+    btn.addEventListener('click', openAccount);
   } else {
-    btn.textContent = 'Sign in';
-    btn.title = 'Save your progress and pick it up on any device';
-    btn.addEventListener('click', () => auth.signIn());
+    if (u && u.anonymous) {
+      btn.textContent = 'Guest';
+      btn.title = 'Your guest account and what we store';
+      btn.addEventListener('click', openAccount);
+    } else {
+      btn.textContent = 'Sign in';
+      btn.title = 'Save your progress and pick it up on any device';
+      btn.addEventListener('click', () => auth.signIn());
+    }
   }
   box.appendChild(btn);
 
