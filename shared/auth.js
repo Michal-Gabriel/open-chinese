@@ -26,8 +26,8 @@
    sign-in would silently never switch on. One file, one cache key.
    REMEMBER: bump ?v= on auth.js wherever it is loaded when these change.   */
 
-const SUPABASE_URL = '';
-const SUPABASE_ANON_KEY = '';
+const SUPABASE_URL = 'https://fooejvrgiipplnznwbez.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_QacOFPhMzcGXdeV61vCrFA_fGkNXFOD';
 
 const CDN = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/+esm';
 
