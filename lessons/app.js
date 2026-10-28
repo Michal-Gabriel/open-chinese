@@ -366,7 +366,7 @@ function authControl() {
       img.src = u.avatar; img.alt = ''; img.referrerPolicy = 'no-referrer';
       who.appendChild(img);
     }
-    who.appendChild(el('span', null, (u.name || 'Account').split(' ')[0]));
+    who.appendChild(el('span', null, String(u.name || 'Account').split('@')[0].split(' ')[0]));
     who.title = 'Signed in — progress saves to your account';
     on(who, () => {
       if (!confirm('Sign out? Your progress stays saved to your account.')) return;
