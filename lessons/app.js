@@ -352,6 +352,10 @@ function renderPath() {
   app.appendChild(path);
 }
 
+function openAccount() {
+  if (window.OpenChineseAccount) window.OpenChineseAccount.open();
+}
+
 /* Sign-in control. Renders nothing at all when no backend is configured. */
 function authControl() {
   const box = el('div', 'auth');
@@ -367,13 +371,13 @@ function authControl() {
       who.appendChild(img);
     }
     who.appendChild(el('span', null, String(u.name || 'Account').split('@')[0].split(' ')[0]));
-    who.title = 'Signed in — progress saves to your account';
-    on(who, () => {
-      if (!confirm('Sign out? Your progress stays saved to your account.')) return;
-      sync.signOut();
-      S = defaults(); save(); render();
-    });
+    who.title = 'Your account and what we store';
+    on(who, openAccount);
     box.appendChild(who);
+  } else if (u && u.anonymous) {
+    const b = on(el('button', 'signin', 'Guest'), openAccount);
+    b.title = 'Your guest account and what we store';
+    box.appendChild(b);
   } else {
     const b = on(el('button', 'signin', 'Sign in'), () => sync.signIn());
     b.title = 'Save your progress and pick it up on any device';

@@ -1,0 +1,75 @@
+/* Account panel — shared by both sections, so it carries its own colours
+   rather than inheriting from either stylesheet. Deliberately light in both:
+   it is an overlay, and a single predictable look beats matching two themes. */
+
+.oc-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(20, 20, 20, 0.45);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px;
+  overflow-y: auto;
+  font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+  color: #252525;
+}
+
+.oc-panel {
+  width: min(460px, 100%);
+  margin: auto;
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.oc-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 24px 20px;
+  border-bottom: 1px solid rgba(37, 37, 37, 0.1);
+}
+.oc-head img { width: 48px; height: 48px; border-radius: 50%; display: block; flex: none }
+.oc-head .oc-fallback {
+  width: 48px; height: 48px; border-radius: 50%; flex: none;
+  background: #a9e7dc; color: #252525;
+  display: grid; place-items: center; font-size: 20px; font-weight: 700;
+}
+.oc-head h2 { margin: 0; font-size: 19px; font-weight: 700; letter-spacing: -0.01em }
+.oc-head p { margin: 2px 0 0; font-size: 14px; color: #666 }
+.oc-head .oc-x {
+  margin-left: auto; align-self: flex-start;
+  border: 0; background: none; cursor: pointer;
+  font-size: 22px; line-height: 1; color: #999; padding: 0 2px;
+}
+.oc-head .oc-x:hover { color: #252525 }
+
+.oc-section { padding: 18px 24px }
+.oc-section + .oc-section { border-top: 1px solid rgba(37, 37, 37, 0.1) }
+.oc-section h3 {
+  margin: 0 0 12px; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase; color: #8a8a8a;
+}
+
+.oc-row { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 15px }
+.oc-row dt { margin: 0; color: #666 }
+.oc-row dd { margin: 0; font-weight: 600; text-align: right; word-break: break-word }
+.oc-row dd.oc-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; font-weight: 500 }
+
+.oc-note { margin: 12px 0 0; font-size: 13px; line-height: 1.55; color: #777 }
+
+.oc-foot { padding: 18px 24px 22px; border-top: 1px solid rgba(37, 37, 37, 0.1) }
+.oc-foot button {
+  width: 100%; min-height: 48px; border-radius: 999px; cursor: pointer;
+  border: 1px solid rgba(37, 37, 37, 0.15); background: #fff; color: #252525;
+  font: inherit; font-size: 15px; font-weight: 600;
+}
+.oc-foot button:hover { background: #f6f5f1 }
+.oc-foot .oc-signout { border-color: transparent; background: #252525; color: #fff }
+.oc-foot .oc-signout:hover { background: #3a3a3a }
+
+.oc-loading { padding: 10px 0; font-size: 14px; color: #888 }
