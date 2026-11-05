@@ -136,3 +136,20 @@ create policy "heartbeat readable" on public.heartbeat for select using (true);
 -- the keep-alive cron calls this with the anon key and no user session,
 -- so it arrives as `anon`, not `authenticated`
 grant select on public.heartbeat to anon, authenticated;
+
+-- A read alone keeps the project awake, but it leaves no trace, so the only
+-- record that the cron ran at all is GitHub's run history. This writes the
+-- timestamp instead. It is a function rather than an update policy on the
+-- table because the anon key ships in the browser: through here the only
+-- thing anyone holding it can write is now().
+create or replace function public.heartbeat_ping()
+returns timestamptz
+language sql
+security definer
+set search_path = public
+as $$
+  update public.heartbeat set pinged = now() where id = 1 returning pinged;
+$$;
+
+revoke all on function public.heartbeat_ping() from public;
+grant execute on function public.heartbeat_ping() to anon, authenticated;
