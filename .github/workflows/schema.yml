@@ -92,8 +92,17 @@ jobs:
           case "$DB_URL" in
             postgres://*|postgresql://*) ;;
             *)
-              head="$(printf '%s' "$DB_URL" | cut -c1-11 | tr -cd '[:print:]')"
-              echo "::error::SUPABASE_DB_URL is not a connection URI — ${#DB_URL} characters starting with '$head'. Copy the URI tab of the Connect dialog (Session pooler, port 5432), not PSQL or the host on its own."
+              # Describe the value, never quote it. An earlier version of this
+              # printed its first characters to tell a psql command from a
+              # hostname, and a secret holding the database password leaked
+              # eleven of them into the run log.
+              case "$DB_URL" in
+                *://*) shape="has a scheme, but not postgres:// or postgresql://" ;;
+                psql*) shape="looks like a psql command — that is the PSQL tab" ;;
+                *.supabase.com*|*.supabase.co*) shape="looks like a bare hostname" ;;
+                *) shape="is neither a URI nor a hostname — possibly the database password on its own" ;;
+              esac
+              echo "::error::SUPABASE_DB_URL is not a connection URI: ${#DB_URL} characters, $shape. Copy the URI tab of the Connect dialog (Session pooler, port 5432) — one string starting with postgresql:// that already contains the host, and put the password where it says YOUR-PASSWORD."
               exit 1
               ;;
           esac
