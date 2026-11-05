@@ -26,12 +26,13 @@ stories/              Voice Stories — reader, data and audio
   data/*.json         19 stories, 249 sentences, vocab and pinyin fallbacks
   audio/storyN/       249 mp3, one per sentence
 lessons/              Gamified Lessons
+  audio/              284 mp3 — one per word and per sentence, with index.json
   course.js           the course content (words, pinyin, sentences)
   app.js              state, audio, exercise generation, every screen
   sync.js             lesson progress on top of the shared account
 storyN.html           redirect stubs, so older story links keep working
 supabase/             schema and its tests
-scripts/              one-off TTS generator for new story audio
+scripts/              TTS generators for story and lesson audio
 ```
 
 ## Accounts
@@ -86,6 +87,25 @@ Add the story to `stories/data/stories.json` (and its vocab to
 ```bash
 OPENAI_API_KEY=... node scripts/generate-story-audio.mjs
 ```
+
+## Lesson audio
+
+Every word and sentence in `lessons/course.js` has a recorded clip, named by a hash
+of the text, with `lessons/audio/index.json` mapping one to the other. The lessons
+used to speak through the browser's `speechSynthesis`, which has no Mandarin voice
+on most of Windows, Android and Linux — and without one `app.js` turns every
+listening exercise into a reading one, so those learners heard no Mandarin at all.
+The clips remove that fork; the voice is still there as a fallback.
+
+```bash
+OPENAI_API_KEY=... node scripts/generate-lesson-audio.mjs     # same voice as the stories
+node scripts/generate-lesson-audio.mjs --local                # macOS say, no key, no network
+```
+
+Only missing clips are generated, so adding a word costs one request; `--overwrite`
+re-records everything, which is how to move the whole set to another voice. The
+current clips were made with `--local` (macOS Tingting), so the lessons and the
+stories do not sound alike yet.
 
 The grid on `stories/` is rendered from that JSON, so no HTML needs editing.
 

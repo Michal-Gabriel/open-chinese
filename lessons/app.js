@@ -96,13 +96,53 @@ if ('speechSynthesis' in window) {
   pickVoice();
   speechSynthesis.onvoiceschanged = pickVoice;
 }
+/* Recorded clips, one per word and per sentence — see
+   scripts/generate-lesson-audio.mjs. Most of Windows, Android and Linux has no
+   Mandarin voice to synthesise with, and the fallback below silently turns
+   listening exercises into reading ones, so a learner there would take a
+   Mandarin course without hearing any. These are the same everywhere.
+
+   The exercises assemble sentences from tokens and so ask for text without its
+   punctuation; the manifest is keyed without it too, so both forms find the
+   clip. */
+let clips = null;
+let clipsPending = true;
+const clipKey = t => String(t).replace(/[。！？、，\s]/g, '');
+
+fetch('./audio/index.json')
+  .then(r => (r.ok ? r.json() : null))
+  .then(m => {
+    if (m) clips = new Map(Object.entries(m).map(([text, file]) => [clipKey(text), file]));
+  })
+  .catch(() => {})
+  .then(() => { clipsPending = false; });
+
 function audioOk() {
+  if (clipsPending || (clips && clips.size)) return true;
   if (!('speechSynthesis' in window)) return false;
   const vs = speechSynthesis.getVoices();
   if (!vs || !vs.length) return true;          // not loaded yet — assume it works
   return vs.some(v => /^zh/i.test(v.lang));
 }
+
+let clipNow = null;
 function speak(text) {
+  if (!text) return;
+  const file = clips && clips.get(clipKey(text));
+  if (file) {
+    try {
+      if (clipNow) { clipNow.pause(); clipNow.currentTime = 0; }
+      clipNow = new Audio('./audio/' + file);
+      // a clip that will not play (autoplay policy, a missing file) is not a
+      // reason to stay silent when the device can speak
+      clipNow.play().catch(() => speakSynth(text));
+      return;
+    } catch (e) { /* fall through to the voice */ }
+  }
+  speakSynth(text);
+}
+
+function speakSynth(text) {
   if (!('speechSynthesis' in window) || !text) return;
   try {
     speechSynthesis.cancel();
