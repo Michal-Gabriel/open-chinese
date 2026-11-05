@@ -103,9 +103,13 @@ node scripts/generate-lesson-audio.mjs --local                # macOS say, no ke
 ```
 
 Only missing clips are generated, so adding a word costs one request; `--overwrite`
-re-records everything, which is how to move the whole set to another voice. The
-current clips were made with `--local` (macOS Tingting), so the lessons and the
-stories do not sound alike yet.
+re-records everything, which is how to move the whole set to another voice.
+
+Check what comes back before trusting it. One clip in this set came back at 21
+seconds for three characters — the model had started improvising — and deleting
+that file and re-running (without `--overwrite`, so only the gap is filled) gave a
+1.5 second reading of the right line. A duration far past what the text can justify
+is the cheap way to spot it.
 
 The grid on `stories/` is rendered from that JSON, so no HTML needs editing.
 
