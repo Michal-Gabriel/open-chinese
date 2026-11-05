@@ -80,6 +80,24 @@ jobs:
             exit 0
           fi
 
+          # psql treats anything that is not a URI as a database name and goes
+          # looking for a local socket, so a wrong secret shows up as
+          # "connection to server on socket ... failed" — which says nothing
+          # about the real problem. Check the shape first and say what is in
+          # there, without printing the value: the scheme is not the secret
+          # part, the credentials that follow it are.
+          DB_URL="$(printf '%s' "$DB_URL" | tr -d '[:space:]')"
+          DB_URL="${DB_URL%\"}"; DB_URL="${DB_URL#\"}"
+          DB_URL="${DB_URL%\'}"; DB_URL="${DB_URL#\'}"
+          case "$DB_URL" in
+            postgres://*|postgresql://*) ;;
+            *)
+              head="$(printf '%s' "$DB_URL" | cut -c1-11 | tr -cd '[:print:]')"
+              echo "::error::SUPABASE_DB_URL is not a connection URI — ${#DB_URL} characters starting with '$head'. Copy the URI tab of the Connect dialog (Session pooler, port 5432), not PSQL or the host on its own."
+              exit 1
+              ;;
+          esac
+
           # -1 wraps the whole file in one transaction. Without it there is a
           # window between `drop policy` and `create policy` where profiles has
           # RLS on and no policies — that denies everything, so a sync landing
