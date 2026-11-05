@@ -1,4 +1,4 @@
-const STORY_PUNCTUATION = new Set(["。", "，", "！", "？", "：", "；", "“", "”", "（", "）", "《", "》", "、", "…", "."]);
+const STORY_PUNCTUATION = new Set(["。", "，", "！", "？", "：", "；", "“", "”", "（", "）", "《", "》", "、", "…", ".", "—"]);
 const AUDIO_CACHE_BUSTER = "2026-04-24";
 const COMMON_VOCAB = [
   { key: "我", pinyin: "wǒ", english: "I / me", level: "HSK1" },
@@ -273,6 +273,18 @@ const EXTRA_VOCAB = [
   { key: "眼泪", pinyin: "yǎnlèi", english: "tears", level: "HSK2" },
   { key: "应该", pinyin: "yīnggāi", english: "should", level: "HSK2" },
   { key: "窗外", pinyin: "chuāngwài", english: "outside the window", level: "HSK2" },
+  { key: "岁", pinyin: "suì", english: "years old", level: "HSK1" },
+  { key: "茶", pinyin: "chá", english: "tea", level: "HSK1" },
+  { key: "衣服", pinyin: "yīfu", english: "clothes", level: "HSK1" },
+  { key: "时候", pinyin: "shíhou", english: "time / when", level: "HSK1" },
+  { key: "小时候", pinyin: "xiǎo shíhou", english: "when (someone) was little", level: "HSK2" },
+  { key: "感情", pinyin: "gǎnqíng", english: "feelings / closeness", level: "HSK3" },
+  { key: "心", pinyin: "xīn", english: "heart", level: "HSK2" },
+  { key: "如果", pinyin: "rúguǒ", english: "if", level: "HSK3" },
+  { key: "穿着", pinyin: "chuānzhe", english: "wearing", level: "HSK2" },
+  { key: "蓝色", pinyin: "lánsè", english: "blue", level: "HSK3" },
+  { key: "保存", pinyin: "bǎocún", english: "to preserve / keep", level: "HSK4" },
+  { key: "消息", pinyin: "xiāoxi", english: "message / news", level: "HSK3" },
 ];
 
 const EXTRA_CHAR_VOCAB = [
@@ -643,7 +655,7 @@ function tokenizeSentence(sentenceText, lexicon) {
   while (index < sentenceText.length) {
     const char = sentenceText[index];
 
-    if (char === "." || char === "…") {
+    if (char === "." || char === "…" || char === "—") {
       let end = index + 1;
       while (end < sentenceText.length && sentenceText[end] === char) {
         end += 1;
@@ -750,7 +762,7 @@ function buildFallbackPinyin(text, pinyinMap) {
 
   return chars
     .map((char) => {
-      if (char === "." || char === "…") return char;
+      if (char === "." || char === "…" || char === "—") return char;
       if (STORY_PUNCTUATION.has(char) || /\s/.test(char)) return char;
       return pinyinMap[char] || char;
     })

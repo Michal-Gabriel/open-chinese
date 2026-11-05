@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
+const storiesDir = path.join(rootDir, "stories");
 
 function getArg(name, fallback = null) {
   const index = process.argv.indexOf(`--${name}`);
@@ -25,12 +26,12 @@ Optional flags:
   --format mp3
 
 Output:
-  audio/<story>/<sentence-id>.<format>
+  stories/audio/<story>/<sentence-id>.<format>
 `);
 }
 
 async function loadStory(story) {
-  const filePath = path.join(rootDir, "data", "stories.json");
+  const filePath = path.join(storiesDir, "data", "stories.json");
   const content = await readFile(filePath, "utf8");
   const stories = JSON.parse(content);
   const normalizedStory = story.startsWith("story") ? story : `story${story}`;
@@ -46,9 +47,19 @@ async function loadStory(story) {
 }
 
 async function loadAllStories() {
-  const filePath = path.join(rootDir, "data", "stories.json");
+  const filePath = path.join(storiesDir, "data", "stories.json");
   const content = await readFile(filePath, "utf8");
   return JSON.parse(content);
+}
+
+/* story1 lost a sentence after its audio was cut, so from sentence 003 on the
+   file is numbered one ahead of the sentence. stories/story-page.js reads the
+   files by the same rule — keep the two in step. */
+function audioFileNumber(storySlug, sentenceId) {
+  const numeric = Number.parseInt(String(sentenceId), 10);
+  if (!Number.isFinite(numeric)) return String(sentenceId);
+  const shifted = storySlug === "story1" && numeric >= 3 ? numeric + 1 : numeric;
+  return String(shifted).padStart(3, "0");
 }
 
 async function generateAudio({ apiKey, model, voice, format, text }) {
@@ -97,13 +108,13 @@ async function main() {
 
   for (const storyItem of stories) {
     const storySlug = storyItem.slug || `story${storyItem.id}`;
-    const outputDir = path.join(rootDir, "audio", storySlug);
+    const outputDir = path.join(storiesDir, "audio", storySlug);
     const sentences = storyItem.sentences || [];
 
     await mkdir(outputDir, { recursive: true });
 
     for (const sentence of sentences) {
-      const filename = `${sentence.id}.${format}`;
+      const filename = `${audioFileNumber(storySlug, sentence.id)}.${format}`;
       const outputPath = path.join(outputDir, filename);
 
       if (!overwrite) {
