@@ -1,0 +1,88 @@
+# supabase/schema.sql used to be applied by hand in the SQL editor, so the file
+# and the project could drift apart — and did: heartbeat_ping() lived in the
+# repo for a while before it existed in the database, and the only sign was a
+# 404 in the keep-alive logs. This closes that gap.
+#
+# The tests are the gate. They run against a throwaway Postgres on every change
+# to supabase/, and nothing reaches the project unless they pass.
+#
+# One secret makes the apply step live:
+#   SUPABASE_DB_URL  the connection string from Project Settings → Database.
+#                    Use the Session pooler (port 5432) rather than Transaction
+#                    (6543) — the latter will not run DDL. Until it is set, the
+#                    apply step skips with a warning instead of failing, so the
+#                    tests still run on their own.
+
+name: Database schema
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/**'
+      - '.github/workflows/schema.yml'
+  pull_request:
+    paths:
+      - 'supabase/**'
+  workflow_dispatch:
+
+# never let two applies touch the project at once
+concurrency:
+  group: supabase-schema
+  cancel-in-progress: false
+
+jobs:
+  test:
+    name: Schema tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: duo
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+
+      # schema.test.sql pulls in schema.sql with \i, which resolves relative to
+      # the file, so this has to run from inside supabase/
+      - name: Run schema.test.sql
+        working-directory: supabase
+        run: |
+          set -euo pipefail
+          psql "postgres://postgres:test@localhost:5432/duo" \
+            -v ON_ERROR_STOP=1 -f schema.test.sql
+          echo "### Schema tests passed" >> "$GITHUB_STEP_SUMMARY"
+
+  apply:
+    name: Apply to the project
+    needs: test
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply schema.sql
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          set -euo pipefail
+          if [ -z "${DB_URL:-}" ]; then
+            echo "::warning::SUPABASE_DB_URL is not set — schema.sql was tested but not applied."
+            echo "### Not applied: set the SUPABASE_DB_URL secret" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          # -1 wraps the whole file in one transaction. Without it there is a
+          # window between `drop policy` and `create policy` where profiles has
+          # RLS on and no policies — that denies everything, so a sync landing
+          # in it would fail rather than leak, but it would still fail.
+          psql "$DB_URL" -1 -v ON_ERROR_STOP=1 -f supabase/schema.sql
+          echo "### schema.sql applied $(date -u)" >> "$GITHUB_STEP_SUMMARY"

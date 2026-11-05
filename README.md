@@ -53,7 +53,12 @@ backend.
 
 `supabase/schema.test.sql` runs the schema against a throwaway Postgres —
 merge semantics, the streak edge case, row-level security between two users,
-and a 300-batch fuzz asserting order-independence:
+the keep-alive's write path, and a 300-batch fuzz asserting order-independence.
+`.github/workflows/schema.yml` runs exactly these on every change to
+`supabase/`, and applies `schema.sql` to the project only if they pass, so the
+file and the database cannot drift apart. It needs one secret,
+`SUPABASE_DB_URL`, and skips the apply with a warning until that is set. To run
+the tests yourself:
 
 ```bash
 docker run -d --name duo-pg -e POSTGRES_PASSWORD=test -e POSTGRES_DB=duo postgres:17-alpine

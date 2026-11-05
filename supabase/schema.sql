@@ -1,6 +1,8 @@
 -- DuoChinese — cloud progress schema.
--- Run this once in the Supabase SQL editor (Dashboard → SQL Editor → New query).
--- Safe to re-run: every statement is idempotent.
+-- .github/workflows/schema.yml applies this to the project once the tests
+-- pass; the SQL editor (Dashboard → SQL Editor → New query) still works if you
+-- would rather paste it. Safe to re-run either way: every statement is
+-- idempotent.
 
 -- ---------------------------------------------------------------------------
 -- 1. One row per user, mirroring the shape app.js keeps in localStorage.
