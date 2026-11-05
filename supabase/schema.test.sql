@@ -268,5 +268,38 @@ begin
   raise notice 'T12 anon reads heartbeat, not profiles  ok';
 end $$;
 
+-- ===========================================================================
+-- 13. The keep-alive writes through heartbeat_ping() and only through it:
+--     anon may call the function, but must not be able to update the table.
+-- ===========================================================================
+reset role;
+update public.heartbeat set pinged = now() - interval '9 days' where id = 1;
+set role anon;
+do $$
+declare before timestamptz; after timestamptz;
+begin
+  select pinged into before from public.heartbeat where id = 1;
+  select public.heartbeat_ping() into after;
+  if after <= before then
+    raise exception 'T13 heartbeat_ping did not move pinged forward (% -> %)', before, after;
+  end if;
+  select pinged into before from public.heartbeat where id = 1;
+  if before <> after then
+    raise exception 'T13 heartbeat_ping returned % but the row says %', after, before;
+  end if;
+
+  -- the anon key is public, so a direct write must stay refused: the function
+  -- is the only door, and all it can write is now()
+  begin
+    update public.heartbeat set pinged = 'epoch' where id = 1;
+    raise exception 'T13 anon was allowed to update the heartbeat directly';
+  exception
+    when insufficient_privilege then null;  -- expected
+    when others then
+      if sqlerrm like 'T13 %' then raise; end if;
+  end;
+  raise notice 'T13 anon pings through the function, cannot write the table  ok';
+end $$;
+
 reset role;
 select 'ALL TESTS PASSED' as result;
