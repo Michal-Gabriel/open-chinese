@@ -301,5 +301,111 @@ begin
   raise notice 'T13 anon pings through the function, cannot write the table  ok';
 end $$;
 
+
+-- ===========================================================================
+-- 14-18. Flashcards. The merge rule here is the opposite of the one above:
+--        the freshest review wins rather than the largest value, because a
+--        review is a measurement and forgetting a word is a real result.
+-- ===========================================================================
+reset role;
+set role authenticated;
+do $$
+declare
+  a uuid := '11111111-1111-1111-1111-111111111111';
+  b uuid := '22222222-2222-2222-2222-222222222222';
+  c public.card_state;
+  n int;
+begin
+  perform set_config('test.uid', a::text, false);
+
+  -- ----------------------------------------------------------------- 14
+  perform public.merge_cards('[
+    {"word":"你","reps":1,"lapses":0,"ease":2.5,"interval_days":1,
+     "due":"2026-11-07","reviewed_at":"2026-11-06T09:00:00Z"},
+    {"word":"好","reps":2,"lapses":0,"ease":2.6,"interval_days":3,
+     "due":"2026-11-09","reviewed_at":"2026-11-06T09:01:00Z"}
+  ]'::jsonb);
+  select count(*) into n from public.card_state where user_id = a;
+  if n <> 2 then raise exception 'T14 expected 2 cards, got %', n; end if;
+  raise notice 'T14 fresh cards inserted                ok';
+
+  -- ----------------------------------------------------------------- 15
+  -- a stale push (an older review) must change nothing
+  perform public.merge_cards('[
+    {"word":"你","reps":99,"lapses":0,"ease":3.0,"interval_days":999,
+     "due":"2029-01-01","reviewed_at":"2026-11-05T09:00:00Z"}
+  ]'::jsonb);
+  select * into c from public.card_state where user_id = a and word = '你';
+  if c.interval_days <> 1 or c.reps <> 1 then
+    raise exception 'T15 a stale push overwrote a newer review: %', row_to_json(c);
+  end if;
+  raise notice 'T15 stale push ignored                  ok';
+
+  -- ----------------------------------------------------------------- 16
+  -- forgetting: a NEWER review with a SHORTER interval must be recorded.
+  -- greatest() semantics would refuse this, which is why cards are not kept
+  -- in profiles.progress.
+  perform public.merge_cards('[
+    {"word":"好","reps":0,"lapses":1,"ease":2.4,"interval_days":0,
+     "due":"2026-11-10","reviewed_at":"2026-11-10T08:00:00Z"}
+  ]'::jsonb);
+  select * into c from public.card_state where user_id = a and word = '好';
+  if c.interval_days <> 0 or c.lapses <> 1 then
+    raise exception 'T16 a lapse was not recorded: %', row_to_json(c);
+  end if;
+  raise notice 'T16 a forgotten word moves backwards    ok';
+
+  -- ----------------------------------------------------------------- 17
+  -- the same word twice in one batch: the later review wins, and the push
+  -- must not fail outright
+  perform public.merge_cards('[
+    {"word":"是","reps":1,"lapses":0,"ease":2.5,"interval_days":1,
+     "due":"2026-11-11","reviewed_at":"2026-11-10T10:00:00Z"},
+    {"word":"是","reps":2,"lapses":0,"ease":2.5,"interval_days":6,
+     "due":"2026-11-16","reviewed_at":"2026-11-10T11:00:00Z"}
+  ]'::jsonb);
+  select * into c from public.card_state where user_id = a and word = '是';
+  if c.interval_days <> 6 or c.reps <> 2 then
+    raise exception 'T17 duplicate in one batch resolved wrongly: %', row_to_json(c);
+  end if;
+  raise notice 'T17 duplicate word in one batch         ok';
+
+  -- ----------------------------------------------------------------- 18
+  -- isolation: b must neither see nor touch a's cards
+  perform set_config('test.uid', b::text, false);
+  select count(*) into n from public.card_state;
+  if n <> 0 then
+    raise exception 'T18 user b can see % of user a''s cards', n;
+  end if;
+  perform public.merge_cards('[
+    {"word":"你","reps":7,"lapses":7,"ease":1.5,"interval_days":77,
+     "due":"2027-01-01","reviewed_at":"2027-01-01T00:00:00Z"}
+  ]'::jsonb);
+  perform set_config('test.uid', a::text, false);
+  select * into c from public.card_state where user_id = a and word = '你';
+  if c.reps <> 1 then
+    raise exception 'T18 user b wrote into user a''s card: %', row_to_json(c);
+  end if;
+  raise notice 'T18 cards are isolated between users    ok';
+end $$;
+
+-- ===========================================================================
+-- 19. anon must not reach card_state at all.
+-- ===========================================================================
+reset role;
+set role anon;
+do $$
+begin
+  begin
+    perform 1 from public.card_state limit 1;
+    raise exception 'T19 anon was allowed to query card_state';
+  exception
+    when insufficient_privilege then null;  -- expected
+    when others then
+      if sqlerrm like 'T19 %' then raise; end if;
+  end;
+  raise notice 'T19 anon cannot read card_state         ok';
+end $$;
+
 reset role;
 select 'ALL TESTS PASSED' as result;

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flashcards — OpenChinese</title>
+    <meta
+      name="description"
+      content="Spaced-repetition flashcards for the HSK 1 vocabulary: every word comes back just before you would forget it, and your progress follows you across devices."
+    />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>字</text></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Serif:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../shared/theme.css?v=22" />
+    <link rel="stylesheet" href="../shared/nav.css?v=22" />
+    <link rel="stylesheet" href="../shared/account.css?v=22" />
+    <link rel="stylesheet" href="./styles.css?v=22" />
+  </head>
+  <body>
+    <div id="site-nav" data-home="../"></div>
+    <main id="app"></main>
+
+    <!-- The syllabus, as a plain script: course.js defines the vocabulary the
+         lessons teach, and the cards read it rather than keeping a copy. -->
+    <script src="../lessons/course.js?v=22"></script>
+
+    <script type="module" src="../shared/auth.js?v=22"></script>
+    <script type="module" src="../shared/account.js?v=22"></script>
+    <script type="module" src="../shared/nav.js?v=22"></script>
+    <script type="module" src="./sync.js?v=22"></script>
+    <script type="module" src="./app.js?v=22"></script>
+  </body>
+</html>

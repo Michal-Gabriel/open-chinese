@@ -1,4 +1,4 @@
-import { seriesMeta, seriesOf } from './series.js?v=21';
+import { seriesMeta, seriesOf } from './series.js?v=22';
 
 const STORY_PUNCTUATION = new Set(["。", "，", "！", "？", "：", "；", "“", "”", "（", "）", "《", "》", "、", "…", ".", "—"]);
 const AUDIO_CACHE_BUSTER = "2026-04-24";
@@ -587,7 +587,7 @@ function getStoryId() {
 }
 
 async function loadStories() {
-  const response = await fetch("./data/stories.json?v=20");
+  const response = await fetch("./data/stories.json?v=22");
   if (!response.ok) {
     throw new Error("Could not load story data.");
   }
