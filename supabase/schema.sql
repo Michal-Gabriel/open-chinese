@@ -155,3 +155,98 @@ $$;
 
 revoke all on function public.heartbeat_ping() from public;
 grant execute on function public.heartbeat_ping() to anon, authenticated;
+
+-- ---------------------------------------------------------------------------
+-- 4. Flashcards: what a learner knows, word by word, and how well.
+--
+--    One row per (user, word). This is a table rather than another jsonb blob
+--    on profiles because the merge rule is different in kind: crowns and XP
+--    only ever go up, so greatest() is right for them, but a review is a
+--    measurement taken at a moment — a word you just failed has a LOWER
+--    interval than it had yesterday, and greatest() would quietly refuse to
+--    record that you had forgotten it. Here the freshest review wins instead.
+-- ---------------------------------------------------------------------------
+create table if not exists public.card_state (
+  user_id       uuid        not null references auth.users(id) on delete cascade,
+  word          text        not null,
+  reps          integer     not null default 0  check (reps >= 0),
+  lapses        integer     not null default 0  check (lapses >= 0),
+  ease          real        not null default 2.5 check (ease >= 1.3),
+  interval_days integer     not null default 0  check (interval_days >= 0),
+  due           date        not null,
+  reviewed_at   timestamptz not null,
+  primary key (user_id, word)
+);
+
+alter table public.card_state enable row level security;
+
+drop policy if exists "own cards select" on public.card_state;
+drop policy if exists "own cards insert" on public.card_state;
+drop policy if exists "own cards update" on public.card_state;
+drop policy if exists "own cards delete" on public.card_state;
+
+create policy "own cards select" on public.card_state
+  for select using (auth.uid() = user_id);
+create policy "own cards insert" on public.card_state
+  for insert with check (auth.uid() = user_id);
+create policy "own cards update" on public.card_state
+  for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+-- Reset clears the cloud copy too; without this it would silently delete none.
+create policy "own cards delete" on public.card_state
+  for delete using (auth.uid() = user_id);
+
+grant select, insert, update, delete on public.card_state to authenticated;
+
+-- ---------------------------------------------------------------------------
+--    The merge. Same reasoning as merge_progress: an RPC rather than a plain
+--    upsert, so two devices reviewing the same word cannot interleave into a
+--    lost update.
+--
+--    `where excluded.reviewed_at > cs.reviewed_at` is the whole rule. A push
+--    carrying an older review leaves the row alone, which makes the call
+--    idempotent and order-independent: two devices may push in either order
+--    and both end up holding the later review.
+--
+--    distinct on (word) guards the other direction — a client that batches up
+--    two reviews of the same word would otherwise hit "ON CONFLICT DO UPDATE
+--    cannot affect row a second time" and lose the whole push.
+-- ---------------------------------------------------------------------------
+create or replace function public.merge_cards(p_cards jsonb)
+returns setof public.card_state
+language plpgsql
+as $$
+begin
+  if auth.uid() is null then
+    raise exception 'merge_cards requires an authenticated user';
+  end if;
+
+  insert into public.card_state as cs
+    (user_id, word, reps, lapses, ease, interval_days, due, reviewed_at)
+  select distinct on (c.word)
+         auth.uid(), c.word,
+         greatest(coalesce(c.reps, 0), 0),
+         greatest(coalesce(c.lapses, 0), 0),
+         greatest(coalesce(c.ease, 2.5), 1.3),
+         greatest(coalesce(c.interval_days, 0), 0),
+         c.due, c.reviewed_at
+  from jsonb_to_recordset(coalesce(p_cards, '[]'::jsonb))
+    as c(word text, reps integer, lapses integer, ease real,
+         interval_days integer, due date, reviewed_at timestamptz)
+  where c.word is not null and c.due is not null and c.reviewed_at is not null
+  order by c.word, c.reviewed_at desc
+  on conflict (user_id, word) do update
+    set reps          = excluded.reps,
+        lapses        = excluded.lapses,
+        ease          = excluded.ease,
+        interval_days = excluded.interval_days,
+        due           = excluded.due,
+        reviewed_at   = excluded.reviewed_at
+    where excluded.reviewed_at > cs.reviewed_at;
+
+  return query
+    select * from public.card_state where user_id = auth.uid() order by word;
+end
+$$;
+
+revoke all on function public.merge_cards(jsonb) from public;
+grant execute on function public.merge_cards(jsonb) to authenticated;
