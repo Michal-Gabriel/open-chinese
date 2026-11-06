@@ -1,10 +1,10 @@
 :root {
-  --bg: #ffffff;
-  --border: #dddddd;
-  --label: #a4a4a4;
-  --text: #303030;
-  --pinyin: #666666;
-  --link: #3a86f5;
+  --bg: var(--paper-2, #faf6ec);
+  --border: var(--line, rgba(28, 25, 21, 0.16));
+  --label: var(--ink-3, #7b7265);
+  --text: var(--ink, #1c1915);
+  --pinyin: var(--ink-3, #7b7265);
+  --link: var(--cinnabar, #a3322a);
 }
 
 * {
@@ -17,7 +17,7 @@ body {
   min-height: 100%;
   background: var(--bg);
   color: var(--text);
-  font-family: "Inter", "Noto Sans SC", sans-serif;
+  font-family: var(--serif, "Noto Serif SC", Georgia, serif);
 }
 
 body {
@@ -36,7 +36,7 @@ body.story-page.chapter-story .story-shell {
 .info-panel,
 .reader-panel {
   border: 1px solid var(--border);
-  background: #fff;
+  background: var(--paper-2, #faf6ec);
 }
 
 .info-panel + .info-panel,
@@ -76,7 +76,7 @@ body.story-page.chapter-story .story-shell {
 
 .story-meta {
   margin: 8px 0 0;
-  color: #8a8a8a;
+  color: var(--ink-3, #7b7265);
   font-size: 16px;
 }
 
@@ -127,7 +127,7 @@ body.story-page.chapter-story .story-shell {
 }
 
 .meaning-pinyin {
-  color: #f36a58;
+  color: #a3322a;
 }
 
 .meaning-level {
@@ -153,9 +153,9 @@ body.story-page.chapter-story .story-shell {
 .meaning-button {
   min-height: 30px;
   padding: 0 11px;
-  border: 1px solid rgba(29, 39, 35, 0.12);
-  border-radius: 999px;
-  background: #1d2723;
+  border: 1px solid rgba(28, 25, 21, 0.12);
+  border-radius: var(--radius, 2px);
+  background: #1c1915;
   color: #fff;
   font: inherit;
   font-size: 12px;
@@ -165,8 +165,8 @@ body.story-page.chapter-story .story-shell {
 }
 
 .meaning-button-secondary {
-  background: #fff;
-  color: #1d2723;
+  background: var(--paper-2, #faf6ec);
+  color: #1c1915;
 }
 
 .meaning-button:disabled {
@@ -206,8 +206,8 @@ body.story-page.chapter-story .story-shell {
   min-height: 38px;
   padding: 0 12px;
   border: 1px solid var(--border);
-  border-radius: 999px;
-  background: #fff;
+  border-radius: var(--radius, 2px);
+  background: var(--paper-2, #faf6ec);
   color: var(--text);
   font: inherit;
 }
@@ -216,7 +216,7 @@ body.story-page.chapter-story .story-shell {
   border: 1px solid var(--text);
   background: var(--text);
   color: #fff;
-  border-radius: 999px;
+  border-radius: var(--radius, 2px);
   padding: 9px 16px;
   font: inherit;
   font-size: 14px;
@@ -224,7 +224,7 @@ body.story-page.chapter-story .story-shell {
 }
 
 .audio-button-secondary {
-  background: #fff;
+  background: var(--paper-2, #faf6ec);
   color: var(--text);
 }
 
@@ -238,11 +238,11 @@ body.story-page.chapter-story .story-shell {
   align-items: center;
   min-height: 38px;
   padding: 0 12px;
-  border-radius: 999px;
-  background: #f4fbf9;
-  color: #54665d;
+  border-radius: var(--radius, 2px);
+  background: #f2ece0;
+  color: #4a433a;
   font-size: 14px;
-  border: 1px solid rgba(29, 39, 35, 0.08);
+  border: 1px solid rgba(28, 25, 21, 0.08);
 }
 
 .display-switches {
@@ -257,7 +257,7 @@ body.story-page.chapter-story .story-shell {
   gap: 8px;
   padding: 6px 12px;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius, 2px);
   background: #fafafa;
   color: #666;
   font-size: 15px;
@@ -299,8 +299,49 @@ body.story-page.chapter-story .story-next-panel {
 
 .story-next-panel {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
   margin-top: 44px;
+}
+
+/* End of a series: no next story to run on to, so say so and offer the way
+   back and the other series by name. */
+.story-series-end {
+  margin: 0;
+  font-size: 17px;
+  color: var(--ink-2, #4a433a);
+}
+
+.story-series-end strong {
+  font-weight: 600;
+  color: var(--ink, #1c1915);
+}
+
+.story-series-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.story-series-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--cinnabar, #a3322a);
+  border-radius: var(--radius, 2px);
+  color: var(--cinnabar, #a3322a);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.story-series-link:hover {
+  background: var(--cinnabar, #a3322a);
+  color: var(--paper-2, #faf6ec);
 }
 
 .story-next-button {
@@ -309,18 +350,18 @@ body.story-page.chapter-story .story-next-panel {
   justify-content: center;
   min-height: 44px;
   padding: 0 18px;
-  border-radius: 999px;
-  background: #1d2723;
+  border-radius: var(--radius, 2px);
+  background: #1c1915;
   color: #fff;
   text-decoration: none;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.01em;
-  box-shadow: 0 10px 24px rgba(29, 39, 35, 0.12);
+  box-shadow: 0 10px 24px rgba(28, 25, 21, 0.12);
 }
 
 .story-next-button:hover {
-  background: #28564d;
+  background: #a3322a;
 }
 
 .reader-row {
@@ -349,10 +390,10 @@ body.story-page.chapter-story .phrase-card {
   width: 100%;
   max-width: 100%;
   padding: 22px 24px 20px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid rgba(29, 39, 35, 0.08);
-  box-shadow: 0 18px 34px rgba(29, 39, 35, 0.06);
+  border-radius: var(--radius, 2px);
+  background: rgba(250, 246, 236, 0.92);
+  border: 1px solid rgba(28, 25, 21, 0.08);
+  box-shadow: 0 18px 34px rgba(28, 25, 21, 0.06);
 }
 
 .pinyin-line {
@@ -407,7 +448,7 @@ body.story-page.chapter-story .hanzi-line {
   content: attr(data-pinyin);
   position: static;
   display: block;
-  font-family: "Inter", sans-serif;
+  font-family: var(--serif, Georgia, serif);
   font-size: 16px;
   line-height: 1.1;
   color: var(--pinyin);
@@ -417,10 +458,10 @@ body.story-page.chapter-story .hanzi-line {
 .word[data-tip]::after {
   content: attr(data-tip);
   display: block;
-  font-family: "Inter", sans-serif;
+  font-family: var(--serif, Georgia, serif);
   font-size: 12px;
   line-height: 1.35;
-  color: #8a8a8a;
+  color: var(--ink-3, #7b7265);
   margin-top: 10px;
   pointer-events: none;
   text-align: center;
@@ -428,14 +469,14 @@ body.story-page.chapter-story .hanzi-line {
 }
 
 .word:hover {
-  background: #bfeee5;
+  background: #dde6e0;
   border-radius: 8px;
 }
 
 .word.reading {
-  background: #bfeee5;
+  background: #dde6e0;
   border-radius: 8px;
-  box-shadow: 0 0 0 2px rgba(159, 227, 215, 0.35);
+  box-shadow: 0 0 0 2px rgba(109, 143, 128, 0.2);
 }
 
 .underline {
@@ -463,12 +504,12 @@ body.story-page.chapter-story .hanzi-line {
 body.story-page {
   padding: 24px 20px 40px;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top left, rgba(171, 230, 222, 0.42), transparent 30%),
-    radial-gradient(circle at top right, rgba(247, 191, 119, 0.22), transparent 26%),
-    linear-gradient(180deg, #fffdf8 0%, #f2ebdf 100%);
-  color: #1d2723;
-  font-family: "Inter", "Noto Sans SC", sans-serif;
+  background-color: var(--paper, #f2ece0);
+  background-image:
+    repeating-linear-gradient(62deg, rgba(28, 25, 21, 0.014) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(-62deg, rgba(28, 25, 21, 0.012) 0 1px, transparent 1px 13px);
+  color: #1c1915;
+  font-family: var(--serif, "Noto Serif SC", Georgia, serif);
 }
 
 body.story-page .story-shell {
@@ -479,10 +520,10 @@ body.story-page .story-shell {
 body.story-page .story-loading,
 body.story-page .story-error {
   padding: 36px;
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(29, 39, 35, 0.08);
-  box-shadow: 0 22px 60px rgba(29, 39, 35, 0.08);
+  border-radius: var(--radius, 2px);
+  background: rgba(250, 246, 236, 0.9);
+  border: 1px solid rgba(28, 25, 21, 0.08);
+  box-shadow: 0 22px 60px rgba(28, 25, 21, 0.08);
 }
 
 body.story-page .story-loading {
@@ -495,7 +536,7 @@ body.story-page .story-back {
   align-items: center;
   gap: 8px;
   margin-bottom: 16px;
-  color: #54665d;
+  color: #4a433a;
   text-decoration: none;
   font-size: 15px;
   font-weight: 600;
@@ -506,10 +547,10 @@ body.story-page .story-hero {
   grid-template-columns: minmax(0, 1.65fr) minmax(280px, 0.85fr);
   gap: 24px;
   padding: 34px;
-  border-radius: 32px;
-  background: linear-gradient(145deg, rgba(24, 44, 40, 0.98), rgba(29, 102, 87, 0.97));
+  border-radius: var(--radius, 2px);
+  background: linear-gradient(145deg, rgba(28, 25, 21, 0.98), rgba(58, 52, 44, 0.97));
   color: #ffffff;
-  box-shadow: 0 28px 64px rgba(24, 44, 40, 0.18);
+  box-shadow: 0 28px 64px rgba(28, 25, 21, 0.18);
 }
 
 body.story-page .story-kicker {
@@ -517,7 +558,7 @@ body.story-page .story-kicker {
   align-items: center;
   margin-bottom: 18px;
   padding: 7px 12px;
-  border-radius: 999px;
+  border-radius: var(--radius, 2px);
   background: rgba(255, 255, 255, 0.12);
   font-size: 13px;
   font-weight: 700;
@@ -537,7 +578,7 @@ body.story-page .story-english-title {
   margin: 14px 0 0;
   font-size: clamp(20px, 2.6vw, 28px);
   line-height: 1.25;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(250, 246, 236, 0.9);
 }
 
 body.story-page .story-summary {
@@ -545,7 +586,7 @@ body.story-page .story-summary {
   margin: 18px 0 0;
   font-size: 17px;
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(250, 246, 236, 0.9);
 }
 
 body.story-page .story-hero-meta {
@@ -553,7 +594,7 @@ body.story-page .story-hero-meta {
   gap: 14px;
   align-content: start;
   padding: 22px;
-  border-radius: 24px;
+  border-radius: var(--radius, 2px);
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
@@ -567,7 +608,7 @@ body.story-page .story-hero-meta span {
   font-size: 13px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.68);
+  color: rgba(250, 246, 236, 0.8);
 }
 
 body.story-page .story-hero-meta strong {
@@ -590,9 +631,9 @@ body.story-page .story-nav span {
   justify-content: center;
   min-height: 44px;
   padding: 0 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(29, 39, 35, 0.09);
-  background: rgba(255, 255, 255, 0.74);
+  border-radius: var(--radius, 2px);
+  border: 1px solid rgba(28, 25, 21, 0.09);
+  background: rgba(250, 246, 236, 0.85);
   color: #34433d;
   text-decoration: none;
   font-size: 14px;
@@ -607,10 +648,10 @@ body.story-page .sentence-grid {
 
 body.story-page .sentence-card {
   padding: 24px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid rgba(29, 39, 35, 0.08);
-  box-shadow: 0 18px 34px rgba(29, 39, 35, 0.06);
+  border-radius: var(--radius, 2px);
+  background: rgba(250, 246, 236, 0.92);
+  border: 1px solid rgba(28, 25, 21, 0.08);
+  box-shadow: 0 18px 34px rgba(28, 25, 21, 0.06);
 }
 
 body.story-page .sentence-card-head {
@@ -625,13 +666,13 @@ body.story-page .sentence-number {
   align-items: center;
   min-height: 28px;
   padding: 0 10px;
-  border-radius: 999px;
-  background: rgba(29, 39, 35, 0.06);
+  border-radius: var(--radius, 2px);
+  background: rgba(28, 25, 21, 0.06);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #54665d;
+  color: #4a433a;
 }
 
 body.story-page .sentence-level {
@@ -639,13 +680,13 @@ body.story-page .sentence-level {
   align-items: center;
   min-height: 28px;
   padding: 0 10px;
-  border-radius: 999px;
-  background: rgba(171, 230, 222, 0.32);
+  border-radius: var(--radius, 2px);
+  background: rgba(109, 143, 128, 0.18);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #28564d;
+  color: #a3322a;
 }
 
 body.story-page .sentence-hanzi {
@@ -682,13 +723,13 @@ body.story-page .story-error p {
 }
 
 body.story-page .story-error a {
-  color: #28564d;
+  color: #a3322a;
   font-weight: 700;
   text-decoration: none;
 }
 
 body.story-page .visit-counter {
-  box-shadow: 0 8px 18px rgba(29, 39, 35, 0.06);
+  box-shadow: 0 8px 18px rgba(28, 25, 21, 0.06);
 }
 
 .site-footer,
@@ -813,6 +854,26 @@ body.story-page .visit-counter {
 
   .story-next-button {
     width: 100%;
+  }
+
+  /* Two buttons at the end of a series: stack them rather than letting the
+     full-width rule above push the second one onto its own ragged line. */
+  .story-next-panel {
+    align-items: stretch;
+  }
+
+  .story-series-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .story-series-link {
+    width: 100%;
+  }
+
+  .story-series-end {
+    text-align: right;
   }
 
   .site-footer,

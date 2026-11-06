@@ -73,7 +73,8 @@
         "pinyin": "Wǒ shuō: \"Shì de, wǒ hěn xiǎng tā.\"",
         "english": "I say, 'Yes, I miss her very much.'"
       }
-    ]
+    ],
+    "series": 1
   },
   {
     "id": "2",
@@ -173,7 +174,8 @@
         "pinyin": "Māma shuō: \"Zài děng yí huìr.\"",
         "english": "Mom says, 'Wait a little longer.'"
       }
-    ]
+    ],
+    "series": 1
   },
   {
     "id": "3",
@@ -243,7 +245,8 @@
         "pinyin": "Nǎinai shuō: \"Nǐmen lèi ma? Xiān zuò yíxià ba.\"",
         "english": "Grandma says, 'Are you tired? Sit down first.'"
       }
-    ]
+    ],
+    "series": 1
   },
   {
     "id": "4",
@@ -307,7 +310,8 @@
         "pinyin": "Nǎinai shuō: \"Yíhuìr wǒmen yìqǐ chī.\"",
         "english": "Grandma says, 'We’ll eat together in a moment.'"
       }
-    ]
+    ],
+    "series": 1
   },
   {
     "id": "5",
@@ -383,7 +387,8 @@
         "pinyin": "Wǒ juéde hěn kāixīn.",
         "english": "I feel very happy."
       }
-    ]
+    ],
+    "series": 1
   },
   {
     "id": "6",
@@ -459,7 +464,8 @@
         "pinyin": "Nǎinai shuō: \"Shì de, dànshì dōngxi hěn hǎo.\"",
         "english": "Grandma says, 'Yes, but the things are good.'"
       }
-    ]
+    ],
+    "series": 1
   },
   {
     "id": "7",
@@ -523,7 +529,8 @@
         "pinyin": "Wǒ juéde zhèyàng de shēnghuó hěn hǎo.",
         "english": "I think this kind of life is very good."
       }
-    ]
+    ],
+    "series": 1
   },
   {
     "id": "8",
@@ -629,7 +636,8 @@
         "pinyin": "Dànshì hěn kāixīn.",
         "english": "But I am very happy."
       }
-    ]
+    ],
+    "series": 1
   },
   {
     "id": "9",
@@ -723,7 +731,8 @@
         "pinyin": "Yě hěn nánwàng.",
         "english": "And it is unforgettable."
       }
-    ]
+    ],
+    "series": 1
   },
   {
     "id": "10",
@@ -731,7 +740,7 @@
     "title": "旧书里的照片",
     "englishTitle": "The photo inside the old book",
     "level": "HSK 2",
-    "summary": "Mr. Chen is a retired 65-year-old man living in a Beijing hutong. One Saturday he buys an old book at a second-hand market. When he opens it at home, an old black-and-white photograph falls out showing a family of four standing in front of a house.",
+    "summary": "Mr Chen buys an old book at a second-hand market and finds a family photograph from the sixties tucked inside it.",
     "sentences": [
       {
         "id": "001",
@@ -811,7 +820,8 @@
         "pinyin": "",
         "english": "They are standing in front of a house."
       }
-    ]
+    ],
+    "series": 2
   },
   {
     "id": "11",
@@ -819,7 +829,7 @@
     "title": "房子在哪里？",
     "englishTitle": "Where is the house?",
     "level": "HSK 2",
-    "summary": "Mr. Chen studies the photo carefully and realises the house in it looks remarkably like his own home — same shape, though the tree and door colour have changed. He turns the photo over and finds small writing on the back, but needs his glasses to read it.",
+    "summary": "The house in the photograph looks remarkably like his own, and there is small writing on the back.",
     "sentences": [
       {
         "id": "001",
@@ -923,7 +933,8 @@
         "pinyin": "",
         "english": "He needs his glasses."
       }
-    ]
+    ],
+    "series": 2
   },
   {
     "id": "12",
@@ -931,7 +942,7 @@
     "title": "照片背面的字",
     "englishTitle": "The words on the back of the photo",
     "level": "HSK 2",
-    "summary": "Mr. Chen reads the back of the photo: '1965, spring. The Chen family, Dongcheng District, Beijing.' His own surname is Chen, and he was four years old in 1965. He feels a strange, inexplicable connection to the little boy in the photo.",
+    "summary": "The words on the back give a year, a district and a family name — and the name is his own.",
     "sentences": [
       {
         "id": "001",
@@ -1023,7 +1034,8 @@
         "pinyin": "",
         "english": "He does not know why, but he feels he knows this child."
       }
-    ]
+    ],
+    "series": 2
   },
   {
     "id": "13",
@@ -1031,7 +1043,7 @@
     "title": "去找邻居",
     "englishTitle": "Going to find the neighbours",
     "level": "HSK 2",
-    "summary": "The next morning Mr. Chen visits Old Uncle Wang, a 78-year-old neighbour who has lived in the hutong for over fifty years. Wang studies the photo with a strange expression, then tells Mr. Chen to go and ask Grandma Li, who has lived there even longer.",
+    "summary": "He takes the photograph to the oldest neighbours in the hutong to ask who the family were.",
     "sentences": [
       {
         "id": "001",
@@ -1123,7 +1135,8 @@
         "pinyin": "",
         "english": "She has lived here even longer and knows more."
       }
-    ]
+    ],
+    "series": 2
   },
   {
     "id": "14",
@@ -1131,7 +1144,7 @@
     "title": "李奶奶的故事",
     "englishTitle": "Grandma Li's story",
     "level": "HSK 2",
-    "summary": "Grandma Li, aged 82, recognises the photo immediately. She knows the family — the Chens, a man called Chen Guohua. She says they moved away in 1966 and she never heard from them again. She asks Mr. Chen why he is looking for them.",
+    "summary": "Grandma Li recognises the family at once, and remembers the year they moved away.",
     "sentences": [
       {
         "id": "001",
@@ -1223,7 +1236,8 @@
         "pinyin": "",
         "english": "She pauses and looks at Mr. Chen. Why... why do you want to find them?"
       }
-    ]
+    ],
+    "series": 2
   },
   {
     "id": "15",
@@ -1231,7 +1245,7 @@
     "title": "一个大问题",
     "englishTitle": "A big question",
     "level": "HSK 2",
-    "summary": "Mr. Chen tells Grandma Li his name and birth year. He realises his father's name was Chen Guojian — very similar to Chen Guohua. Grandma Li gently asks whether Guohua might have been his father's brother. Mr. Chen doesn't know — his father died when he was twelve and his mother never mentioned an uncle.",
+    "summary": "A question from Grandma Li makes Mr Chen wonder what his father never told him.",
     "sentences": [
       {
         "id": "001",
@@ -1323,7 +1337,8 @@
         "pinyin": "",
         "english": "If this really was Chen Guohua's family, then the little boy in the photo... may be your uncle."
       }
-    ]
+    ],
+    "series": 2
   },
   {
     "id": "16",
@@ -1331,7 +1346,7 @@
     "title": "给妈妈打电话",
     "englishTitle": "Calling his mother",
     "level": "HSK 2",
-    "summary": "Mr. Chen calls his mother in Shanghai. After a long silence she confirms: his father did have a younger brother called Guohua. They lost contact in 1966 when Guohua's family moved south. His father spent years trying to find him. Mr. Chen tells his mother he may have found a lead.",
+    "summary": "He calls his mother in Shanghai, and after a long silence she answers him.",
     "sentences": [
       {
         "id": "001",
@@ -1423,7 +1438,8 @@
         "pinyin": "",
         "english": "I think... I found Uncle's whereabouts."
       }
-    ]
+    ],
+    "series": 2
   },
   {
     "id": "17",
@@ -1431,7 +1447,7 @@
     "title": "去图书馆",
     "englishTitle": "Going to the library",
     "level": "HSK 2",
-    "summary": "At the library's old records department, a librarian finds Chen Guohua's registration: he was a teacher who officially moved to Guangzhou in 1966. Excited, Mr. Chen texts his mother the news and declares he is going to find his uncle.",
+    "summary": "The library’s old records department still holds a registration card from 1966.",
     "sentences": [
       {
         "id": "001",
@@ -1511,7 +1527,8 @@
         "pinyin": "",
         "english": "I am going to find him."
       }
-    ]
+    ],
+    "series": 2
   },
   {
     "id": "18",
@@ -1519,7 +1536,7 @@
     "title": "南方的消息",
     "englishTitle": "News from the south",
     "level": "HSK 2",
-    "summary": "Mr. Chen's mother remembers a contact in Guangzhou. Online research confirms Chen Guohua worked at a Guangzhou primary school from 1966 to 1985. A community website article titled \"Old teacher Chen Guohua, a lifetime devoted to education\" confirms he was still teaching — Mr. Chen's eyes fill with tears.",
+    "summary": "A trail leading south suggests the man in the photograph may still be alive.",
     "sentences": [
       {
         "id": "001",
@@ -1599,7 +1616,8 @@
         "pinyin": "",
         "english": "His uncle was still a teacher."
       }
-    ]
+    ],
+    "series": 2
   },
   {
     "id": "19",
@@ -1607,7 +1625,7 @@
     "title": "重逢",
     "englishTitle": "Reunion",
     "level": "HSK 2",
-    "summary": "Three weeks later Mr. Chen flies to Guangzhou. The article's author turns out to be Uncle Guohua's daughter. The uncle is alive at 87. They meet, look at the old photograph together, and Uncle Guohua weeps when he hears his brother spent a lifetime searching for him. Mr. Chen places the photo in his uncle's hands. Outside, the Guangzhou sun shines warm and bright.",
+    "summary": "Mr Chen flies to Guangzhou to see how the story ends.",
     "sentences": [
       {
         "id": "001",
@@ -1681,6 +1699,7 @@
         "pinyin": "",
         "english": "Outside the window, the Guangzhou sun is bright and warm."
       }
-    ]
+    ],
+    "series": 2
   }
 ]

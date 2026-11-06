@@ -1,0 +1,89 @@
+/* ---------- OpenChinese theme ----------------------------------------------
+   One palette for the whole site, loaded by every page before its own
+   stylesheet. The reference is a page of classical Chinese print: xuan paper,
+   ink, a cinnabar seal, and a celadon green for anything that is not either.
+
+   Shapes are square. Traditional Chinese layout is ruled and rectangular, so
+   nothing here is a pill or a rounded card; the corners are kept at 2px only
+   so that borders meet cleanly.                                             */
+
+:root {
+  /* 宣纸 — paper, from the lightest wash to the deepest fold */
+  --paper: #f2ece0;
+  --paper-2: #faf6ec;
+  --paper-3: #e7ddc9;
+
+  /* 墨 — ink, thinned three ways */
+  --ink: #1c1915;
+  --ink-2: #4a433a;
+  --ink-3: #7b7265;
+
+  /* 朱砂 — cinnabar, the seal red. One accent, used sparingly. */
+  --cinnabar: #a3322a;
+  --cinnabar-d: #86271f;
+  --cinnabar-l: #f1dfda;
+
+  /* 青瓷 — celadon, for the second voice */
+  --celadon: #6d8f80;
+  --celadon-l: #dde6e0;
+
+  /* 金 — a muted gold, for marks rather than surfaces */
+  --gold: #a98a4f;
+
+  --line: rgba(28, 25, 21, 0.16);
+  --line-soft: rgba(28, 25, 21, 0.08);
+  --line-strong: rgba(28, 25, 21, 0.34);
+
+  --radius: 2px;
+
+  --serif: "Noto Serif SC", "Songti SC", "Source Han Serif SC", "Noto Serif",
+    Georgia, "Times New Roman", serif;
+  --sans: "Noto Sans SC", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+
+  /* kept so older rules that still reference them land somewhere sensible */
+  --bg: var(--paper);
+  --text: var(--ink);
+  --muted: var(--ink-3);
+  --accent: var(--celadon-l);
+}
+
+/* The paper itself: a flat wash with two faint diagonals across it, so that
+   large empty areas read as a sheet rather than as a blank screen. */
+.paper-ground {
+  background-color: var(--paper);
+  background-image:
+    repeating-linear-gradient(
+      62deg,
+      rgba(28, 25, 21, 0.014) 0 1px,
+      transparent 1px 9px
+    ),
+    repeating-linear-gradient(
+      -62deg,
+      rgba(28, 25, 21, 0.012) 0 1px,
+      transparent 1px 13px
+    );
+}
+
+/* 印章 — the seal. A cinnabar square with the character cut out of it, used
+   for the wordmark and for anything that needs to look stamped on. */
+.seal {
+  display: inline-grid;
+  place-items: center;
+  width: 2.1em;
+  height: 2.1em;
+  background: var(--cinnabar);
+  color: var(--paper-2);
+  font-family: var(--serif);
+  font-weight: 600;
+  line-height: 1;
+  border-radius: var(--radius);
+}
+
+/* A heading rule in the classical manner: one firm line, one hairline under
+   it, with the gap doing the work. */
+.rule-double {
+  border: 0;
+  height: 0;
+  border-top: 1px solid var(--line-strong);
+  box-shadow: 0 3px 0 -2px var(--line);
+}

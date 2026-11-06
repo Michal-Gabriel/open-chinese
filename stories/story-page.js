@@ -1,3 +1,5 @@
+import { seriesMeta, seriesOf } from './series.js?v=21';
+
 const STORY_PUNCTUATION = new Set(["。", "，", "！", "？", "：", "；", "“", "”", "（", "）", "《", "》", "、", "…", ".", "—"]);
 const AUDIO_CACHE_BUSTER = "2026-04-24";
 const COMMON_VOCAB = [
@@ -585,7 +587,7 @@ function getStoryId() {
 }
 
 async function loadStories() {
-  const response = await fetch("./data/stories.json");
+  const response = await fetch("./data/stories.json?v=20");
   if (!response.ok) {
     throw new Error("Could not load story data.");
   }
@@ -910,9 +912,20 @@ function renderStoryPage(story, stories) {
   const priorKeys = collectSeenKeys(stories, storyIndex, tokenLexicon);
   const lexicon = buildLexicon(story.vocab || [], priorKeys);
   const storyNumber = story.id;
-  const isChapterStory = Number.parseInt(storyNumber, 10) >= 11;
+  /* The second series starts at story 10, so read the series from the data
+     rather than from a hard-coded id. The dense layout belongs to the second
+     series, whose stories are longer. */
+  const isChapterStory = (story.series || 1) >= 2;
   const storyCount = stories.length;
-  const nextStory = stories[storyIndex + 1] || null;
+  /* A series ends where the next story belongs to a different one. The two
+     series share no characters, so running straight on would be a non
+     sequitur: offer the way back, and the other series by name instead. */
+  const currentSeries = seriesOf(story);
+  const following = stories[storyIndex + 1] || null;
+  const nextStory = following && seriesOf(following) === currentSeries ? following : null;
+  const otherSeriesStart = nextStory
+    ? null
+    : stories.find((entry) => seriesOf(entry) !== currentSeries) || null;
   const firstSentence = story.sentences[0];
   const remainingSentences = story.sentences.slice(1);
   const rows = chunk(remainingSentences, isChapterStory ? 1 : 3);
@@ -920,9 +933,17 @@ function renderStoryPage(story, stories) {
   const initialEntry = firstSentenceWord ? lexicon.byKey.get(firstSentenceWord.key) : lexicon.entries[0];
   const storyKeys = collectStoryKeys(story, tokenLexicon);
   const newWordCount = Array.from(storyKeys).filter((key) => !priorKeys.has(key)).length;
+  const otherSeriesName = otherSeriesStart ? seriesMeta(seriesOf(otherSeriesStart)).title : "";
   const nextStoryLink = nextStory
     ? `<a class="story-next-button" href="./story.html?story=${escapeHtml(nextStory.slug || `story${nextStory.id}`)}">Read next story</a>`
-    : "";
+    : `
+        <p class="story-series-end">That is the end of <strong>${escapeHtml(seriesMeta(currentSeries).title)}</strong>.</p>
+        <div class="story-series-actions">
+          <a class="story-next-button" href="./">All stories</a>
+          ${otherSeriesStart
+            ? `<a class="story-series-link" href="./story.html?story=${escapeHtml(otherSeriesStart.slug || `story${otherSeriesStart.id}`)}">Start “${escapeHtml(otherSeriesName)}”</a>`
+            : ""}
+        </div>`;
   const initialWordKey = firstSentenceWord ? firstSentenceWord.key : firstSentence.text;
   const initialEnglish = buildEnglishGloss(initialWordKey, lexicon);
 

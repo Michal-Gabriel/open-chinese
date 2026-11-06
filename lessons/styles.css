@@ -1,24 +1,27 @@
+/* The same palette as the rest of the site: paper, ink, cinnabar, celadon.
+   The variable names are kept from the original so the rest of this file
+   needs no edits — only what they point at has changed. */
 :root{
-  --green:#58CC02; --green-d:#46A302; --green-l:#D7FFB8; --green-t:#58A700;
-  --blue:#1CB0F6; --blue-d:#1899D6;
-  --red:#FF4B4B; --red-d:#EA2B2B; --red-l:#FFDFE0; --red-t:#EA2B2B;
-  --yellow:#FFC800; --purple:#CE82FF; --orange:#FF9600;
-  --ink:#3C3C3C; --ink-2:#4B4B4B; --grey:#AFAFAF; --grey-l:#E5E5E5; --grey-bg:#F7F7F7;
-  --wing:#E5E5E5;
-  --radius:16px;
+  --green:#6D8F80; --green-d:#577567; --green-l:#DDE6E0; --green-t:#4F6B55;
+  --blue:#4B6B8A; --blue-d:#3C566F;
+  --red:#A3322A; --red-d:#86271F; --red-l:#F1DFDA; --red-t:#A3322A;
+  --yellow:#A98A4F; --purple:#7A5A6E; --orange:#B5703A;
+  --ink:#1C1915; --ink-2:#4A433A; --grey:#9B9284; --grey-l:#E0D7C5; --grey-bg:#F2ECE0;
+  --wing:#E0D7C5;
+  --radius:2px;
 }
 @media (prefers-color-scheme: dark){
-  :root{ --ink:#F1F7FB; --ink-2:#DCE6EC; --grey:#5F7382; --grey-l:#37464F; --grey-bg:#131F24; --wing:#37464F; }
+  :root{ --ink:#F2ECE0; --ink-2:#D9D0BF; --grey:#776E60; --grey-l:#3A342C; --grey-bg:#17150F; --wing:#3A342C; }
 }
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
 body{
   margin:0;
-  font-family:Nunito,"Helvetica Neue",Arial,sans-serif;
-  font-weight:700;
+  font-family:var(--serif,"Noto Serif SC",Georgia,serif);
+  font-weight:600;
   color:var(--ink);
-  background:#fff;
+  background:var(--grey-bg);
   overscroll-behavior:none;
 }
 @media (prefers-color-scheme: dark){ body{background:var(--grey-bg)} }
@@ -28,7 +31,7 @@ button{font-family:inherit;font-weight:800;cursor:pointer;border:0;background:no
 /* ---------- generic 3D button ---------- */
 .btn{
   display:block;width:100%;padding:14px 16px;border-radius:var(--radius);
-  font-size:15px;letter-spacing:.8px;text-transform:uppercase;
+  font-size:15px;letter-spacing:.14em;text-transform:uppercase;
   color:#fff;background:var(--green);box-shadow:0 4px 0 var(--green-d);
   transition:filter .1s;
 }

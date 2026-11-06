@@ -340,7 +340,7 @@ function renderPath() {
   app.appendChild(top);
 
   const hero = el('div', 'hero');
-  hero.appendChild(el('h1', null, '🐲 Gamified Lessons'));
+  hero.appendChild(el('h1', null, 'Gamified Lessons'));
   const doneCount = Object.values(S.progress).filter(v => v > 0).length;
   hero.appendChild(el('p', null, doneCount
     ? doneCount + ' of ' + ALL_LESSONS.length + ' lessons started · keep going!'
