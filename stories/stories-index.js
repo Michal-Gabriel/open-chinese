@@ -6,21 +6,21 @@
  * disagree again, and a new story needs no HTML edit.
  */
 
-const LEVEL_BLURB = {
-  'HSK 1-2': 'Short stories built on the first few hundred words. New vocabulary arrives slowly and repeats often.',
-  'HSK 2': 'Longer stories with a wider vocabulary, for once the basics feel comfortable.',
-};
+import { SERIES, seriesMeta, seriesOf } from './series.js?v=21';
 
 const root = document.getElementById('story-sections');
 
-function card(story) {
+/* `number` counts within the series, so each series starts again at one.
+   The link still uses story.id, which is the stable key the data, the audio
+   folders and the old story1.html…story19.html stubs are all keyed on. */
+function card(story, number) {
   const a = document.createElement('a');
   a.className = 'story-card';
   a.href = './story.html?story=' + encodeURIComponent(story.id);
 
   const num = document.createElement('span');
   num.className = 'story-number';
-  num.textContent = 'Story ' + story.id;
+  num.textContent = 'Story ' + number;
   a.appendChild(num);
 
   const h3 = document.createElement('h3');
@@ -43,23 +43,39 @@ function card(story) {
   return a;
 }
 
-function section(level, stories) {
+function section(series, stories) {
+  const meta = seriesMeta(series);
+  const name = meta.title || ('Series ' + series);
+  const levels = Array.from(new Set(stories.map(st => st.level)));
+
   const s = document.createElement('section');
   s.className = 'story-section';
-  s.setAttribute('aria-label', 'Stories for ' + level);
+  s.setAttribute('aria-label', name);
 
   const h2 = document.createElement('h2');
-  h2.textContent = 'Read & Listen — ' + level;
+  h2.textContent = name;
   s.appendChild(h2);
+
+  if (meta.hanzi) {
+    const hz = document.createElement('p');
+    hz.className = 'story-section-hanzi';
+    hz.textContent = meta.hanzi;
+    s.appendChild(hz);
+  }
+
+  const range = document.createElement('p');
+  range.className = 'story-section-meta';
+  range.textContent = 'Series · ' + stories.length + ' stories · ' + levels.join(', ');
+  s.appendChild(range);
 
   const intro = document.createElement('p');
   intro.className = 'story-intro';
-  intro.textContent = LEVEL_BLURB[level] || (stories.length + ' stories at this level.');
+  intro.textContent = meta.blurb || (stories.length + ' stories.');
   s.appendChild(intro);
 
   const grid = document.createElement('div');
   grid.className = 'story-grid';
-  stories.forEach(st => grid.appendChild(card(st)));
+  stories.forEach((st, i) => grid.appendChild(card(st, i + 1)));
   s.appendChild(grid);
   return s;
 }
@@ -67,7 +83,7 @@ function section(level, stories) {
 async function build() {
   let stories;
   try {
-    const res = await fetch('./data/stories.json');
+    const res = await fetch('./data/stories.json?v=20');
     if (!res.ok) throw new Error('HTTP ' + res.status);
     stories = await res.json();
   } catch (e) {
@@ -82,16 +98,17 @@ async function build() {
     return;
   }
 
-  // keep the order the data is in, but group by level
-  const levels = [];
+  // keep the order the data is in, but group by series
+  const groups = [];
   for (const st of stories) {
-    let g = levels.find(l => l.level === st.level);
-    if (!g) { g = { level: st.level, items: [] }; levels.push(g); }
+    const sr = seriesOf(st);
+    let g = groups.find(x => x.series === sr);
+    if (!g) { g = { series: sr, items: [] }; groups.push(g); }
     g.items.push(st);
   }
 
   root.textContent = '';
-  levels.forEach(g => root.appendChild(section(g.level, g.items)));
+  groups.forEach(g => root.appendChild(section(g.series, g.items)));
 }
 
 build();

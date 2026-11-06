@@ -5,6 +5,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
+  font-family: var(--serif, Georgia, serif);
 }
 
 .site-nav .home {
@@ -13,12 +14,18 @@
   gap: 8px;
   font-size: 15px;
   font-weight: 600;
+  letter-spacing: 0.04em;
   text-decoration: none;
-  color: var(--text, #252525);
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--line, rgba(37, 37, 37, 0.12));
-  background: rgba(255, 255, 255, 0.7);
+  color: var(--ink, #1c1915);
+  padding: 7px 14px;
+  border-radius: var(--radius, 2px);
+  border: 1px solid var(--line, rgba(28, 25, 21, 0.16));
+  background: transparent;
+}
+
+.site-nav .home:hover {
+  border-color: var(--cinnabar, #a3322a);
+  color: var(--cinnabar, #a3322a);
 }
 
 .site-nav .spacer { flex: 1; }
@@ -35,33 +42,39 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-height: 40px;
+  min-height: 38px;
   padding: 0 16px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  background: rgba(169, 231, 220, 0.3);
-  color: var(--text, #252525);
+  border-radius: var(--radius, 2px);
+  border: 1px solid var(--cinnabar, #a3322a);
+  background: transparent;
+  color: var(--cinnabar, #a3322a);
   font-size: 14px;
   font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.site-nav .account button:hover {
+  background: var(--cinnabar, #a3322a);
+  color: var(--paper-2, #faf6ec);
 }
 
 .site-nav .account button img {
   width: 24px;
   height: 24px;
-  border-radius: 50%;
+  border-radius: var(--radius, 2px);
   display: block;
 }
 
 .site-nav .account .dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: transparent;
   flex: none;
 }
-.site-nav .account .dot.syncing { background: #1cb0f6; animation: nav-pulse 1s ease-in-out infinite; }
-.site-nav .account .dot.saved   { background: #58cc02; }
-.site-nav .account .dot.error   { background: #ffc800; }
+.site-nav .account .dot.syncing { background: var(--celadon, #6d8f80); animation: nav-pulse 1s ease-in-out infinite; }
+.site-nav .account .dot.saved   { background: var(--celadon, #6d8f80); }
+.site-nav .account .dot.error   { background: var(--gold, #a98a4f); }
 @keyframes nav-pulse { 0%,100% { opacity: .3 } 50% { opacity: 1 } }
 
 @media (max-width: 760px) {
@@ -73,4 +86,8 @@
   border-color: transparent;
   padding-left: 0;
   cursor: default;
+}
+
+.site-nav .home--current:hover {
+  color: var(--ink, #1c1915);
 }

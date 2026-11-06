@@ -6,7 +6,7 @@
 
 const COURSE = [
 {
-  id: 'u1', title: 'Greetings', subtitle: 'Say hello', color: '#58CC02', icon: '👋',
+  id: 'u1', title: 'Greetings', subtitle: 'Say hello', color: '#A3322A', icon: '好',
   lessons: [
     { id: 'u1l1', title: 'Hello',
       words: [
@@ -54,7 +54,7 @@ const COURSE = [
   ],
 },
 {
-  id: 'u2', title: 'People', subtitle: 'Who is who', color: '#1CB0F6', icon: '🧑',
+  id: 'u2', title: 'People', subtitle: 'Who is who', color: '#3C4A5A', icon: '人',
   lessons: [
     { id: 'u2l1', title: 'He and she',
       words: [
@@ -130,7 +130,7 @@ const COURSE = [
   ],
 },
 {
-  id: 'u3', title: 'Numbers', subtitle: 'One to ten', color: '#CE82FF', icon: '🔢',
+  id: 'u3', title: 'Numbers', subtitle: 'One to ten', color: '#6D8F80', icon: '十',
   lessons: [
     { id: 'u3l1', title: 'One to five',
       words: [
@@ -174,7 +174,7 @@ const COURSE = [
   ],
 },
 {
-  id: 'u4', title: 'Time', subtitle: 'Days and hours', color: '#FF9600', icon: '⏰',
+  id: 'u4', title: 'Time', subtitle: 'Days and hours', color: '#A98A4F', icon: '时',
   lessons: [
     { id: 'u4l1', title: 'What time',
       words: [
@@ -223,7 +223,7 @@ const COURSE = [
   ],
 },
 {
-  id: 'u5', title: 'Going places', subtitle: 'Here and there', color: '#FF4B4B', icon: '🚕',
+  id: 'u5', title: 'Going places', subtitle: 'Here and there', color: '#4B6B8A', icon: '去',
   lessons: [
     { id: 'u5l1', title: 'Come and go',
       words: [
@@ -275,7 +275,7 @@ const COURSE = [
   ],
 },
 {
-  id: 'u6', title: 'Food', subtitle: 'Eat, drink, buy', color: '#2B9AC9', icon: '🍜',
+  id: 'u6', title: 'Food', subtitle: 'Eat, drink, buy', color: '#B5703A', icon: '吃',
   lessons: [
     { id: 'u6l1', title: 'Eat and drink',
       words: [
@@ -326,7 +326,7 @@ const COURSE = [
   ],
 },
 {
-  id: 'u7', title: 'At home', subtitle: 'Rooms and things', color: '#A560E8', icon: '🏠',
+  id: 'u7', title: 'At home', subtitle: 'Rooms and things', color: '#7A5A6E', icon: '家',
   lessons: [
     { id: 'u7l1', title: 'Home',
       words: [
@@ -376,7 +376,7 @@ const COURSE = [
   ],
 },
 {
-  id: 'u8', title: 'Doing things', subtitle: 'Verbs you need', color: '#00B894', icon: '✍️',
+  id: 'u8', title: 'Doing things', subtitle: 'Verbs you need', color: '#4F6B55', icon: '做',
   lessons: [
     { id: 'u8l1', title: 'Look and listen',
       words: [
@@ -443,7 +443,7 @@ const COURSE = [
   ],
 },
 {
-  id: 'u9', title: 'Describing', subtitle: 'Big, small, hot, cold', color: '#E0459C', icon: '☀️',
+  id: 'u9', title: 'Describing', subtitle: 'Big, small, hot, cold', color: '#8A4A3C', icon: '大',
   lessons: [
     { id: 'u9l1', title: 'Big and small',
       words: [
