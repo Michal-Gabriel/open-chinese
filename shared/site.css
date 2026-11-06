@@ -148,6 +148,57 @@ h1 {
   margin-top: auto;
 }
 
+/* A section that is not finished yet: dimmed, and stamped. The card stays a
+   link — it works, it is just not done — so the greying is a statement about
+   the state of the work rather than a disabled control. */
+.section-card--wip {
+  position: relative;
+  background: transparent;
+  border-style: dashed;
+}
+
+.section-card--wip .section-icon {
+  background: var(--ink-3);
+}
+
+.section-card--wip h2,
+.section-card--wip p,
+.section-card--wip .section-meta {
+  color: var(--ink-3);
+}
+
+.section-card--wip .story-link {
+  border-color: var(--line);
+  color: var(--ink-3);
+}
+
+.section-card--wip:hover {
+  border-color: var(--line-strong);
+  box-shadow: none;
+}
+
+.section-card--wip:hover .story-link {
+  border-color: var(--ink-3);
+  background: transparent;
+  color: var(--ink-3);
+}
+
+.section-wip {
+  position: absolute;
+  top: 14px;
+  right: -8px;
+  padding: 5px 12px;
+  border: 1px solid var(--gold);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transform: rotate(-3deg);
+}
+
 /* ---------- the two notes below ---------- */
 
 .grid {
