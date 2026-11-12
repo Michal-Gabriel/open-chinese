@@ -262,6 +262,10 @@ h1 {
 .forum-panel .story-link {
   grid-column: 2;
   margin-top: 14px;
+  /* The panel is a grid, where the section cards' align-self: flex-start only
+     governs the block axis — without this the button stretches the full
+     column and stops looking like the one on the cards. */
+  justify-self: start;
 }
 
 @media (max-width: 600px) {
@@ -419,7 +423,8 @@ h1 {
 /* ---------- buttons and links ---------- */
 
 .story-card .story-link,
-.section-card .story-link {
+.section-card .story-link,
+.forum-panel .story-link {
   display: inline-flex;
   align-self: flex-start;
   align-items: center;
@@ -441,6 +446,14 @@ h1 {
 .section-card:hover .story-link {
   border-color: var(--cinnabar);
   background: var(--cinnabar);
+  color: var(--paper-2);
+}
+
+/* The forum keeps the celadon it is introduced with rather than borrowing
+   the cinnabar the three study cards use. */
+.forum-panel:hover .story-link {
+  border-color: var(--celadon);
+  background: var(--celadon);
   color: var(--paper-2);
 }
 
