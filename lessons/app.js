@@ -315,15 +315,22 @@ function currentLesson() {
 
 function renderPath() {
   const top = el('div', 'top');
-  const mk = (cls, icon, val) => {
-    const s = el('div', 'stat ' + cls);
-    s.appendChild(el('span', 'icon', icon));
-    s.appendChild(el('span', val === '∞' ? 'inf' : null, val));
+  /* A study record rather than a purse: days kept and ground covered. There
+     is nothing to spend and nothing to lose, so no gems and no lives. XP
+     still accrues underneath because the account schema stores it, but it is
+     not something the learner is asked to collect. */
+  const mk = (glyph, val, label) => {
+    const s = el('div', 'stat');
+    s.appendChild(el('span', 'stat-glyph', glyph));
+    const box = el('div');
+    box.appendChild(el('span', 'stat-val', String(val)));
+    box.appendChild(el('span', 'stat-label', label));
+    s.appendChild(box);
     return s;
   };
-  top.appendChild(mk('fire', '🔥', S.streak));
-  top.appendChild(mk('gem', '💎', S.xp));
-  top.appendChild(mk('heart', '❤️', '∞'));
+  const begun = Object.values(S.progress).filter(v => v > 0).length;
+  top.appendChild(mk('日', S.streak, S.streak === 1 ? 'day in a row' : 'days in a row'));
+  top.appendChild(mk('课', begun + ' / ' + ALL_LESSONS.length, 'lessons begun'));
   top.appendChild(el('div', 'spacer'));
   const home = el('a', 'home-link', '← OpenChinese');
   home.href = '../';
@@ -352,7 +359,7 @@ function renderPath() {
 
   COURSE.forEach(u => {
     const head = el('div', 'unit-head');
-    head.style.background = u.color;
+    head.style.setProperty('--unit', u.color);
     head.appendChild(el('div', 'u-ic', u.icon));
     const box = el('div');
     box.appendChild(el('h2', null, u.title));
@@ -360,30 +367,33 @@ function renderPath() {
     head.appendChild(box);
     path.appendChild(head);
 
+    /* The trail is a single ruled line down the page with a numbered stone on
+       it for each lesson — a table of contents you can walk — rather than a
+       zig-zag of bubbles. Each stone carries its number in hanzi, review
+       lessons carry 复, and the three study marks sit beside it. */
     const nodes = el('div', 'nodes');
     u.lessons.forEach((l, i) => {
-      const row = el('div', 'node-row');
-      // gentle zig-zag, like a trail
-      const offs = [0, 46, 70, 46, 0, -46, -70, -46];
-      row.style.transform = 'translateX(' + offs[i % offs.length] + 'px)';
+      const marked = S.progress[l.id] || 0;
+      const full = marked >= MAX_CROWNS;
+      const here = cur && cur.id === l.id;
 
-      const wrap = el('div', 'node-wrap');
-      const crowns = S.progress[l.id] || 0;
-      const full = crowns >= MAX_CROWNS;
+      const row = on(el('button', 'node-row' + (here ? ' here' : '')), () => startLesson(l.id));
+      row.title = l.title;
 
-      const btn = el('button', 'node' + (crowns ? ' done' : ' fresh'));
-      btn.textContent = full ? '👑' : l.review ? '🏆' : '★';
-      btn.style.background = full ? '#FFC800' : u.color;
-      btn.style.boxShadow = '0 7px 0 ' + (full ? '#E0A900' : shade(u.color));
-      btn.title = l.title;
-      on(btn, () => startLesson(l.id));
-      wrap.appendChild(btn);
+      const marks = el('div', 'marks');
+      for (let m = 0; m < MAX_CROWNS; m++) marks.appendChild(el('span', 'mark' + (m < marked ? ' on' : '')));
+      row.appendChild(marks);
 
-      if (crowns > 0) wrap.appendChild(el('div', 'crowns', '👑' + crowns));
-      wrap.appendChild(el('div', 'lbl', l.title));
-      if (cur && cur.id === l.id) wrap.appendChild(el('div', 'start-bubble', crowns ? 'Practice' : 'Start'));
+      const stone = el('div', 'node' + (full ? ' full' : marked ? ' done' : ' fresh'));
+      stone.style.setProperty('--unit', u.color);
+      stone.textContent = l.review ? '复' : numeral(i + 1);
+      row.appendChild(stone);
 
-      row.appendChild(wrap);
+      const side = el('div', 'node-side');
+      side.appendChild(el('div', 'lbl', l.title));
+      if (here) side.appendChild(el('div', 'cue', marked ? 'Practise again' : 'Begin here'));
+      row.appendChild(side);
+
       nodes.appendChild(row);
     });
     path.appendChild(nodes);
@@ -427,11 +437,12 @@ function authControl() {
   return box;
 }
 
-function shade(hex) {
-  const n = parseInt(hex.slice(1), 16);
-  const f = c => Math.max(0, Math.round(c * 0.78));
-  return '#' + [f(n >> 16 & 255), f(n >> 8 & 255), f(n & 255)]
-    .map(v => v.toString(16).padStart(2, '0')).join('');
+/* Lesson numbers are written the way a Chinese page would write them. */
+const HANZI_DIGITS = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+function numeral(n) {
+  if (n < 10) return HANZI_DIGITS[n];
+  if (n < 20) return '十' + HANZI_DIGITS[n % 10];
+  return HANZI_DIGITS[Math.floor(n / 10)] + '十' + HANZI_DIGITS[n % 10];
 }
 
 /* ---------- session ---------- */
@@ -469,10 +480,9 @@ function renderLesson() {
   fill.style.width = Math.round(ses.i / ses.queue.length * 100) + '%';
   bar.appendChild(fill);
   top.appendChild(bar);
-  const h = el('div', 'hearts');
-  h.appendChild(el('span', null, '❤️'));
-  h.appendChild(el('span', 'inf', '∞'));
-  top.appendChild(h);
+  /* Where the lives used to sit: how far through the set you are. Nothing is
+     taken away for a wrong answer — it simply comes back later. */
+  top.appendChild(el('div', 'step-count', Math.min(ses.i + 1, ses.queue.length) + ' / ' + ses.queue.length));
   wrap.appendChild(top);
 
   /* stage */
@@ -762,8 +772,9 @@ function renderDone() {
   const acc = Math.round(ses.right / Math.max(1, ses.right + ses.wrong) * 100);
   const wrap = el('div', 'finish');
   const box = el('div');
-  box.appendChild(el('div', 'trophy', ses.wrong === 0 ? '🏆' : '🎉'));
-  box.appendChild(el('h1', null, ses.wrong === 0 ? 'Perfect lesson!' : 'Lesson complete!'));
+  const clean = ses.wrong === 0;
+  box.appendChild(el('div', 'stamp' + (clean ? ' clean' : ''), clean ? '满' : '成'));
+  box.appendChild(el('h1', null, clean ? 'Perfect lesson' : 'Lesson complete'));
 
   const cards = el('div', 'cards');
   const card = (cls, title, val) => {
@@ -772,7 +783,7 @@ function renderDone() {
     c.appendChild(el('div', null, val));
     return c;
   };
-  cards.appendChild(card('', 'Total XP', ses.gainedXp));
+  cards.appendChild(card('', 'Marks', (S.progress[ses.lesson.id] || 0) + ' / ' + MAX_CROWNS));
   cards.appendChild(card('blue', 'Time', (secs < 60 ? secs + 's' : Math.floor(secs / 60) + 'm ' + (secs % 60) + 's')));
   cards.appendChild(card('red', 'Accuracy', acc + '%'));
   box.appendChild(cards);
