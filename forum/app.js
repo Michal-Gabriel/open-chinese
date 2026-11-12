@@ -1,10 +1,21 @@
-/* Forum — one page: the thread list, with every thread opening in place.
+/* Forum — a thread list and a thread, both served by this one file.
  *
- * There is no per-thread URL yet, on purpose: a second page would need
- * routing, a share link worth sharing, and a story about what happens when a
- * thread is deleted out from under one. This version answers the question it
- * was asked — let signed-in people start threads and answer each other — and
- * leaves room for the rest.
+ * Each thread has an address of its own: forum/?t=<id>. A query parameter
+ * rather than a path, because GitHub Pages serves static files with no
+ * rewriting — forum/<id> would be a 404, and the usual workaround (a 404.html
+ * that re-enters the app) turns every mistyped URL into a soft landing that
+ * hides real mistakes. The parameter costs nothing and works everywhere.
+ *
+ * Rows in the list are real anchors carrying that href, so copy-link,
+ * middle-click and open-in-new-tab behave the way they look like they should;
+ * a plain left click is intercepted and handled with pushState instead, to
+ * keep the threads already loaded.
+ *
+ * What a shared link cannot do yet: show a preview. Link previews are built
+ * from meta tags in the HTML, and the HTML here is one static file that knows
+ * nothing about any thread, so a link pasted into a chat shows the forum's
+ * own title. Fixing that needs rendering at the server, which Pages does not
+ * do.
  *
  * Trust: every piece of text that comes back from the server was typed by
  * somebody else, so it only ever reaches the page through textContent. There
@@ -21,12 +32,64 @@ const app = document.getElementById('app');
 const state = {
   threads: null,        // null = not loaded yet
   error: null,
-  openId: null,         // which thread is expanded
+  focusId: null,        // the thread in the address bar, if any
+  focus: null,          // its row, once fetched
+  missing: false,       // asked for a thread that is not there any more
   replies: {},          // threadId -> rows
   busy: false,
   composing: false,
   booted: false,       // has auth.js finished deciding whether there is a backend
 };
+
+/* ---------- the address bar ----------
+   One thread is in view when ?t= names it. Everything else about navigation
+   follows from that: the list is simply the case where it does not. */
+
+const PARAM = 't';
+
+function idFromUrl() {
+  const id = new URLSearchParams(location.search).get(PARAM);
+  /* Only ever a uuid. Anything else came from a mangled link or someone
+     poking at the URL, and sending it to the database would turn a typo into
+     an error message. */
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id || '') ? id : null;
+}
+
+function hrefFor(id) { return '?' + PARAM + '=' + encodeURIComponent(id); }
+
+function show(id, push) {
+  if (push !== false) {
+    history.pushState({}, '', id ? hrefFor(id) : location.pathname);
+  }
+  enter(id);
+}
+
+/* Adopt whatever the address bar now says — on boot, and on back/forward. */
+function enter(id) {
+  state.focusId = id;
+  state.missing = false;
+  state.composing = false;
+  if (!id) {
+    state.focus = null;
+    document.title = 'Forum — OpenChinese';
+    render();
+    if (state.threads == null && auth()) loadThreads();
+    return;
+  }
+  /* The list may already hold it, in which case there is nothing to wait
+     for; otherwise the thread is fetched on its own, which is what makes a
+     pasted link work on a cold page. */
+  const known = (state.threads || []).find(t => t.id === id);
+  state.focus = known || null;
+  /* The tab's name is part of the address: a bookmark or a back-button menu
+     full of "Forum — OpenChinese" tells the reader nothing. */
+  if (known) document.title = known.title + ' \u2014 Forum \u2014 OpenChinese';
+  render();
+  if (!known) loadThread(id);
+  if (!state.replies[id]) loadReplies(id);
+}
+
+window.addEventListener('popstate', () => enter(idFromUrl()));
 
 /* ---------- small helpers ---------- */
 
@@ -103,6 +166,26 @@ async function loadThreads() {
   render();
 }
 
+/* One thread, fetched by id. Used when a link is opened cold, so the page
+   has something to show before (or without) the whole list. */
+async function loadThread(id) {
+  const a = auth();
+  if (!a) return;
+  try {
+    const { data, error } = await a.client()
+      .from('forum_thread')
+      .select('id, author_id, author_name, title, body, created_at, last_activity, forum_reply(count)')
+      .eq('id', id)
+      .maybeSingle();
+    if (error) throw error;
+    if (!data) { state.missing = true; state.focus = null; }
+    else { state.focus = data; document.title = data.title + ' — Forum — OpenChinese'; }
+  } catch (e) {
+    state.error = e.message || 'could not load';
+  }
+  render();
+}
+
 async function loadReplies(threadId) {
   const a = auth();
   if (!a) return;
@@ -136,8 +219,8 @@ async function postThread(title, body) {
     .select('id')
     .single();
   if (error) return error.message;
-  state.openId = data && data.id;
   await loadThreads();
+  if (data && data.id) show(data.id);
   return null;
 }
 
@@ -158,8 +241,16 @@ async function remove(table, id, threadId) {
   if (!a) return;
   const { error } = await a.client().from(table).delete().eq('id', id);
   if (error) return;
-  if (table === 'forum_reply') await loadReplies(threadId);
+  if (table === 'forum_reply') {
+    await loadReplies(threadId);
+    await loadThreads();
+    return;
+  }
+  /* The thread just deleted is the one on screen, so there is nowhere to
+     stay: go back to the list rather than leaving its address in the bar. */
+  delete state.replies[id];
   await loadThreads();
+  show(null);
 }
 
 /* ---------- screens ---------- */
@@ -276,38 +367,50 @@ function deleteButton(table, id, threadId, label) {
   return b;
 }
 
-function threadCard(t) {
-  const open = state.openId === t.id;
-  const card = el('article', 'thread' + (open ? ' thread--open' : ''));
+/* A row in the list. An anchor, not a button: the whole point of this change
+   is that a thread has an address, and an address you cannot copy out of the
+   context menu is only half of one. */
+function threadRow(t) {
+  const card = el('article', 'thread');
 
-  const header = on(el('button', 'thread-head'), () => {
-    state.openId = open ? null : t.id;
-    if (!open && !state.replies[t.id]) loadReplies(t.id);
-    else render();
+  const link = el('a', 'thread-head');
+  link.href = hrefFor(t.id);
+  link.addEventListener('click', e => {
+    /* Leave the modified clicks alone — they mean "new tab", "new window",
+       "download", and the browser does them better than we would. */
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    show(t.id);
   });
-  header.type = 'button';
 
   const n = replyCount(t);
   const count = el('span', 'thread-count');
   count.appendChild(el('strong', null, String(n)));
   count.appendChild(el('span', 'thread-count-label', n === 1 ? 'reply' : 'replies'));
-  header.appendChild(count);
+  link.appendChild(count);
 
   const mid = el('span', 'thread-mid');
   mid.appendChild(el('span', 'thread-title', t.title));
   mid.appendChild(byline(t.author_name, t.last_activity || t.created_at));
-  header.appendChild(mid);
-  card.appendChild(header);
+  link.appendChild(mid);
 
-  if (!open) return card;
+  card.appendChild(link);
+  return card;
+}
 
-  const bodyBox = el('div', 'thread-body');
-  paragraphs(bodyBox, t.body);
+/* One thread, on its own. */
+function threadView(t) {
+  const card = el('article', 'thread thread--open');
   const u = poster();
+
+  const top = el('div', 'thread-body');
+  top.appendChild(el('h2', 'thread-title thread-title--full', t.title));
+  top.appendChild(byline(t.author_name, t.created_at));
+  paragraphs(top, t.body);
   if (u && u.id === t.author_id) {
-    bodyBox.appendChild(deleteButton('forum_thread', t.id, null, 'Delete thread'));
+    top.appendChild(deleteButton('forum_thread', t.id, null, 'Delete thread'));
   }
-  card.appendChild(bodyBox);
+  card.appendChild(top);
 
   const rows = state.replies[t.id];
   if (!rows) {
@@ -328,6 +431,18 @@ function threadCard(t) {
 
   card.appendChild(replyForm(t));
   return card;
+}
+
+/* The way back, which doubles as the thread view's only chrome. */
+function backLink() {
+  const a = el('a', 'back-link', '← All threads');
+  a.href = location.pathname;
+  a.addEventListener('click', e => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    show(null);
+  });
+  return a;
 }
 
 function replyForm(t) {
@@ -374,6 +489,9 @@ function replyForm(t) {
 
 function render() {
   app.textContent = '';
+
+  if (state.focusId) return renderThread();
+
   app.appendChild(head());
   app.appendChild(composer());
 
@@ -392,14 +510,34 @@ function render() {
   }
 
   const list = el('div', 'threads');
-  state.threads.forEach(t => list.appendChild(threadCard(t)));
+  state.threads.forEach(t => list.appendChild(threadRow(t)));
   app.appendChild(list);
+}
+
+function renderThread() {
+  app.appendChild(backLink());
+
+  if (state.missing) {
+    app.appendChild(el('p', 'empty',
+      'That thread is not here any more. Its author may have deleted it.'));
+    return;
+  }
+  if (state.error && state.error !== 'offline') {
+    app.appendChild(el('p', 'notice', 'Could not load the thread: ' + state.error));
+    return;
+  }
+  if (!state.focus) {
+    app.appendChild(el('p', 'notice', 'Loading…'));
+    return;
+  }
+  app.appendChild(threadView(state.focus));
 }
 
 /* auth.js may finish before or after this module runs, so handle both. */
 window.addEventListener('oc:auth', () => {
   state.booted = true;
-  if (state.threads == null) loadThreads();
+  if (state.focusId && !state.focus && !state.missing) enter(state.focusId);
+  else if (state.threads == null) loadThreads();
   else render();
 });
 
@@ -412,5 +550,6 @@ setTimeout(() => {
   if (!auth()) render();
 }, 6000);
 
+state.focusId = idFromUrl();
 render();
-if (auth()) { state.booted = true; loadThreads(); }
+if (auth()) { state.booted = true; enter(state.focusId); }

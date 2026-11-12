@@ -239,3 +239,31 @@ body {
   .form-actions { flex-direction: column; }
   .form-actions .btn-primary, .form-actions .btn-ghost { width: 100%; }
 }
+
+/* ---------- a thread on its own ---------- */
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 7px 13px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink-2);
+  font-size: 14px;
+  text-decoration: none;
+}
+.back-link:hover { border-color: var(--cinnabar); color: var(--cinnabar); }
+
+/* The row is an anchor so that its address can be copied; it must not look
+   like body copy with a link in it. */
+.thread-head { text-decoration: none; color: inherit; }
+
+.thread--open .thread-body { padding-top: 18px; }
+.thread-title--full {
+  display: block;
+  margin: 0;
+  font-size: clamp(23px, 3.4vw, 29px);
+  font-weight: 600;
+  line-height: 1.3;
+}
+.thread--open .thread-body .byline { margin-bottom: 14px; }
