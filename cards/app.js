@@ -10,7 +10,7 @@
  * makes. cards/sync.js publishes window.CardSync when a backend answers.
  */
 
-import { buildQueue, countDue, grade, newCard, strengthOf, STRENGTHS, today } from './srs.js?v=28';
+import { buildQueue, countDue, grade, newCard, strengthOf, STRENGTHS, today } from './srs.js?v=29';
 
 const KEY = 'openchinese.cards.v1';
 
