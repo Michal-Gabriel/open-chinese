@@ -16,6 +16,12 @@ create table if not exists auth.users (id uuid primary key);
 create or replace function auth.uid() returns uuid language sql stable as $$
   select nullif(current_setting('test.uid', true), '')::uuid
 $$;
+-- The forum policies read the token itself, not just the uid: a guest account
+-- is `authenticated` exactly like a signed-in one, and the claims are the only
+-- thing telling them apart. Tests set test.jwt alongside test.uid.
+create or replace function auth.jwt() returns jsonb language sql stable as $$
+  select coalesce(nullif(current_setting('test.jwt', true), '')::jsonb, '{}'::jsonb)
+$$;
 do $$ begin
   if not exists (select 1 from pg_roles where rolname = 'authenticated') then
     create role authenticated nologin;
@@ -405,6 +411,167 @@ begin
       if sqlerrm like 'T19 %' then raise; end if;
   end;
   raise notice 'T19 anon cannot read card_state         ok';
+end $$;
+
+-- ===========================================================================
+-- 20-26. The forum.
+-- ===========================================================================
+reset role;
+set role authenticated;
+do $$
+declare
+  a uuid := '11111111-1111-1111-1111-111111111111';
+  b uuid := '22222222-2222-2222-2222-222222222222';
+  named_a text := '{"is_anonymous":false,"email":"a@example.com"}';
+  named_b text := '{"is_anonymous":false,"email":"b@example.com"}';
+  guest   text := '{"is_anonymous":true}';
+  t uuid;
+  n int;
+  was timestamptz;
+  now_is timestamptz;
+begin
+  -- ----------------------------------------------------------------- 20
+  perform set_config('test.uid', a::text, false);
+  perform set_config('test.jwt', named_a, false);
+  insert into public.forum_thread (author_id, author_name, title, body)
+    values (a, 'Ann', 'How do I hear the third tone?', 'It sounds flat to me.')
+    returning id into t;
+  perform set_config('test.uid', b::text, false);
+  perform set_config('test.jwt', named_b, false);
+  insert into public.forum_reply (thread_id, author_id, author_name, body)
+    values (t, b, 'Bo', 'Say it low rather than low-then-high.');
+  select count(*) into n from public.forum_reply where thread_id = t;
+  if n <> 1 then
+    raise exception 'T20 reply not stored: % rows', n;
+  end if;
+  raise notice 'T20 signed-in users post and reply      ok';
+
+  -- ----------------------------------------------------------------- 21
+  -- the guest account the site mints silently must NOT be able to post
+  perform set_config('test.uid', a::text, false);
+  perform set_config('test.jwt', guest, false);
+  begin
+    insert into public.forum_thread (author_id, author_name, title, body)
+      values (a, 'Ghost', 'Buy cheap followers', 'spam');
+    raise exception 'T21 a guest account was allowed to open a thread';
+  exception
+    when insufficient_privilege then null;   -- RLS refused, as it should
+    when others then
+      if sqlerrm like 'T21 %' then raise; end if;
+  end;
+  begin
+    insert into public.forum_reply (thread_id, author_id, author_name, body)
+      values (t, a, 'Ghost', 'spam');
+    raise exception 'T21 a guest account was allowed to reply';
+  exception
+    when insufficient_privilege then null;
+    when others then
+      if sqlerrm like 'T21 %' then raise; end if;
+  end;
+  raise notice 'T21 guest accounts cannot post          ok';
+
+  -- ----------------------------------------------------------------- 22
+  -- a token with no is_anonymous claim at all still must not get through,
+  -- because the missing email gives it away
+  perform set_config('test.jwt', '{"email":""}', false);
+  begin
+    insert into public.forum_thread (author_id, author_name, title, body)
+      values (a, 'Ghost', 'Still spam', 'spam');
+    raise exception 'T22 a token without claims was allowed to post';
+  exception
+    when insufficient_privilege then null;
+    when others then
+      if sqlerrm like 'T22 %' then raise; end if;
+  end;
+  raise notice 'T22 a claimless token cannot post       ok';
+
+  -- ----------------------------------------------------------------- 23
+  -- posting under someone else's id
+  perform set_config('test.uid', b::text, false);
+  perform set_config('test.jwt', named_b, false);
+  begin
+    insert into public.forum_thread (author_id, author_name, title, body)
+      values (a, 'Ann', 'Not actually Ann', 'impersonation');
+    raise exception 'T23 user b posted as user a';
+  exception
+    when insufficient_privilege then null;
+    when others then
+      if sqlerrm like 'T23 %' then raise; end if;
+  end;
+  raise notice 'T23 nobody can post as someone else     ok';
+
+  -- ----------------------------------------------------------------- 24
+  -- a thread is everyone's to read, and nobody else's to delete
+  select count(*) into n from public.forum_thread where id = t;
+  if n <> 1 then
+    raise exception 'T24 user b cannot read user a''s thread';
+  end if;
+  delete from public.forum_thread where id = t;
+  select count(*) into n from public.forum_thread where id = t;
+  if n <> 1 then
+    raise exception 'T24 user b deleted user a''s thread';
+  end if;
+  raise notice 'T24 threads are public, deletes are not ok';
+
+  -- ----------------------------------------------------------------- 25
+  -- a reply bumps the thread it answers, which is what the list sorts on
+  select last_activity into was from public.forum_thread where id = t;
+  perform pg_sleep(0.01);
+  insert into public.forum_reply (thread_id, author_id, author_name, body)
+    values (t, b, 'Bo', 'One more thought.');
+  select last_activity into now_is from public.forum_thread where id = t;
+  if now_is <= was then
+    raise exception 'T25 last_activity did not move: % -> %', was, now_is;
+  end if;
+  raise notice 'T25 a reply bumps its thread            ok';
+
+  -- ----------------------------------------------------------------- 26
+  -- deleting your own thread takes its replies with it
+  perform set_config('test.uid', a::text, false);
+  perform set_config('test.jwt', named_a, false);
+  delete from public.forum_thread where id = t;
+  select count(*) into n from public.forum_reply where thread_id = t;
+  if n <> 0 then
+    raise exception 'T26 % replies outlived their thread', n;
+  end if;
+  raise notice 'T26 deleting a thread clears replies    ok';
+end $$;
+
+-- ===========================================================================
+-- 27. Someone with no account at all can still read the forum.
+-- ===========================================================================
+reset role;
+set role authenticated;
+do $$
+declare a uuid := '11111111-1111-1111-1111-111111111111';
+begin
+  perform set_config('test.uid', a::text, false);
+  perform set_config('test.jwt', '{"is_anonymous":false,"email":"a@example.com"}', false);
+  insert into public.forum_thread (author_id, author_name, title, body)
+    values (a, 'Ann', 'A thread left for the public', 'Readable by anyone.');
+end $$;
+
+reset role;
+set role anon;
+do $$
+declare n int;
+begin
+  perform set_config('test.uid', '', false);
+  perform set_config('test.jwt', '', false);
+  select count(*) into n from public.forum_thread;
+  if n < 1 then
+    raise exception 'T27 a signed-out reader sees no threads';
+  end if;
+  begin
+    insert into public.forum_thread (author_id, author_name, title, body)
+      values ('11111111-1111-1111-1111-111111111111', 'Nobody', 'Spam', 'spam');
+    raise exception 'T27 a signed-out visitor was allowed to post';
+  exception
+    when insufficient_privilege then null;
+    when others then
+      if sqlerrm like 'T27 %' then raise; end if;
+  end;
+  raise notice 'T27 signed-out readers read, not write  ok';
 end $$;
 
 reset role;

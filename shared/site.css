@@ -208,6 +208,67 @@ h1 {
   margin-top: 36px;
 }
 
+/* The forum is not a fourth way to study, so it does not join the three
+   section cards. It is a different kind of thing — a place rather than a
+   course — and gets the celadon accent the secondary panels use. */
+.forum-panel {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 6px 20px;
+  margin-top: 36px;
+  padding: 24px 26px 22px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--celadon);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.forum-panel:hover {
+  border-color: var(--celadon);
+  box-shadow: inset 0 0 0 1px var(--celadon-l);
+}
+
+.forum-panel .forum-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius);
+  background: var(--celadon);
+  color: var(--paper-2);
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.forum-panel h2 {
+  margin: 0 0 8px;
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.forum-panel p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+.forum-panel .story-link {
+  grid-column: 2;
+  margin-top: 14px;
+}
+
+@media (max-width: 600px) {
+  .forum-panel { grid-template-columns: 1fr; gap: 14px; padding: 20px 18px; }
+  .forum-panel .story-link { grid-column: 1; margin-top: 4px; }
+}
+
 .card {
   padding: 20px 22px 18px;
   border: 1px solid var(--line-soft);

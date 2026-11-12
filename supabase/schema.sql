@@ -250,3 +250,124 @@ $$;
 
 revoke all on function public.merge_cards(jsonb) from public;
 grant execute on function public.merge_cards(jsonb) to authenticated;
+
+-- ---------------------------------------------------------------------------
+-- 5. The forum: threads and replies.
+--
+--    Everything here is PUBLIC to read, including to people with no account
+--    at all, and that is the point — a question someone asked in 2026 should
+--    be readable by whoever searches for it in 2028.
+--
+--    Posting is the part that needs a gate, and the gate is not simply "has a
+--    session". The site mints an ANONYMOUS account the moment a learner has
+--    progress worth saving (see shared/auth.js), and that account arrives
+--    here as `authenticated` exactly like a signed-in one. So the role alone
+--    would let every silent guest post. is_named_user() below is what
+--    separates the two.
+--
+--    The author's display name is copied onto the row rather than looked up:
+--    auth.users is not readable from the browser, so without a copy every
+--    post would render as a bare uuid. The cost is that the name is a
+--    snapshot — renaming yourself in Google does not rewrite old posts — and
+--    that a determined person could put any string in it. That is cosmetic:
+--    author_id is the identity the policies check, and it cannot be forged.
+-- ---------------------------------------------------------------------------
+
+-- A real account, not the guest one the site creates behind the scenes.
+--
+-- Two conditions rather than one, on purpose. is_anonymous is the direct
+-- answer but it is a claim Supabase chose to put in the token, and if a
+-- future version renamed it the ->> would yield NULL and the coalesce would
+-- read as "not anonymous" — failing open, letting guests post. An anonymous
+-- user has no email either, and that claim is not going anywhere, so the
+-- second condition holds the gate shut even if the first stops working.
+create or replace function public.is_named_user() returns boolean
+language sql stable as $$
+  select auth.uid() is not null
+     and coalesce((auth.jwt() ->> 'is_anonymous')::boolean, false) = false
+     and nullif(auth.jwt() ->> 'email', '') is not null
+$$;
+
+revoke all on function public.is_named_user() from public;
+grant execute on function public.is_named_user() to anon, authenticated;
+
+create table if not exists public.forum_thread (
+  id            uuid        primary key default gen_random_uuid(),
+  author_id     uuid        not null references auth.users(id) on delete cascade,
+  author_name   text        not null check (length(btrim(author_name)) between 1 and 60),
+  title         text        not null check (length(btrim(title)) between 3 and 140),
+  body          text        not null check (length(btrim(body)) between 1 and 8000),
+  created_at    timestamptz not null default now(),
+  -- what the list sorts on: a thread answered this morning belongs above one
+  -- started last week and never touched since
+  last_activity timestamptz not null default now()
+);
+
+create table if not exists public.forum_reply (
+  id          uuid        primary key default gen_random_uuid(),
+  thread_id   uuid        not null references public.forum_thread(id) on delete cascade,
+  author_id   uuid        not null references auth.users(id) on delete cascade,
+  author_name text        not null check (length(btrim(author_name)) between 1 and 60),
+  body        text        not null check (length(btrim(body)) between 1 and 8000),
+  created_at  timestamptz not null default now()
+);
+
+create index if not exists forum_thread_activity_idx on public.forum_thread (last_activity desc);
+create index if not exists forum_reply_thread_idx    on public.forum_reply (thread_id, created_at);
+
+alter table public.forum_thread enable row level security;
+alter table public.forum_reply  enable row level security;
+
+drop policy if exists "threads are public"      on public.forum_thread;
+drop policy if exists "named users post"        on public.forum_thread;
+drop policy if exists "own thread delete"       on public.forum_thread;
+drop policy if exists "replies are public"      on public.forum_reply;
+drop policy if exists "named users reply"       on public.forum_reply;
+drop policy if exists "own reply delete"        on public.forum_reply;
+
+create policy "threads are public" on public.forum_thread
+  for select using (true);
+create policy "named users post" on public.forum_thread
+  for insert with check (auth.uid() = author_id and public.is_named_user());
+-- No update policy at all: a post that can be rewritten after it has been
+-- answered turns a thread into a record of a conversation that never
+-- happened. Delete your own and post again instead.
+create policy "own thread delete" on public.forum_thread
+  for delete using (auth.uid() = author_id);
+
+create policy "replies are public" on public.forum_reply
+  for select using (true);
+create policy "named users reply" on public.forum_reply
+  for insert with check (auth.uid() = author_id and public.is_named_user());
+create policy "own reply delete" on public.forum_reply
+  for delete using (auth.uid() = author_id);
+
+-- anon here means "nobody is signed in", which is most of the readers.
+grant select on public.forum_thread, public.forum_reply to anon, authenticated;
+grant insert, delete on public.forum_thread, public.forum_reply to authenticated;
+
+-- A reply has to touch a row its author does not own, and there is no update
+-- policy that would let them. SECURITY DEFINER is the whole reason this is a
+-- trigger function rather than a second statement in the client: through here
+-- the only thing a replier can change on someone else's thread is the clock.
+create or replace function public.forum_touch_thread()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+begin
+  -- clock_timestamp() rather than now(): now() is the transaction's start
+  -- time, so two replies posted inside one transaction would stamp the thread
+  -- with the same instant and the list would have no way to order them.
+  update public.forum_thread set last_activity = clock_timestamp() where id = new.thread_id;
+  return new;
+end
+$$;
+
+revoke all on function public.forum_touch_thread() from public;
+
+drop trigger if exists forum_reply_touches_thread on public.forum_reply;
+create trigger forum_reply_touches_thread
+  after insert on public.forum_reply
+  for each row execute function public.forum_touch_thread();

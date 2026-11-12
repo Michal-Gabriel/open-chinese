@@ -6,7 +6,7 @@
  * disagree again, and a new story needs no HTML edit.
  */
 
-import { SERIES, seriesMeta, seriesOf } from './series.js?v=24';
+import { SERIES, seriesMeta, seriesOf } from './series.js?v=25';
 
 const root = document.getElementById('story-sections');
 
@@ -83,7 +83,7 @@ function section(series, stories) {
 async function build() {
   let stories;
   try {
-    const res = await fetch('./data/stories.json?v=24');
+    const res = await fetch('./data/stories.json?v=25');
     if (!res.ok) throw new Error('HTTP ' + res.status);
     stories = await res.json();
   } catch (e) {
