@@ -122,11 +122,17 @@ function poster() {
 }
 
 /* Google gives us a full name for most people and an email address for the
-   rest. The forum is public, so an address never becomes the byline. */
+   rest. The forum is public, so neither goes up whole: an address never
+   becomes a byline, and a full name is cut to the part someone would use to
+   speak to you. Asking a question about a tone should not publish your
+   surname.
+   Two people called Michał are then indistinguishable, which is the cost and
+   a small one on a board this size. */
 function bylineFor(user) {
   const raw = String(user.name || '').trim();
   if (!raw) return 'Anonymous';
-  return (raw.includes('@') ? raw.split('@')[0] : raw).slice(0, 60);
+  const name = raw.includes('@') ? raw.split('@')[0] : raw;
+  return name.split(/\s+/)[0].slice(0, 60);
 }
 
 const MINUTE = 60e3, HOUR = 60 * MINUTE, DAY = 24 * HOUR;
