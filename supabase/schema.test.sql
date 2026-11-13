@@ -574,5 +574,64 @@ begin
   raise notice 'T27 signed-out readers read, not write  ok';
 end $$;
 
+-- ===========================================================================
+-- 28. Image paths on a post.
+--     The browser writes these, so the constraint is the only thing standing
+--     between a post and an <img> pointed wherever somebody likes.
+-- ===========================================================================
+reset role;
+set role authenticated;
+do $$
+declare
+  a uuid := '11111111-1111-1111-1111-111111111111';
+  named_a text := '{"is_anonymous":false,"email":"a@example.com"}';
+  good text := '11111111-1111-1111-1111-111111111111/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.png';
+  t uuid;
+  bad text;
+begin
+  perform set_config('test.uid', a::text, false);
+  perform set_config('test.jwt', named_a, false);
+
+  insert into public.forum_thread (author_id, author_name, title, body, images)
+    values (a, 'A', 'With a screenshot', 'see below', array[good])
+    returning id into t;
+  if (select cardinality(images) from public.forum_thread where id = t) <> 1 then
+    raise exception 'T28 a good path was not stored';
+  end if;
+
+  -- a traversal and a file type that is not an image
+  foreach bad in array array[
+    '11111111-1111-1111-1111-111111111111/../secrets.png',
+    '11111111-1111-1111-1111-111111111111/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.svg'
+  ] loop
+    begin
+      insert into public.forum_thread (author_id, author_name, title, body, images)
+        values (a, 'A', 'Bad path', 'x', array[bad]);
+      raise exception 'T28 a bad path was accepted: %', bad;
+    exception
+      when check_violation then null;   -- expected
+      when others then
+        if sqlerrm like 'T28 %' then raise; end if;
+    end;
+  end loop;
+
+  begin
+    insert into public.forum_thread (author_id, author_name, title, body, images)
+      values (a, 'A', 'Too many', 'x', array[good, good, good, good, good]);
+    raise exception 'T28 five images were accepted';
+  exception
+    when check_violation then null;
+    when others then
+      if sqlerrm like 'T28 %' then raise; end if;
+  end;
+
+  -- the ordinary case: a post with no images at all
+  insert into public.forum_thread (author_id, author_name, title, body)
+    values (a, 'A', 'No screenshot', 'x');
+
+  delete from public.forum_thread where author_id = a;
+  raise notice 'T28 image paths are checked, not trusted ok';
+end $$;
+
 reset role;
 select 'ALL TESTS PASSED' as result;

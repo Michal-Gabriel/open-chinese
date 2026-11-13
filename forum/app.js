@@ -39,6 +39,14 @@ const state = {
   busy: false,
   composing: false,
   booted: false,       // has auth.js finished deciding whether there is a backend
+  /* Files picked for the post being written, not yet uploaded. One list, not
+     one per form: the composer lives on the list screen and the reply box on
+     a thread, so only ever one of them is on screen. It sits in state rather
+     than in the form's closure because every data load re-renders, and a
+     screenshot that disappears while you are still typing is worse than no
+     screenshots at all. */
+  pending: [],         // [{ file, url }] — url is an object URL for the preview
+  uploadError: null,
 };
 
 /* ---------- the address bar ----------
@@ -69,6 +77,7 @@ function enter(id) {
   state.focusId = id;
   state.missing = false;
   state.composing = false;
+  clearPending();
   if (!id) {
     state.focus = null;
     document.title = 'Forum — OpenChinese';
@@ -146,6 +155,152 @@ function paragraphs(into, text) {
   });
 }
 
+/* ---------- screenshots ----------
+   A question about Thai is very often a question about something on a screen.
+   The files go to Storage under the uploader's own uid, which is the whole of
+   what the storage policy checks, and the post keeps only the paths. */
+
+const BUCKET = 'forum-images';
+const MAX_IMAGES = 4;                      // the constraint in schema.sql agrees
+const MAX_BYTES = 5 * 1024 * 1024;         // and so does the bucket
+const TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+
+function extensionOf(type) {
+  return type === 'image/jpeg' ? 'jpg' : type.slice('image/'.length);
+}
+
+function publicUrl(path) {
+  const a = auth();
+  if (!a) return '';
+  return a.client().storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+}
+
+/* Add what was picked, pasted or dropped. Says what it refused and why rather
+   than silently keeping four of the six files you dragged in. */
+function addFiles(list) {
+  const files = Array.from(list || []);
+  let refused = null;
+  for (const f of files) {
+    if (state.pending.length >= MAX_IMAGES) { refused = 'Four images is the limit.'; break; }
+    if (!TYPES.includes(f.type)) { refused = 'Only PNG, JPEG, GIF and WebP images.'; continue; }
+    if (f.size > MAX_BYTES) { refused = f.name + ' is over 5 MB.'; continue; }
+    state.pending.push({ file: f, url: URL.createObjectURL(f) });
+  }
+  state.uploadError = refused;
+  render();
+}
+
+function dropPending(i) {
+  const p = state.pending[i];
+  if (p) URL.revokeObjectURL(p.url);
+  state.pending.splice(i, 1);
+  render();
+}
+
+function clearPending() {
+  state.pending.forEach(p => URL.revokeObjectURL(p.url));
+  state.pending = [];
+  state.uploadError = null;
+}
+
+/* Upload at submit rather than at pick, so abandoning a half-written post
+   leaves nothing behind in the bucket. Returns the paths, or throws. */
+async function uploadPending() {
+  const a = auth(), u = poster();
+  if (!a || !u || !state.pending.length) return [];
+  const paths = [];
+  for (const p of state.pending) {
+    const path = u.id + '/' + crypto.randomUUID() + '.' + extensionOf(p.file.type);
+    const { error } = await a.client().storage.from(BUCKET)
+      .upload(path, p.file, { contentType: p.file.type, upsert: false });
+    if (error) {
+      /* Nothing half-posted: drop whatever did go up before giving in. */
+      if (paths.length) await a.client().storage.from(BUCKET).remove(paths);
+      throw new Error('Could not upload ' + p.file.name + ': ' + error.message);
+    }
+    paths.push(path);
+  }
+  return paths;
+}
+
+/* The picker, the previews, and the paste and drop handlers for a textarea.
+   Pasting is the one that matters: a screenshot is on the clipboard, not on
+   disk, and asking someone to save it to a file first is asking them not to
+   bother. */
+function attachments(area) {
+  const box = el('div', 'attach');
+
+  const bar = el('div', 'attach-bar');
+  const pick = el('label', 'btn-ghost attach-pick', 'Add an image');
+  const input = el('input', 'attach-input');
+  input.type = 'file';
+  input.accept = TYPES.join(',');
+  input.multiple = true;
+  input.addEventListener('change', () => { addFiles(input.files); input.value = ''; });
+  pick.appendChild(input);
+  bar.appendChild(pick);
+  bar.appendChild(el('span', 'attach-hint', 'or paste a screenshot · up to four, 5 MB each'));
+  box.appendChild(bar);
+
+  if (state.uploadError) box.appendChild(el('p', 'form-error', state.uploadError));
+
+  if (state.pending.length) {
+    const strip = el('div', 'attach-strip');
+    state.pending.forEach((p, i) => {
+      const cell = el('div', 'attach-thumb');
+      const img = document.createElement('img');
+      img.src = p.url;
+      img.alt = p.file.name;
+      cell.appendChild(img);
+      const x = on(el('button', 'attach-drop', '✕'), () => dropPending(i));
+      x.type = 'button';
+      x.title = 'Remove ' + p.file.name;
+      cell.appendChild(x);
+      strip.appendChild(cell);
+    });
+    box.appendChild(strip);
+  }
+
+  area.addEventListener('paste', e => {
+    const files = Array.from((e.clipboardData && e.clipboardData.files) || []);
+    if (!files.length) return;
+    e.preventDefault();
+    addFiles(files);
+  });
+  area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('dropping'); });
+  area.addEventListener('dragleave', () => area.classList.remove('dropping'));
+  area.addEventListener('drop', e => {
+    const files = (e.dataTransfer && e.dataTransfer.files) || [];
+    area.classList.remove('dropping');
+    if (!files.length) return;
+    e.preventDefault();
+    addFiles(files);
+  });
+
+  return box;
+}
+
+/* Images on a posted thread or reply. A link around each one, so a detail
+   nobody can read at this size is one click from full size. */
+function postImages(into, paths) {
+  if (!paths || !paths.length) return;
+  const grid = el('div', 'post-images');
+  paths.forEach(path => {
+    const url = publicUrl(path);
+    const a = el('a', 'post-image');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = 'Image posted with this message';
+    img.loading = 'lazy';
+    a.appendChild(img);
+    grid.appendChild(a);
+  });
+  into.appendChild(grid);
+}
+
 /* ---------- data ---------- */
 
 async function loadThreads() {
@@ -154,7 +309,7 @@ async function loadThreads() {
   try {
     const { data, error } = await a.client()
       .from('forum_thread')
-      .select('id, author_id, author_name, title, body, created_at, last_activity, forum_reply(count)')
+      .select('id, author_id, author_name, title, body, images, created_at, last_activity, forum_reply(count)')
       .order('last_activity', { ascending: false })
       .limit(100);
     if (error) throw error;
@@ -174,7 +329,7 @@ async function loadThread(id) {
   try {
     const { data, error } = await a.client()
       .from('forum_thread')
-      .select('id, author_id, author_name, title, body, created_at, last_activity, forum_reply(count)')
+      .select('id, author_id, author_name, title, body, images, created_at, last_activity, forum_reply(count)')
       .eq('id', id)
       .maybeSingle();
     if (error) throw error;
@@ -192,7 +347,7 @@ async function loadReplies(threadId) {
   try {
     const { data, error } = await a.client()
       .from('forum_reply')
-      .select('id, author_id, author_name, body, created_at')
+      .select('id, author_id, author_name, body, images, created_at')
       .eq('thread_id', threadId)
       .order('created_at', { ascending: true });
     if (error) throw error;
@@ -210,37 +365,67 @@ function replyCount(t) {
   return (c && c.count) || 0;
 }
 
-async function postThread(title, body) {
+async function postThread(title, body, images) {
   const a = auth(), u = poster();
   if (!a || !u) return 'You need to be signed in to post.';
   const { data, error } = await a.client()
     .from('forum_thread')
-    .insert({ author_id: u.id, author_name: bylineFor(u), title: title, body: body })
+    .insert({ author_id: u.id, author_name: bylineFor(u), title: title, body: body, images: images })
     .select('id')
     .single();
-  if (error) return error.message;
+  /* The files are already in the bucket at this point, so a refused insert
+     has to take them back out — otherwise every failed post leaves litter
+     nothing will ever reference. */
+  if (error) { await discard(images); return error.message; }
   await loadThreads();
   if (data && data.id) show(data.id);
   return null;
 }
 
-async function postReply(threadId, body) {
+async function postReply(threadId, body, images) {
   const a = auth(), u = poster();
   if (!a || !u) return 'You need to be signed in to reply.';
   const { error } = await a.client()
     .from('forum_reply')
-    .insert({ thread_id: threadId, author_id: u.id, author_name: bylineFor(u), body: body });
-  if (error) return error.message;
+    .insert({ thread_id: threadId, author_id: u.id, author_name: bylineFor(u), body: body, images: images });
+  if (error) { await discard(images); return error.message; }
   await loadReplies(threadId);
   await loadThreads();
   return null;
 }
 
+/* Storage knows nothing about the rows that point at it, so every path has
+   to be swept up by hand. Best-effort on purpose: a file that outlives its
+   post is litter, while a post that refuses to delete because its image is
+   already gone would be a wall. */
+async function discard(paths) {
+  const a = auth();
+  if (!a || !paths || !paths.length) return;
+  try { await a.client().storage.from(BUCKET).remove(paths); } catch (e) {}
+}
+
 async function remove(table, id, threadId) {
   const a = auth();
   if (!a) return;
+
+  /* Collected before the delete: afterwards the rows that named these files
+     are gone and there is nothing left to read the paths off. A thread takes
+     its replies with it in SQL, so it takes their images too. */
+  const files = [];
+  if (table === 'forum_reply') {
+    const r = (state.replies[threadId] || []).find(x => x.id === id);
+    if (r) files.push(...(r.images || []));
+  } else {
+    const t = (state.focus && state.focus.id === id ? state.focus : null)
+          || (state.threads || []).find(x => x.id === id);
+    if (t) files.push(...(t.images || []));
+    (state.replies[id] || []).forEach(r => files.push(...(r.images || [])));
+  }
+
   const { error } = await a.client().from(table).delete().eq('id', id);
   if (error) return;
+  await discard(files);
+
   if (table === 'forum_reply') {
     await loadReplies(threadId);
     await loadThreads();
@@ -295,7 +480,7 @@ function composer() {
 
   if (!state.composing) {
     box.appendChild(on(el('button', 'btn-primary', 'Start a thread'), () => {
-      state.composing = true; render();
+      state.composing = true; clearPending(); render();
     }));
     return box;
   }
@@ -318,13 +503,14 @@ function composer() {
   const actions = el('div', 'form-actions');
   const send = el('button', 'btn-primary', 'Post');
   send.type = 'submit';
-  const cancel = on(el('button', 'btn-ghost', 'Cancel'), () => { state.composing = false; render(); });
+  const cancel = on(el('button', 'btn-ghost', 'Cancel'), () => { state.composing = false; clearPending(); render(); });
   cancel.type = 'button';
   actions.appendChild(send);
   actions.appendChild(cancel);
 
   form.appendChild(title);
   form.appendChild(body);
+  form.appendChild(attachments(body));
   form.appendChild(err);
   form.appendChild(actions);
 
@@ -334,8 +520,16 @@ function composer() {
     const t = title.value.trim(), b = body.value.trim();
     if (t.length < 3) { err.textContent = 'Give the thread a title of at least three characters.'; err.hidden = false; return; }
     if (!b) { err.textContent = 'Write something in the body.'; err.hidden = false; return; }
-    state.busy = true; send.disabled = true; send.textContent = 'Posting…';
-    const problem = await postThread(t, b);
+    state.busy = true; send.disabled = true;
+    send.textContent = state.pending.length ? 'Uploading…' : 'Posting…';
+    let problem = null;
+    try {
+      const images = await uploadPending();
+      send.textContent = 'Posting…';
+      problem = await postThread(t, b, images);
+    } catch (e) {
+      problem = e.message;
+    }
     state.busy = false;
     if (problem) {
       err.textContent = problem; err.hidden = false;
@@ -343,6 +537,7 @@ function composer() {
       return;
     }
     state.composing = false;
+    clearPending();
     render();
   });
 
@@ -407,6 +602,7 @@ function threadView(t) {
   top.appendChild(el('h2', 'thread-title thread-title--full', t.title));
   top.appendChild(byline(t.author_name, t.created_at));
   paragraphs(top, t.body);
+  postImages(top, t.images);
   if (u && u.id === t.author_id) {
     top.appendChild(deleteButton('forum_thread', t.id, null, 'Delete thread'));
   }
@@ -421,6 +617,7 @@ function threadView(t) {
       const item = el('div', 'reply');
       item.appendChild(byline(r.author_name, r.created_at));
       paragraphs(item, r.body);
+      postImages(item, r.images);
       if (u && u.id === r.author_id) {
         item.appendChild(deleteButton('forum_reply', r.id, t.id, 'Delete'));
       }
@@ -467,6 +664,7 @@ function replyForm(t) {
   send.type = 'submit';
 
   form.appendChild(body);
+  form.appendChild(attachments(body));
   form.appendChild(err);
   form.appendChild(send);
 
@@ -475,13 +673,24 @@ function replyForm(t) {
     if (state.busy) return;
     const b = body.value.trim();
     if (!b) { err.textContent = 'Write something first.'; err.hidden = false; return; }
-    state.busy = true; send.disabled = true; send.textContent = 'Posting…';
-    const problem = await postReply(t.id, b);
+    state.busy = true; send.disabled = true;
+    send.textContent = state.pending.length ? 'Uploading…' : 'Posting…';
+    let problem = null;
+    try {
+      const images = await uploadPending();
+      send.textContent = 'Posting…';
+      problem = await postReply(t.id, b, images);
+    } catch (e) {
+      problem = e.message;
+    }
     state.busy = false;
     if (problem) {
       err.textContent = problem; err.hidden = false;
       send.disabled = false; send.textContent = 'Reply';
+      return;
     }
+    clearPending();
+    render();
   });
 
   return form;

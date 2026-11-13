@@ -371,3 +371,91 @@ drop trigger if exists forum_reply_touches_thread on public.forum_reply;
 create trigger forum_reply_touches_thread
   after insert on public.forum_reply
   for each row execute function public.forum_touch_thread();
+
+-- ---------------------------------------------------------------------------
+-- 6. Screenshots on forum posts.
+--
+--    A question about Thai is very often a question about something on a
+--    screen — a keyboard that will not type สระอำ, a sentence an app marked
+--    wrong — and describing a screenshot in words is work nobody should have
+--    to do to ask.
+--
+--    The files live in Storage and the row keeps only their paths. The path
+--    always begins with the uploader's uid, which is what the storage policy
+--    checks: everyone writes inside their own folder and nowhere else. The
+--    bucket is public to read, like the threads themselves.
+-- ---------------------------------------------------------------------------
+
+-- Paths are written by the browser, so they are checked here rather than
+-- trusted: at most four, and each one exactly "<uid>/<uuid>.<ext>". Nothing
+-- else can be stored, so nothing else can come back out and be turned into a
+-- URL — no traversal, no pointing the <img> at another bucket.
+create or replace function public.forum_images_ok(paths text[]) returns boolean
+language sql immutable as $$
+  -- an aggregate query with no GROUP BY returns one row even over an empty
+  -- array, which is why the empty case needs no branch of its own
+  select coalesce(cardinality(paths), 0) <= 4
+     and coalesce(bool_and(p ~ '^[0-9a-f-]{36}/[0-9a-f-]{36}\.(png|jpe?g|gif|webp)$'), true)
+    from unnest(coalesce(paths, '{}'::text[])) as p
+$$;
+
+alter table public.forum_thread add column if not exists images text[] not null default '{}';
+alter table public.forum_reply  add column if not exists images text[] not null default '{}';
+
+alter table public.forum_thread drop constraint if exists forum_thread_images_ck;
+alter table public.forum_thread add constraint forum_thread_images_ck check (public.forum_images_ok(images));
+alter table public.forum_reply  drop constraint if exists forum_reply_images_ck;
+alter table public.forum_reply  add constraint forum_reply_images_ck  check (public.forum_images_ok(images));
+
+-- The bucket and its policies, for the hosted project only: a throwaway
+-- Postgres has no storage schema, and the tests run against one of those.
+--
+-- Wrapped in a block that downgrades a permission error to a warning. The
+-- policies below sit on a table this role does not own on every Supabase
+-- project, and a failure there would otherwise abort the whole apply and take
+-- the rest of the schema with it — a forum that cannot take screenshots is a
+-- smaller problem than a schema that will not load.
+do $$
+begin
+  if not exists (select 1 from pg_namespace where nspname = 'storage') then
+    raise notice 'no storage schema here — skipping the bucket (this is the test run)';
+    return;
+  end if;
+
+  insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+  values ('forum-images', 'forum-images', true, 5242880,
+          array['image/png', 'image/jpeg', 'image/gif', 'image/webp'])
+  on conflict (id) do update
+     set public             = excluded.public,
+         file_size_limit    = excluded.file_size_limit,
+         allowed_mime_types = excluded.allowed_mime_types;
+
+  execute $p$drop policy if exists "forum images are public" on storage.objects$p$;
+  execute $p$drop policy if exists "named users upload"      on storage.objects$p$;
+  execute $p$drop policy if exists "own upload delete"       on storage.objects$p$;
+
+  execute $p$
+    create policy "forum images are public" on storage.objects
+      for select using (bucket_id = 'forum-images')
+  $p$;
+  -- (storage.foldername(name))[1] is the first path segment: the uploader's
+  -- uid. Same gate as posting — a silent guest account is authenticated too.
+  execute $p$
+    create policy "named users upload" on storage.objects
+      for insert with check (
+        bucket_id = 'forum-images'
+        and public.is_named_user()
+        and (storage.foldername(name))[1] = auth.uid()::text
+      )
+  $p$;
+  execute $p$
+    create policy "own upload delete" on storage.objects
+      for delete using (
+        bucket_id = 'forum-images'
+        and (storage.foldername(name))[1] = auth.uid()::text
+      )
+  $p$;
+exception
+  when insufficient_privilege then
+    raise warning 'could not set up the forum-images bucket: %', sqlerrm;
+end $$;
